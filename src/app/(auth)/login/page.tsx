@@ -26,8 +26,9 @@ export default async function LoginPage({
         redirectTo: "/dashboard",
       });
     } catch (error) {
-      if (error instanceof AuthError) redirect("/login?error=CredentialsSignin");
-      throw error; // re-throw the Next.js redirect
+      if (error instanceof AuthError)
+        redirect("/login?error=CredentialsSignin");
+      throw error;
     }
   }
 
@@ -41,7 +42,9 @@ export default async function LoginPage({
           <span className="font-display font-semibold text-ink">Admin</span>
         </Link>
         <h1 className="font-display text-2xl text-ink">Sign in</h1>
-        <p className="mt-1 text-sm text-muted">Manage content, bookings and messages.</p>
+        <p className="mt-1 text-sm text-muted">
+          Manage content, bookings and messages.
+        </p>
 
         {error ? (
           <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
@@ -52,11 +55,23 @@ export default async function LoginPage({
         <form action={login} className="mt-6 space-y-4">
           <div>
             <Label htmlFor="email">Email</Label>
-            <Input id="email" name="email" type="email" required autoComplete="email" />
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              required
+              autoComplete="email"
+            />
           </div>
           <div>
             <Label htmlFor="password">Password</Label>
-            <Input id="password" name="password" type="password" required autoComplete="current-password" />
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              required
+              autoComplete="current-password"
+            />
           </div>
           <Button className="w-full" type="submit">
             Sign in
