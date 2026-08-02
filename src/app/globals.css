@@ -5,24 +5,29 @@
 @tailwind utilities;
 
 @layer base {
+  /*
+   * One palette for the public site and the admin panel, taken from the logo:
+   * violet from the base of the swirl, fuchsia from its crest, amber from the
+   * warm arc, on cool indigo-tinted neutrals.
+   */
   :root {
     --background: 0 0% 100%;
-    --foreground: 215 45% 12%;
+    --foreground: 258 30% 14%;
     --card: 0 0% 100%;
-    --card-foreground: 215 45% 12%;
-    --primary: 201 100% 36%;
+    --card-foreground: 258 30% 14%;
+    --primary: 263 70% 50%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 213 55% 16%;
+    --secondary: 293 69% 49%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 208 45% 97%;
-    --muted-foreground: 213 18% 42%;
-    --accent: 190 92% 42%;
-    --accent-foreground: 0 0% 100%;
+    --muted: 260 40% 97%;
+    --muted-foreground: 258 12% 45%;
+    --accent: 38 92% 50%;
+    --accent-foreground: 258 30% 14%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
-    --border: 212 30% 90%;
-    --input: 212 30% 87%;
-    --ring: 201 100% 36%;
+    --border: 260 25% 90%;
+    --input: 260 25% 86%;
+    --ring: 263 70% 50%;
     --radius: 0.75rem;
   }
 }
@@ -293,9 +298,25 @@
   -webkit-backdrop-filter: blur(16px);
 }
 
-/* Cyan → blue gradient text */
+/* Slim scrollbar for the tall admin sidebar */
+.scrollbar-slim {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(215 20% 82%) transparent;
+}
+.scrollbar-slim::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollbar-slim::-webkit-scrollbar-thumb {
+  background: hsl(215 20% 82%);
+  border-radius: 999px;
+}
+.scrollbar-slim::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Spectrum gradient text, tuned to stay legible on dark sections */
 .text-gradient {
-  background: linear-gradient(100deg, #4fc3f7 0%, #22d3ee 55%, #7dd3fc 100%);
+  background: linear-gradient(100deg, #c4b5fd 0%, #f0abfc 45%, #fcd34d 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

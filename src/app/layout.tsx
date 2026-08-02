@@ -7,11 +7,13 @@ import "./globals.css";
  * `src/app/[locale]/layout.tsx`.
  */
 export const metadata: Metadata = {
-  title: "CSDF",
+  title: "Sankranthi Foundation",
+  description: "Community-led care, opportunity and dignity across Sri Lanka.",
+  icons: { icon: "/brand/mark.png" },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#051225",
+  themeColor: "#0f0c2b",
   viewportFit: "cover",
 };
 

@@ -28,7 +28,8 @@ export function SiteFooter({
   const socials = buildSocials(settings);
 
   const shortName = s(settings, "site_short_name");
-  const logoImage = s(settings, "logo_image");
+  // The footer sits on near-black, so prefer the light logo when one is set.
+  const logoImage = s(settings, "logo_image_light") || s(settings, "logo_image");
   const logoLetter = s(settings, "logo_letter");
 
   const about = s(settings, "footer_about", locale);
@@ -53,7 +54,7 @@ export function SiteFooter({
   return (
     <footer id="sec-footer" className="relative bg-navy-950 text-white/90">
       {/* Brand gradient rule */}
-      <div className="h-1 bg-gradient-to-r from-brand-600 via-accent to-destructive" />
+      <div className="h-1 bg-spectrum" />
       {/* Soft cyan glow */}
       <div className="pointer-events-none absolute -top-24 left-1/4 h-64 w-64 rounded-full bg-accent/10 blur-3xl" />
 
@@ -70,7 +71,7 @@ export function SiteFooter({
             ) : (
               <>
                 {logoLetter && (
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-600 to-accent text-lg font-bold shadow-lg shadow-accent/20">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-spectrum text-lg font-bold shadow-lg shadow-accent/20">
                     {logoLetter}
                   </span>
                 )}

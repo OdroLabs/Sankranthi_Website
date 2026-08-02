@@ -16,7 +16,7 @@ export interface HeaderProps {
   nav: NavConfig;
   /** Full organisation name, shown small under the wordmark. */
   siteName: string;
-  /** Abbreviation used as the wordmark, e.g. CSDF. */
+  /** Abbreviation used as the wordmark, e.g. SF. */
   shortName: string;
   logoImage?: string;
   logoLetter: string;
@@ -118,7 +118,7 @@ export function SiteHeader({
     <>
       {/* Announcement bar — hidden when no text is set in the admin */}
       {announceText && (
-        <div id="sec-announce" className="bg-gradient-to-r from-brand-700 via-brand-600 to-accent text-white">
+        <div id="sec-announce" className="bg-spectrum text-white">
           <div className="mx-auto max-w-[1400px] px-4 py-2 text-center text-xs font-semibold md:px-6">
             {announceLink ? (
               <Link href={announceLink} className="hover:underline">
@@ -178,32 +178,36 @@ export function SiteHeader({
         >
           <Link href={`/${locale}`} className="group flex shrink-0 items-center gap-2.5">
             {logoImage ? (
+              /* An uploaded logo usually carries the name already, so the
+                 text wordmark beside it would only repeat it. */
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={logoImage}
                 alt={siteName || shortName}
-                className="h-10 w-auto max-w-[170px] object-contain transition-transform duration-300 group-hover:scale-105"
+                className="h-11 w-auto max-w-[190px] object-contain transition-transform duration-300 group-hover:scale-105"
               />
             ) : (
-              logoLetter && (
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-700 via-brand-600 to-accent text-lg font-bold text-white shadow-md shadow-brand-600/25 transition-transform duration-300 group-hover:scale-105">
-                  {logoLetter}
-                </span>
-              )
-            )}
-            {(shortName || siteName) && (
-              <span className="leading-tight">
-                {shortName && (
-                  <span className="block text-lg font-extrabold tracking-tight text-navy-900">
-                    {shortName}
+              <>
+                {logoLetter && (
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-spectrum text-lg font-bold text-white shadow-md shadow-brand-600/25 transition-transform duration-300 group-hover:scale-105">
+                    {logoLetter}
                   </span>
                 )}
-                {siteName && (
-                  <span className="block max-w-[220px] truncate text-[10px] text-muted-foreground">
-                    {siteName}
+                {(shortName || siteName) && (
+                  <span className="leading-tight">
+                    {shortName && (
+                      <span className="block text-lg font-extrabold tracking-tight text-navy-900">
+                        {shortName}
+                      </span>
+                    )}
+                    {siteName && (
+                      <span className="block max-w-[220px] truncate text-[10px] text-muted-foreground">
+                        {siteName}
+                      </span>
+                    )}
                   </span>
                 )}
-              </span>
+              </>
             )}
           </Link>
 

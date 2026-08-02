@@ -35,15 +35,16 @@ export function buildNav(settings: SettingsMap, dict: Dictionary): NavConfig {
   const on = (key: string) => sBool(settings, key, true);
 
   const primary: NavItem[] = [{ href: "", label: dict.nav.home }];
-  if (on("nav_show_about")) primary.push({ href: "/about", label: dict.nav.about });
   if (on("nav_show_projects")) primary.push({ href: "/projects", label: dict.nav.projects });
+  if (on("nav_show_about")) primary.push({ href: "/about", label: dict.nav.about });
   if (on("nav_show_services")) primary.push({ href: "/services", label: dict.nav.services });
 
-  const mediaItems: NavItem[] = [];
+  const resourceItems: NavItem[] = [];
   if (on("nav_show_publications"))
-    mediaItems.push({ href: "/publications", label: dict.nav.publications });
-  if (on("nav_show_news")) mediaItems.push({ href: "/news", label: dict.nav.news });
-  if (on("nav_show_events")) mediaItems.push({ href: "/events", label: dict.nav.events });
+    resourceItems.push({ href: "/publications", label: dict.nav.publications });
+
+  const volunteerItems: NavItem[] = [];
+  if (on("nav_show_events")) volunteerItems.push({ href: "/events", label: dict.nav.events });
 
   const involvedItems: NavItem[] = [];
   if (on("nav_show_business"))
@@ -52,7 +53,8 @@ export function buildNav(settings: SettingsMap, dict: Dictionary): NavConfig {
     involvedItems.push({ href: "/suggestions", label: dict.nav.suggestions });
 
   const groups: NavGroup[] = [];
-  if (mediaItems.length) groups.push({ label: dict.nav.media, items: mediaItems });
+  if (resourceItems.length) groups.push({ label: "Resources", items: resourceItems });
+  if (volunteerItems.length) groups.push({ label: "Volunteers", items: volunteerItems });
   if (involvedItems.length) groups.push({ label: dict.nav.getInvolved, items: involvedItems });
 
   const contact = on("nav_show_contact") ? { href: "/contact", label: dict.nav.contact } : null;

@@ -407,6 +407,37 @@ export async function submitSuggestion(formData: FormData) {
   return { ok: true };
 }
 
+export async function submitBooking(formData: FormData) {
+  const name = ((formData.get("name") as string) || "").trim();
+  const phone = ((formData.get("phone") as string) || "").trim();
+  const service = ((formData.get("service") as string) || "").trim();
+  const date = ((formData.get("preferredDate") as string) || "").trim();
+  const preferredTime = ((formData.get("preferredTime") as string) || "").trim();
+
+  if (!name || !phone || !service || !date || !preferredTime) {
+    return { ok: false, error: "Please complete all required fields." };
+  }
+
+  const preferredDate = new Date(`${date}T12:00:00`);
+  if (Number.isNaN(preferredDate.getTime())) {
+    return { ok: false, error: "Please choose a valid appointment date." };
+  }
+
+  await prisma.booking.create({
+    data: {
+      name,
+      phone,
+      service,
+      preferredDate,
+      preferredTime,
+      email: ((formData.get("email") as string) || "").trim() || null,
+      notes: ((formData.get("notes") as string) || "").trim() || null,
+    },
+  });
+
+  return { ok: true };
+}
+
 export async function subscribeNewsletter(formData: FormData) {
   const email = (formData.get("email") as string)?.trim();
   if (!email || !email.includes("@")) return { ok: false };

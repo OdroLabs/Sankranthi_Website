@@ -40,24 +40,26 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        /* Violet, anchored on the base of the logo's swirl (#7b2ff7 at 600). */
         brand: {
-          50: "#f0f9ff",
-          100: "#e0f2fe",
-          200: "#bae6fd",
-          300: "#7dd3fc",
-          400: "#4fc3f7",
-          500: "#0096e6",
-          600: "#0077b6",
-          700: "#005f8f",
-          800: "#004a70",
-          900: "#023e5c",
-          950: "#062a3f",
+          50: "#f6f3ff",
+          100: "#ede7ff",
+          200: "#ddd1ff",
+          300: "#c4adff",
+          400: "#a880fc",
+          500: "#8f52f9",
+          600: "#7b2ff7",
+          700: "#681ddb",
+          800: "#5619b4",
+          900: "#471791",
+          950: "#2b0b63",
         },
+        /* Deep indigo ink for dark sections — the footer, hero overlays. */
         navy: {
-          700: "#123b63",
-          800: "#0d2b4a",
-          900: "#081f38",
-          950: "#051225",
+          700: "#37306b",
+          800: "#262052",
+          900: "#191540",
+          950: "#0f0c2b",
         },
         teal: {
           50: "#f0fdfa",
@@ -69,15 +71,19 @@ const config: Config = {
           900: "#134e4a",
         },
       },
+      backgroundImage: {
+        /* The logo's swirl, flattened into a left-to-right sweep. */
+        spectrum: "linear-gradient(100deg, #7b2ff7 0%, #e6338c 40%, #f5722b 72%, #f5c518 100%)",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        card: "0 1px 2px rgba(5, 18, 37, 0.04), 0 8px 24px -8px rgba(5, 18, 37, 0.10)",
+        card: "0 1px 2px rgba(23, 15, 51, 0.04), 0 8px 24px -8px rgba(23, 15, 51, 0.10)",
         "card-hover":
-          "0 2px 4px rgba(5, 18, 37, 0.05), 0 20px 40px -12px rgba(0, 119, 182, 0.22)",
+          "0 2px 4px rgba(23, 15, 51, 0.05), 0 20px 40px -12px rgba(123, 47, 247, 0.22)",
         glow: "0 0 0 1px rgba(255,255,255,0.08), 0 24px 60px -20px rgba(0, 0, 0, 0.5)",
       },
       keyframes: {

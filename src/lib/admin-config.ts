@@ -347,9 +347,9 @@ export const entities: EntityDef[] = [
   {
     slug: "products",
     model: "product",
-    title: "Products",
-    titleSingular: "Product",
-    description: "Community-based business products.",
+    title: "Nail Spa Services",
+    titleSingular: "Nail Service",
+    description: "Treatments offered through the community Nail Spa.",
     orderBy: { order: "asc" },
     fields: [
       { name: "name", label: "Name", type: "text", i18n: true, required: true },
@@ -365,6 +365,25 @@ export const entities: EntityDef[] = [
       { name: "nameEn", label: "Name" },
       { name: "price", label: "Price", type: "money" },
       { name: "published", label: "Published", type: "boolean" },
+    ],
+  },
+  {
+    slug: "bookings",
+    model: "booking",
+    title: "Nail Spa Bookings",
+    titleSingular: "Booking",
+    description: "Appointment requests submitted through the community business page.",
+    readOnly: true,
+    orderBy: { createdAt: "desc" },
+    fields: [],
+    listFields: [
+      { name: "createdAt", label: "Requested", type: "date" },
+      { name: "name", label: "Customer" },
+      { name: "phone", label: "Phone" },
+      { name: "service", label: "Service" },
+      { name: "preferredDate", label: "Preferred date", type: "date" },
+      { name: "preferredTime", label: "Time" },
+      { name: "status", label: "Status" },
     ],
   },
   {
