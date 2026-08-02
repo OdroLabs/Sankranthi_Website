@@ -2,15 +2,15 @@
 
 import { useState, Suspense } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { AlertCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { AdminLogo } from "@/components/admin/brand";
+import { PrideStripe } from "@/components/pride-stripe";
 
 function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,13 +25,21 @@ function LoginForm() {
       password: form.get("password") as string,
       redirect: false,
     });
-    setLoading(false);
+
     if (res?.error) {
       setError("Invalid email or password.");
-    } else {
-      router.push(searchParams.get("callbackUrl") ?? "/admin");
-      router.refresh();
+      setLoading(false);
+      return;
     }
+
+    /*
+     * A full page load rather than a client-side push: it guarantees the
+     * freshly set session cookie reaches the middleware, which would otherwise
+     * bounce the soft navigation straight back to this page. Loading stays on
+     * so the button cannot be pressed twice while the panel loads.
+     */
+    const target = searchParams.get("callbackUrl") ?? "/admin/dashboard";
+    window.location.assign(target);
   }
 
   return (
@@ -81,7 +89,7 @@ export default function AdminLoginPage() {
       />
 
       <div className="relative w-full max-w-sm overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-900/5">
-        <div className="h-1.5 w-full bg-spectrum" />
+        <PrideStripe className="h-1.5" />
         <div className="p-8">
           <div className="mb-7 text-center">
             <AdminLogo className="mx-auto h-11 max-w-none object-center" />

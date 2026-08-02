@@ -10,11 +10,11 @@ const SPA_IMAGE =
 
 async function main() {
   await prisma.user.upsert({
-    where: { email: "admin@sankranthi.org" },
+    where: { email: "admin@sf.lk" },
     update: { name: "Sankranthi Admin", role: "owner", active: true },
     create: {
       name: "Sankranthi Admin",
-      email: "admin@sankranthi.org",
+      email: "admin@sf.lk",
       password: await hash("admin12345", 10),
       role: "owner",
     },
@@ -31,7 +31,7 @@ async function main() {
     seo_title: "Sankranthi Foundation | Stronger communities, brighter futures",
     seo_description: "Sankranthi Foundation connects people with practical support, inclusive community services, research, volunteering and sustainable livelihood opportunities.",
     seo_keywords: "Sankranthi Foundation, Sri Lanka community services, volunteers, community development, Nail Spa",
-    email: "hello@sankranthi.org",
+    email: "hello@sf.lk",
     phone: "+94 11 234 5678",
     whatsapp: "94771234567",
     office_hours: "Monday to Friday, 8.30 AM – 5.00 PM",
@@ -200,7 +200,7 @@ async function main() {
   ] });
 
   console.log("Sankranthi Foundation content is ready.");
-  console.log("Admin: admin@sankranthi.org / admin12345");
+  console.log("Admin: admin@sf.lk / admin12345");
 }
 
 main().catch((error) => {

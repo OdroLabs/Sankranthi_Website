@@ -9,6 +9,7 @@ import { SiteFooter } from "@/components/site/footer";
 import { ScrollFX } from "@/components/site/scroll-fx";
 import { ScrollProgress } from "@/components/site/scroll-progress";
 import { FloatingDonate } from "@/components/site/floating-donate";
+import { PrideStripe } from "@/components/pride-stripe";
 
 export const dynamic = "force-dynamic";
 
@@ -66,6 +67,7 @@ export default async function LocaleLayout({
     <div className="flex min-h-screen flex-col">
       <ScrollFX />
       <ScrollProgress />
+      <PrideStripe />
       <SiteHeader
         locale={locale}
         dict={dict}

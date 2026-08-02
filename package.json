@@ -9,8 +9,6 @@
     "lint": "next lint",
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed-sankranthi.ts",
-    "db:seed:sankranthi": "tsx prisma/seed-sankranthi.ts",
-    "db:seed:settings": "tsx prisma/seed-settings.ts",
     "db:studio": "prisma studio",
     "postinstall": "prisma generate"
   },

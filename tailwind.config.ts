@@ -61,6 +61,23 @@ const config: Config = {
           900: "#191540",
           950: "#0f0c2b",
         },
+        /*
+         * Pride flag colours, kept at their official values so the identity is
+         * never approximated. The last four are the Progress Pride additions
+         * for trans and people-of-colour representation.
+         */
+        pride: {
+          red: "#e40303",
+          orange: "#ff8c00",
+          yellow: "#ffed00",
+          green: "#008026",
+          blue: "#24408e",
+          violet: "#732982",
+          brown: "#613915",
+          ink: "#000000",
+          sky: "#5bcefa",
+          pink: "#f5a9b8",
+        },
         teal: {
           50: "#f0fdfa",
           100: "#ccfbf1",
@@ -72,8 +89,17 @@ const config: Config = {
         },
       },
       backgroundImage: {
-        /* The logo's swirl, flattened into a left-to-right sweep. */
+        /*
+         * `spectrum` is the everyday brand gradient — short enough to stay
+         * readable behind white text on buttons, pills and avatars.
+         * `pride` and `pride-flag` are the full six-colour flag, reserved for
+         * thin rules and dividers where the identity should be unmistakable.
+         */
         spectrum: "linear-gradient(100deg, #7b2ff7 0%, #e6338c 40%, #f5722b 72%, #f5c518 100%)",
+        pride:
+          "linear-gradient(90deg, #e40303 0%, #ff8c00 20%, #ffed00 40%, #008026 60%, #24408e 80%, #732982 100%)",
+        "pride-flag":
+          "linear-gradient(90deg, #e40303 0 16.667%, #ff8c00 16.667% 33.333%, #ffed00 33.333% 50%, #008026 50% 66.667%, #24408e 66.667% 83.333%, #732982 83.333% 100%)",
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -4,6 +4,7 @@ import type { Dictionary } from "@/lib/dictionaries";
 import { buildNav, buildSocials } from "@/lib/nav";
 import { s, show, type SettingsMap } from "@/lib/settings";
 import { NewsletterForm } from "./newsletter-form";
+import { PrideStripe } from "@/components/pride-stripe";
 
 const SOCIAL_ICONS: Record<string, typeof Facebook> = {
   facebook: Facebook,
@@ -54,7 +55,7 @@ export function SiteFooter({
   return (
     <footer id="sec-footer" className="relative bg-navy-950 text-white/90">
       {/* Brand gradient rule */}
-      <div className="h-1 bg-spectrum" />
+      <PrideStripe className="h-1.5" />
       {/* Soft cyan glow */}
       <div className="pointer-events-none absolute -top-24 left-1/4 h-64 w-64 rounded-full bg-accent/10 blur-3xl" />
 

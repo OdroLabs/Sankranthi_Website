@@ -39,6 +39,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PrideStripe } from "@/components/pride-stripe";
 import { AdminLogo } from "./brand";
 
 interface NavLinkDef {
@@ -176,6 +177,7 @@ export function AdminSidebar({ role, logo }: { role: string; logo?: string }) {
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
+        <PrideStripe />
         <div className="flex h-16 shrink-0 items-center justify-between gap-2 border-b border-slate-200 px-4">
           <Link href="/admin/dashboard" className="flex min-w-0 items-center">
             <AdminLogo src={logo} className="h-10" />

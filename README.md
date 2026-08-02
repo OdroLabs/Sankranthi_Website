@@ -16,7 +16,7 @@ The admin area at `/admin` manages site content, settings, translations, donatio
 
 Starter login after seeding:
 
-- Email: `admin@sankranthi.org`
+- Email: `admin@sf.lk`
 - Password: `admin12345`
 
 Change the starter password immediately after the first login.
@@ -26,7 +26,7 @@ Change the starter password immediately after the first login.
 1. Copy `.env.example` to `.env` and configure PostgreSQL, authentication and payment values.
 2. Install dependencies with `pnpm install`.
 3. Run `pnpm db:push`.
-4. Run `pnpm db:seed:settings -- --force`, followed by `pnpm db:seed`.
+4. Run `pnpm db:seed`.
 5. Start the site with `pnpm dev`.
 
 Use `pnpm build` for a production build.

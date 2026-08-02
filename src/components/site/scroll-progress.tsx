@@ -35,7 +35,7 @@ export function ScrollProgress() {
     <div aria-hidden className="pointer-events-none fixed inset-x-0 top-0 z-[90] h-[3px]">
       <div
         ref={barRef}
-        className="h-full origin-left bg-spectrum"
+        className="h-full origin-left bg-pride"
         style={{ transform: "scaleX(0)" }}
       />
     </div>

@@ -30,7 +30,7 @@ export function s(map: SettingsMap, key: string, locale = "en"): string {
  * There is deliberately no `sOr(key, hardcodedFallback)` helper. Page content
  * lives only in the database: if a value is blank the element or section is
  * hidden, never replaced with a string baked into the code. Run
- * `npm run db:seed:settings` to populate every key.
+ * `npm run db:seed` to populate every key.
  */
 
 /** One item per line, blanks removed. */
