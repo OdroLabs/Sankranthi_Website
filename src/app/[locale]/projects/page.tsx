@@ -10,8 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import { PageHero } from "@/components/site/page-hero";
 import { EmptyState } from "@/components/site/empty-state";
 
-export default async function ProjectsPage({ params }: { params: { locale: Locale } }) {
-  const { locale } = params;
+export default async function ProjectsPage({ params }: { params: Promise<{ locale: Locale }> }) {
+  const { locale } = await params;
   const [settings, projects] = await Promise.all([
     getSettings(),
     prisma.project.findMany({

@@ -10,8 +10,8 @@ import { PageHero } from "@/components/site/page-hero";
 import { EmptyState } from "@/components/site/empty-state";
 import { BookingForm } from "@/components/site/booking-form";
 
-export default async function BusinessPage({ params }: { params: { locale: Locale } }) {
-  const { locale } = params;
+export default async function BusinessPage({ params }: { params: Promise<{ locale: Locale }> }) {
+  const { locale } = await params;
   const [products, settings] = await Promise.all([
     prisma.product.findMany({ where: { published: true }, orderBy: { order: "asc" } }),
     getSettings(),

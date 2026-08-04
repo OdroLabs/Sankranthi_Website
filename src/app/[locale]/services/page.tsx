@@ -8,8 +8,8 @@ import { getSettings, s } from "@/lib/settings";
 import { PageHero } from "@/components/site/page-hero";
 import { EmptyState } from "@/components/site/empty-state";
 
-export default async function ServicesPage({ params }: { params: { locale: Locale } }) {
-  const { locale } = params;
+export default async function ServicesPage({ params }: { params: Promise<{ locale: Locale }> }) {
+  const { locale } = await params;
   const [settings, services] = await Promise.all([
     getSettings(),
     prisma.service.findMany({ where: { published: true }, orderBy: { order: "asc" } }),

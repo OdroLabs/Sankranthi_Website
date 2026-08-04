@@ -10,8 +10,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DeleteButton } from "@/components/admin/delete-button";
 
-export default async function EntityListPage({ params }: { params: { entity: string } }) {
-  const entity = getEntity(params.entity);
+export default async function EntityListPage({ params }: { params: Promise<{ entity: string }> }) {
+  const { entity: entitySlug } = await params;
+  const entity = getEntity(entitySlug);
   if (!entity) notFound();
 
   const rows: Record<string, any>[] = await (prisma as any)[entity.model].findMany({

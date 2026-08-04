@@ -18,8 +18,8 @@ const categoryLabels: Record<string, string> = {
   other: "Other",
 };
 
-export default async function PublicationsPage({ params }: { params: { locale: Locale } }) {
-  const { locale } = params;
+export default async function PublicationsPage({ params }: { params: Promise<{ locale: Locale }> }) {
+  const { locale } = await params;
   const [settings, publications] = await Promise.all([
     getSettings(),
     prisma.publication.findMany({ where: { published: true }, orderBy: { publishedAt: "desc" } }),

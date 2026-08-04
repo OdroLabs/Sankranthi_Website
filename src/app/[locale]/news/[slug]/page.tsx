@@ -19,12 +19,12 @@ import { formatDate } from "@/lib/utils";
 export default async function NewsDetailPage({
   params,
 }: {
-  params: { locale: Locale; slug: string };
+  params: Promise<{ locale: Locale; slug: string }>;
 }) {
-  const { locale } = params;
+  const { locale, slug } = await params;
   const settings = await getSettings();
   const dict = getLabels(locale, settings);
-  const param = decodeURIComponent(params.slug);
+  const param = decodeURIComponent(slug);
   let item = await prisma.news.findFirst({ where: { slug: param } });
   if (!item && /^\d+$/.test(param)) {
     // Legacy numeric URL — look up by id and redirect to the slug URL

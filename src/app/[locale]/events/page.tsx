@@ -11,8 +11,8 @@ import { PageHero } from "@/components/site/page-hero";
 import { Section } from "@/components/site/section";
 import { EmptyState } from "@/components/site/empty-state";
 
-export default async function EventsPage({ params }: { params: { locale: Locale } }) {
-  const { locale } = params;
+export default async function EventsPage({ params }: { params: Promise<{ locale: Locale }> }) {
+  const { locale } = await params;
   const now = new Date();
   const [settings, upcoming, past, gallery] = await Promise.all([
     getSettings(),

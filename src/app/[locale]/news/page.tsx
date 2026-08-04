@@ -10,8 +10,8 @@ import { formatDate } from "@/lib/utils";
 import { PageHero } from "@/components/site/page-hero";
 import { EmptyState } from "@/components/site/empty-state";
 
-export default async function NewsPage({ params }: { params: { locale: Locale } }) {
-  const { locale } = params;
+export default async function NewsPage({ params }: { params: Promise<{ locale: Locale }> }) {
+  const { locale } = await params;
   const [settings, news] = await Promise.all([
     getSettings(),
     prisma.news.findMany({ where: { published: true }, orderBy: { publishedAt: "desc" } }),

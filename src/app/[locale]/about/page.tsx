@@ -5,8 +5,8 @@ import { getSettings, s, sPairs } from "@/lib/settings";
 import { Card, CardContent } from "@/components/ui/card";
 import { PageHero } from "@/components/site/page-hero";
 
-export default async function AboutPage({ params }: { params: { locale: Locale } }) {
-  const { locale } = params;
+export default async function AboutPage({ params }: { params: Promise<{ locale: Locale }> }) {
+  const { locale } = await params;
   const settings = await getSettings();
   const dict = getLabels(locale, settings);
 

@@ -9,10 +9,11 @@ export default async function DonatePage({
   params,
   searchParams,
 }: {
-  params: { locale: Locale };
-  searchParams: { cancelled?: string };
+  params: Promise<{ locale: Locale }>;
+  searchParams: Promise<{ cancelled?: string }>;
 }) {
-  const { locale } = params;
+  const { locale } = await params;
+  const { cancelled } = await searchParams;
   const settings = await getSettings();
   const dict = getLabels(locale, settings);
 
@@ -57,7 +58,7 @@ export default async function DonatePage({
                 <h2 className="text-xl font-extrabold text-navy-900">{dict.donate.donateNow}</h2>
               </div>
 
-              {searchParams.cancelled && (
+              {cancelled && (
                 <p className="mb-5 rounded-2xl border border-yellow-300 bg-yellow-50 p-4 text-sm text-yellow-800">
                   {dict.donate.cancelledText}
                 </p>

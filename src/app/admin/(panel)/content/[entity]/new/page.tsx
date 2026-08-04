@@ -2,8 +2,9 @@ import { notFound } from "next/navigation";
 import { getEntity } from "@/lib/admin-config";
 import { EntityForm } from "@/components/admin/entity-form";
 
-export default function NewEntityPage({ params }: { params: { entity: string } }) {
-  const entity = getEntity(params.entity);
+export default async function NewEntityPage({ params }: { params: Promise<{ entity: string }> }) {
+  const { entity: entitySlug } = await params;
+  const entity = getEntity(entitySlug);
   if (!entity || entity.readOnly) notFound();
 
   return (

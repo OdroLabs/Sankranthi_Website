@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 /**
@@ -29,7 +30,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <script dangerouslySetInnerHTML={{ __html: animBootstrap }} />
+        <Script
+          id="anim-bootstrap"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: animBootstrap }}
+        />
         {children}
       </body>
     </html>

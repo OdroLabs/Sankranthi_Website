@@ -5,14 +5,15 @@ import { SettingsTabs } from "@/components/admin/settings-tabs";
 import { SettingsForm } from "@/components/admin/settings-form";
 import { LabelsForm } from "@/components/admin/labels-form";
 
-export default async function SettingsPage({ params }: { params: { page: string } }) {
+export default async function SettingsPage({ params }: { params: Promise<{ page: string }> }) {
   // Hiding the sidebar link is not enough — block the route itself.
   const admin = await getAdmin();
   if (!admin) redirect("/admin/login");
   if (admin.role !== "owner") redirect("/admin/dashboard");
 
-  const isLabels = params.page === "labels";
-  const page = isLabels ? undefined : getSettingPage(params.page);
+  const { page: pageSlug } = await params;
+  const isLabels = pageSlug === "labels";
+  const page = isLabels ? undefined : getSettingPage(pageSlug);
   if (!isLabels && !page) notFound();
 
   const settings = await getSettings();

@@ -30,10 +30,10 @@ function parsePairs(text: string) {
 export default async function ServiceDetailPage({
   params,
 }: {
-  params: { locale: Locale; slug: string };
+  params: Promise<{ locale: Locale; slug: string }>;
 }) {
-  const { locale } = params;
-  const param = decodeURIComponent(params.slug);
+  const { locale, slug } = await params;
+  const param = decodeURIComponent(slug);
   const settings = await getSettings();
   const dict = getLabels(locale, settings);
   let service = await prisma.service.findFirst({ where: { slug: param } });

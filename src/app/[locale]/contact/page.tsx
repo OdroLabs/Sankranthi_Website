@@ -7,8 +7,8 @@ import { PageHero } from "@/components/site/page-hero";
 import { ContactForm } from "@/components/site/contact-form";
 import { Card, CardContent } from "@/components/ui/card";
 
-export default async function ContactPage({ params }: { params: { locale: Locale } }) {
-  const { locale } = params;
+export default async function ContactPage({ params }: { params: Promise<{ locale: Locale }> }) {
+  const { locale } = await params;
   const settings = await getSettings();
   const dict = getLabels(locale, settings);
 

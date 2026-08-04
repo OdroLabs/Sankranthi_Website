@@ -4,8 +4,8 @@ import { getSettings, s } from "@/lib/settings";
 import { PageHero } from "@/components/site/page-hero";
 import { SuggestionForm } from "@/components/site/suggestion-form";
 
-export default async function SuggestionsPage({ params }: { params: { locale: Locale } }) {
-  const { locale } = params;
+export default async function SuggestionsPage({ params }: { params: Promise<{ locale: Locale }> }) {
+  const { locale } = await params;
   const settings = await getSettings();
   const dict = getLabels(locale, settings);
 

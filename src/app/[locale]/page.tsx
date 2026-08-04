@@ -2,9 +2,6 @@ import Link from "next/link";
 import {
   Heart,
   ArrowRight,
-  ShieldCheck,
-  Users,
-  HandHeart,
   CalendarDays,
   MapPin,
   PhoneCall,
@@ -14,7 +11,7 @@ import {
 import { prisma } from "@/lib/prisma";
 import { loc, type Locale } from "@/lib/i18n";
 import { getLabels } from "@/lib/labels";
-import { getSettings, s, sList, sNum, show } from "@/lib/settings";
+import { getSettings, s, sNum, show } from "@/lib/settings";
 import { formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -43,8 +40,8 @@ function link(locale: string, value: string): string {
   return `/${locale}${target.startsWith("/") ? target : `/${target}`}`;
 }
 
-export default async function HomePage({ params }: { params: { locale: Locale } }) {
-  const locale = params.locale;
+export default async function HomePage({ params }: { params: Promise<{ locale: Locale }> }) {
+  const { locale } = await params;
   const settings = await getSettings();
   const dict = getLabels(locale, settings);
 
@@ -90,10 +87,7 @@ export default async function HomePage({ params }: { params: { locale: Locale } 
   const heroTitle = s(settings, "hero_title", locale);
   const heroBadge = s(settings, "hero_badge", locale);
   const heroSubtitle = s(settings, "hero_subtitle", locale);
-  const heroPoints = sList(settings, "hero_points", locale);
-  const heroFootnote = s(settings, "hero_footnote", locale);
   const heroCta1 = s(settings, "hero_cta1_label", locale);
-  const heroCta2 = s(settings, "hero_cta2_label", locale);
 
   const aboutTitle = s(settings, "home_about_title", locale);
   const aboutText = s(settings, "home_about_text", locale);
@@ -139,129 +133,60 @@ export default async function HomePage({ params }: { params: { locale: Locale } 
   const showTestimonials = show(settings, "show_home_testimonials", testimonials);
   const showNews = show(settings, "show_home_news", news);
   const showEvents = show(settings, "show_home_events", events);
-  const showNewsEvents = showNews || showEvents;
   const showPartners = show(settings, "show_home_partners", partners);
   const showDonate = show(settings, "show_home_donate", donateTitle, donateText);
-
-  const pointIcons = [ShieldCheck, Heart, Users, HandHeart];
 
   return (
     <>
       {/* ------------------------------------------------------------------ */}
-      {/* Hero                                                                */}
+      {/* Hero — migrated 1:1 from the legacy static site's hero-reference    */}
       {/* ------------------------------------------------------------------ */}
       {showHero && (
-        <section id="sec-hero" className="relative flex min-h-[82svh] items-center overflow-hidden bg-navy-950 pb-24 pt-16 text-white md:pb-32 md:pt-24">
-          {/* Photo with parallax, fading in from the right */}
+        <section id="sec-hero" className="hero-ref relative overflow-hidden bg-white">
           {heroImage && (
-            <div className="absolute inset-y-0 right-0 w-full overflow-hidden lg:w-3/4">
-              <div
-                data-parallax="8"
-                className="absolute -inset-y-[12%] inset-x-0 scale-110 bg-cover bg-center opacity-30 lg:opacity-60"
-                style={{ backgroundImage: `url(${heroImage})` }}
-              />
+            <div className="hero-ref__visual" style={{ backgroundImage: `url(${heroImage})` }}>
+              <div className="hero-ref__visual-tint" />
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/95 to-navy-900/35" />
-          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-navy-950/80 to-transparent" />
-          {/* Subtle grid pattern */}
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.05]"
-            style={{
-              backgroundImage:
-                "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
-              backgroundSize: "56px 56px",
-            }}
-          />
-          {/* Cyan glow */}
-          <div className="pointer-events-none absolute -left-32 top-1/4 h-96 w-96 rounded-full bg-accent/10 blur-3xl" />
+          <div className="hero-ref__shade" />
 
-          <div
-            className={`container relative z-10 grid items-center gap-12 ${
-              heroPoints.length > 0 ? "lg:grid-cols-[1.1fr_0.9fr]" : ""
-            }`}
-          >
-            <div>
-              {heroBadge && (
-                <p
-                  data-hero
-                  className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.22em] text-accent"
-                >
-                  <span className="block h-0.5 w-10 bg-gradient-to-r from-accent to-brand-400" />
-                  {heroBadge}
-                </p>
-              )}
-              {heroTitle && (
-                <h1
-                  data-hero
-                  className="mb-6 mt-5 text-4xl font-extrabold leading-[1.08] tracking-tight md:text-6xl"
-                >
-                  {heroTitle}
-                </h1>
-              )}
-              {heroSubtitle && (
-                <p
-                  data-hero
-                  className="mb-9 max-w-xl whitespace-pre-line leading-relaxed text-white/75 md:text-lg"
-                >
-                  {heroSubtitle}
-                </p>
-              )}
-              {(heroCta1 || heroCta2) && (
-                <div data-hero className="flex flex-wrap gap-4">
-                  {heroCta1 && (
-                    <Button
-                      asChild
-                      size="lg"
-                      className="rounded-full bg-accent px-8 font-bold text-navy-950 shadow-lg shadow-accent/25 hover:bg-accent/90 hover:shadow-xl hover:shadow-accent/30"
-                    >
-                      <Link href={link(locale, s(settings, "hero_cta1_link"))}>
-                        {heroCta1} <ArrowRight className="h-4 w-4" />
-                      </Link>
-                    </Button>
-                  )}
-                  {heroCta2 && (
-                    <Button
-                      asChild
-                      size="lg"
-                      variant="outline"
-                      className="rounded-full border-white/30 bg-white/5 px-8 font-semibold text-white backdrop-blur hover:border-white/50 hover:bg-white/15 hover:text-white"
-                    >
-                      <Link href={link(locale, s(settings, "hero_cta2_link"))}>
-                        {heroCta2}
-                      </Link>
-                    </Button>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Commitment card — hidden when no highlight points are set */}
-            {heroPoints.length > 0 && (
-              <div data-hero className="glass-dark rounded-3xl p-8 shadow-glow md:p-9">
-                <ul className="grid gap-5">
-                  {heroPoints.map((point, i) => {
-                    const Icon = pointIcons[i % pointIcons.length];
-                    return (
-                      <li key={i} className="flex items-center gap-4">
-                        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-brand-500/30 to-accent/20 ring-1 ring-white/15">
-                          <Icon className="h-5 w-5 text-accent" />
-                        </span>
-                        <span className="text-sm font-medium text-white md:text-base">{point}</span>
-                      </li>
-                    );
-                  })}
-                </ul>
-                {heroFootnote && (
-                  <p className="mt-7 border-t border-white/15 pt-5 text-center text-sm text-white/60">
-                    {heroFootnote}
-                  </p>
-                )}
-              </div>
+          <div className="hero-ref__content">
+            {heroTitle && <h1 data-hero>{heroTitle}</h1>}
+            {heroCta1 && (
+              <Link data-hero href={link(locale, s(settings, "hero_cta1_link"))} className="hero-ref__button">
+                {heroCta1}
+              </Link>
             )}
           </div>
 
-          <Curve className="absolute inset-x-0 -bottom-px z-10 text-background" />
+          <svg className="hero-ref__divider" viewBox="0 0 320 1000" preserveAspectRatio="none" aria-hidden="true">
+            <path className="divider-shadow" d="M72 0 C260 185 250 350 143 505 C30 670 22 830 108 1000" />
+            <path className="divider-yellow" d="M72 0 C260 185 250 350 143 505 C30 670 22 830 108 1000" />
+            <path
+              className="divider-white"
+              d="M72 0 C260 185 250 350 143 505 C30 670 22 830 108 1000 L320 1000 L320 0 Z"
+            />
+          </svg>
+
+          {news[0] && (
+            <aside className="hero-ref__news" aria-label="Featured news">
+              <h2>Latest Update:</h2>
+              <Link className="featured-news" href={`/${locale}/news/${news[0].slug ?? news[0].id}`}>
+                {news[0].image && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={news[0].image} alt={loc(news[0], "title", locale)} />
+                )}
+                <span className="featured-news__overlay">
+                  <strong>{loc(news[0], "title", locale)}</strong>
+                  <small>Read more</small>
+                </span>
+              </Link>
+            </aside>
+          )}
+
+          <Link href={`/${locale}/donate`} className="hero-ref__donate" aria-label="Support us">
+            <span aria-hidden="true">♥</span> Support Us
+          </Link>
         </section>
       )}
 
@@ -630,101 +555,91 @@ export default async function HomePage({ params }: { params: { locale: Locale } 
       )}
 
       {/* ------------------------------------------------------------------ */}
-      {/* News + Events                                                       */}
+      {/* News — migrated 1:1 from the legacy static site's news-section      */}
       {/* ------------------------------------------------------------------ */}
-      {showNewsEvents && (
-        <section
-          className={`container grid gap-12 pb-16 md:pb-24 ${
-            showNews && showEvents ? "lg:grid-cols-2" : ""
-          }`}
-        >
-          {showNews && (
-            <div id="sec-news" data-animate>
-              <div className="mb-8 space-y-3">
-                {s(settings, "home_news_eyebrow", locale) && (
-                  <SectionTag>{s(settings, "home_news_eyebrow", locale)}</SectionTag>
+      {showNews && (
+        <section id="sec-news" data-animate className="news-ref container pb-16 md:pb-24">
+          <div className="news-ref__heading">
+            {s(settings, "home_news_eyebrow", locale) && <span>{s(settings, "home_news_eyebrow", locale)}</span>}
+            {newsTitle && <h2>{newsTitle}</h2>}
+          </div>
+          <div className="news-ref__grid">
+            {news.map((item) => (
+              <Link key={item.id} href={`/${locale}/news/${item.slug ?? item.id}`} className="news-ref__card">
+                {item.image && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={item.image} alt={loc(item, "title", locale)} />
                 )}
-                {newsTitle && (
-                  <h2 className="text-2xl font-extrabold tracking-tight text-navy-900 md:text-3xl">
-                    {newsTitle}
-                  </h2>
-                )}
-              </div>
-              <div className="grid gap-5">
-                {news.map((item) => (
-                  <Link
-                    key={item.id}
-                    href={`/${locale}/news/${item.slug ?? item.id}`}
-                    className="group block rounded-3xl border border-border bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-card-hover"
-                  >
-                    <p className="mb-1.5 text-xs font-bold uppercase tracking-[0.12em] text-primary">
-                      {formatDate(item.publishedAt, locale)}
-                    </p>
-                    <h3 className="line-clamp-2 font-bold text-navy-900 transition-colors group-hover:text-primary">
-                      {loc(item, "title", locale)}
+                <div className="news-ref__body">
+                  <time dateTime={new Date(item.publishedAt).toISOString()}>
+                    {formatDate(item.publishedAt, locale)}
+                  </time>
+                  <h3>{loc(item, "title", locale)}</h3>
+                  <span>Read more →</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+          {s(settings, "facebook") && (
+            <div className="news-ref__action">
+              <a href={s(settings, "facebook")} target="_blank" rel="noopener noreferrer">
+                Follow us on Facebook
+              </a>
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* ------------------------------------------------------------------ */}
+      {/* Events                                                              */}
+      {/* ------------------------------------------------------------------ */}
+      {showEvents && (
+        <section className="container pb-16 md:pb-24">
+          <div id="sec-events" data-animate className="mx-auto max-w-2xl">
+            <div className="mb-8 space-y-3 text-center">
+              {s(settings, "home_events_eyebrow", locale) && (
+                <SectionTag>{s(settings, "home_events_eyebrow", locale)}</SectionTag>
+              )}
+              {eventsTitle && (
+                <h2 className="text-2xl font-extrabold tracking-tight text-navy-900 md:text-3xl">{eventsTitle}</h2>
+              )}
+            </div>
+            <div className="space-y-5">
+              {events.map((event) => (
+                <Link
+                  key={event.id}
+                  href={`/${locale}/events/${event.slug ?? event.id}`}
+                  className="group flex gap-4 rounded-3xl border border-border bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-card-hover"
+                >
+                  <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-brand-700 to-accent text-white shadow-md shadow-brand-600/20">
+                    <span className="font-number text-xl font-bold leading-none">
+                      {new Date(event.startDate).getDate()}
+                    </span>
+                    <span className="mt-0.5 text-[10px] uppercase">
+                      {new Date(event.startDate).toLocaleString("en", { month: "short" })}
+                    </span>
+                  </div>
+                  <div>
+                    <h3 className="font-bold leading-snug text-navy-900 transition-colors group-hover:text-primary">
+                      {loc(event, "title", locale)}
                     </h3>
-                    {item.image && (
-                      <div className="mt-4 h-36 w-full overflow-hidden rounded-2xl">
-                        <div
-                          className="h-full w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                          style={{ backgroundImage: `url(${item.image})` }}
-                        />
-                      </div>
+                    {event.location && (
+                      <p className="mt-1.5 flex items-center gap-1 text-xs text-muted-foreground">
+                        <MapPin className="h-3 w-3 text-primary" /> {event.location}
+                      </p>
                     )}
+                  </div>
+                </Link>
+              ))}
+              {eventsLinkLabel && (
+                <Button asChild variant="outline" className="w-full rounded-full font-semibold">
+                  <Link href={`/${locale}/events`}>
+                    <CalendarDays className="h-4 w-4" /> {eventsLinkLabel}
                   </Link>
-                ))}
-              </div>
+                </Button>
+              )}
             </div>
-          )}
-          {showEvents && (
-            <div id="sec-events" data-animate data-delay="0.12">
-              <div className="mb-8 space-y-3">
-                {s(settings, "home_events_eyebrow", locale) && (
-                  <SectionTag>{s(settings, "home_events_eyebrow", locale)}</SectionTag>
-                )}
-                {eventsTitle && (
-                  <h2 className="text-2xl font-extrabold tracking-tight text-navy-900 md:text-3xl">
-                    {eventsTitle}
-                  </h2>
-                )}
-              </div>
-              <div className="space-y-5">
-                {events.map((event) => (
-                  <Link
-                    key={event.id}
-                    href={`/${locale}/events/${event.slug ?? event.id}`}
-                    className="group flex gap-4 rounded-3xl border border-border bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-card-hover"
-                  >
-                    <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-brand-700 to-accent text-white shadow-md shadow-brand-600/20">
-                      <span className="font-number text-xl font-bold leading-none">
-                        {new Date(event.startDate).getDate()}
-                      </span>
-                      <span className="mt-0.5 text-[10px] uppercase">
-                        {new Date(event.startDate).toLocaleString("en", { month: "short" })}
-                      </span>
-                    </div>
-                    <div>
-                      <h3 className="font-bold leading-snug text-navy-900 transition-colors group-hover:text-primary">
-                        {loc(event, "title", locale)}
-                      </h3>
-                      {event.location && (
-                        <p className="mt-1.5 flex items-center gap-1 text-xs text-muted-foreground">
-                          <MapPin className="h-3 w-3 text-primary" /> {event.location}
-                        </p>
-                      )}
-                    </div>
-                  </Link>
-                ))}
-                {eventsLinkLabel && (
-                  <Button asChild variant="outline" className="w-full rounded-full font-semibold">
-                    <Link href={`/${locale}/events`}>
-                      <CalendarDays className="h-4 w-4" /> {eventsLinkLabel}
-                    </Link>
-                  </Button>
-                )}
-              </div>
-            </div>
-          )}
+          </div>
         </section>
       )}
 

@@ -6,10 +6,11 @@ import { EntityForm } from "@/components/admin/entity-form";
 export default async function EditEntityPage({
   params,
 }: {
-  params: { entity: string; id: string };
+  params: Promise<{ entity: string; id: string }>;
 }) {
-  const entity = getEntity(params.entity);
-  const id = Number(params.id);
+  const { entity: entitySlug, id: idParam } = await params;
+  const entity = getEntity(entitySlug);
+  const id = Number(idParam);
   if (!entity || entity.readOnly || isNaN(id)) notFound();
 
   const record = await (prisma as any)[entity.model].findUnique({ where: { id } });

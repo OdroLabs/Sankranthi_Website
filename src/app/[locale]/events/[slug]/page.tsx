@@ -33,12 +33,12 @@ function parsePairs(text: string) {
 export default async function EventDetailPage({
   params,
 }: {
-  params: { locale: Locale; slug: string };
+  params: Promise<{ locale: Locale; slug: string }>;
 }) {
-  const { locale } = params;
+  const { locale, slug } = await params;
   const settings = await getSettings();
   const dict = getLabels(locale, settings);
-  const param = decodeURIComponent(params.slug);
+  const param = decodeURIComponent(slug);
   let event = await prisma.event.findFirst({ where: { slug: param } });
   if (!event && /^\d+$/.test(param)) {
     // Legacy numeric URL — look up by id and redirect to the slug URL

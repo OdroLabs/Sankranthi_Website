@@ -116,21 +116,6 @@ export function SiteHeader({
 
   return (
     <>
-      {/* Announcement bar — hidden when no text is set in the admin */}
-      {announceText && (
-        <div id="sec-announce" className="bg-spectrum text-white">
-          <div className="mx-auto max-w-[1400px] px-4 py-2 text-center text-xs font-semibold md:px-6">
-            {announceLink ? (
-              <Link href={announceLink} className="hover:underline">
-                {announceText}
-              </Link>
-            ) : (
-              announceText
-            )}
-          </div>
-        </div>
-      )}
-
       {/* Utility strip — hidden when switched off, or when there is nothing to show */}
       {showTopbar && (hasContactStrip || showLangs) && (
         <div id="sec-topbar" className="hidden bg-navy-950 text-white md:block">
