@@ -139,54 +139,127 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   return (
     <>
       {/* ------------------------------------------------------------------ */}
-      {/* Hero — migrated 1:1 from the legacy static site's hero-reference    */}
+      {/* Hero — full-bleed photo with a floating glass content panel         */}
       {/* ------------------------------------------------------------------ */}
       {showHero && (
-        <section id="sec-hero" className="hero-ref relative overflow-hidden bg-white">
+        <section id="sec-hero" className="hero2 relative isolate overflow-hidden bg-navy-950 text-white">
           {heroImage && (
-            <div className="hero-ref__visual" style={{ backgroundImage: `url(${heroImage})` }}>
-              <div className="hero-ref__visual-tint" />
+            <div className="absolute inset-0 overflow-hidden">
+              <div
+                data-parallax="10"
+                className="hero2__bg absolute -inset-y-[12%] inset-x-0 scale-110 bg-cover bg-center"
+                style={{ backgroundImage: `url(${heroImage})` }}
+              />
             </div>
           )}
-          <div className="hero-ref__shade" />
+          {/* Scrim for text legibility — deepest bottom-left, fading toward the top-right */}
+          <div className="absolute inset-0 bg-gradient-to-t from-navy-950/95 via-navy-950/55 to-navy-950/25" />
+          <div className="absolute inset-0 bg-gradient-to-r from-navy-950/70 via-navy-950/10 to-transparent" />
 
-          <div className="hero-ref__content">
-            {heroTitle && <h1 data-hero>{heroTitle}</h1>}
-            {heroCta1 && (
-              <Link data-hero href={link(locale, s(settings, "hero_cta1_link"))} className="hero-ref__button">
-                {heroCta1}
-              </Link>
+          {/* Ambient glows */}
+          <span className="hero2__orb hero2__orb--1 pointer-events-none absolute -left-16 top-16 h-72 w-72 rounded-full bg-accent/25 blur-3xl" />
+          <span className="hero2__orb hero2__orb--2 pointer-events-none absolute bottom-0 right-1/3 h-80 w-80 rounded-full bg-brand-500/25 blur-3xl" />
+
+          <div className="container relative grid gap-10 py-24 md:py-32 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:py-40">
+            <div>
+              {heroBadge && (
+                <span
+                  data-hero
+                  className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-accent backdrop-blur-md"
+                >
+                  <Sparkles className="h-3.5 w-3.5" /> {heroBadge}
+                </span>
+              )}
+              {heroTitle && (
+                <h1
+                  data-hero
+                  className="max-w-2xl text-4xl font-extrabold leading-[1.15] tracking-tight text-white drop-shadow-sm md:text-6xl"
+                >
+                  {heroTitle}
+                </h1>
+              )}
+              {heroSubtitle && (
+                <p data-hero className="mt-6 max-w-xl text-base leading-relaxed text-white/80 md:text-lg">
+                  {heroSubtitle}
+                </p>
+              )}
+              {heroCta1 && (
+                <div data-hero className="mt-9">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="group rounded-full bg-accent px-8 font-bold text-navy-950 shadow-glow hover:bg-accent/90"
+                  >
+                    <Link href={link(locale, s(settings, "hero_cta1_link"))}>
+                      {heroCta1}
+                      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
+                    </Link>
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            {news.length > 0 && (
+              <aside
+                data-hero
+                data-delay="0.2"
+                aria-label="Latest news and updates"
+                className="hero2__news relative w-full max-w-sm justify-self-start rounded-3xl border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-xl lg:justify-self-end"
+              >
+                <h2 className="mb-4 text-lg font-bold text-white">Latest News &amp; Updates</h2>
+                <ul className="space-y-4">
+                  {news.slice(0, 3).map((item) => (
+                    <li key={item.id} className="border-t border-white/15 pt-4 first:border-0 first:pt-0">
+                      <Link href={`/${locale}/news/${item.slug ?? item.id}`} className="group flex gap-3">
+                        {item.image && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            className="h-14 w-14 shrink-0 rounded-xl object-cover shadow-md"
+                            src={item.image}
+                            alt={loc(item, "title", locale)}
+                          />
+                        )}
+                        <span className="min-w-0">
+                          <span className="block line-clamp-2 text-sm font-semibold leading-snug text-white transition-colors group-hover:text-accent">
+                            {loc(item, "title", locale)}
+                          </span>
+                          <time
+                            dateTime={new Date(item.publishedAt).toISOString()}
+                            className="mt-1 block text-[11px] font-bold uppercase tracking-wide text-accent"
+                          >
+                            {formatDate(item.publishedAt, locale)}
+                          </time>
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                {s(settings, "facebook") && (
+                  <a
+                    href={s(settings, "facebook")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-5 block border-t border-white/15 pt-4 text-center text-xs font-bold text-white/80 transition-colors hover:text-accent"
+                  >
+                    Follow us on Facebook
+                  </a>
+                )}
+              </aside>
             )}
           </div>
 
-          <svg className="hero-ref__divider" viewBox="0 0 320 1000" preserveAspectRatio="none" aria-hidden="true">
-            <path className="divider-shadow" d="M72 0 C260 185 250 350 143 505 C30 670 22 830 108 1000" />
-            <path className="divider-yellow" d="M72 0 C260 185 250 350 143 505 C30 670 22 830 108 1000" />
-            <path
-              className="divider-white"
-              d="M72 0 C260 185 250 350 143 505 C30 670 22 830 108 1000 L320 1000 L320 0 Z"
-            />
-          </svg>
-
-          {news[0] && (
-            <aside className="hero-ref__news" aria-label="Featured news">
-              <h2>Latest Update:</h2>
-              <Link className="featured-news" href={`/${locale}/news/${news[0].slug ?? news[0].id}`}>
-                {news[0].image && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={news[0].image} alt={loc(news[0], "title", locale)} />
-                )}
-                <span className="featured-news__overlay">
-                  <strong>{loc(news[0], "title", locale)}</strong>
-                  <small>Read more</small>
-                </span>
-              </Link>
-            </aside>
-          )}
-
-          <Link href={`/${locale}/donate`} className="hero-ref__donate" aria-label="Support us">
-            <span aria-hidden="true">♥</span> Support Us
+          {/* Floating Support Us tab */}
+          <Link
+            data-hero
+            href={`/${locale}/donate`}
+            aria-label="Support us"
+            className="hero2__donate group absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 items-center gap-2 rounded-l-full bg-destructive py-4 pl-4 pr-3 text-xs font-bold text-white shadow-lg shadow-destructive/30 transition hover:bg-destructive/90 md:flex"
+          >
+            <Heart className="h-4 w-4 fill-white" />
+            <span className="[writing-mode:vertical-rl]">Support Us</span>
           </Link>
+
+          <Curve flip className="absolute inset-x-0 -bottom-px text-background" />
         </section>
       )}
 
