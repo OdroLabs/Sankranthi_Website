@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { hash } from "bcryptjs";
+import { Prisma } from "@prisma/client";
 import { prisma } from "./prisma";
 import { requireAdmin, requireOwner } from "./session";
 import { toRole, type Role } from "./roles";
@@ -88,21 +89,53 @@ function validateRequired(fields: FieldDef[], formData: FormData) {
   }
 }
 
-function buildData(fields: FieldDef[], formData: FormData) {
+const notNullColumnCache = new Map<string, Set<string>>();
+
+/**
+ * Columns the schema declares non-nullable, e.g. `News.publishedAt`, which is
+ * required but carries a database default. Writing an explicit `null` to one of
+ * those is rejected by Prisma, so a blank optional field has to be left out of
+ * the payload entirely rather than sent as null.
+ */
+function notNullColumns(model: string): Set<string> {
+  const cached = notNullColumnCache.get(model);
+  if (cached) return cached;
+  const meta = Prisma.dmmf.datamodel.models.find(
+    (m) => m.name.toLowerCase() === model.toLowerCase()
+  );
+  const names = new Set(
+    (meta?.fields ?? []).filter((f) => f.isRequired).map((f) => f.name)
+  );
+  notNullColumnCache.set(model, names);
+  return names;
+}
+
+function buildData(model: string, fields: FieldDef[], formData: FormData) {
+  const notNull = notNullColumns(model);
   const data: Record<string, any> = {};
+
+  /**
+   * Omit rather than null a blank value whose column cannot hold null: on
+   * create the schema default applies, on update the stored value is kept.
+   */
+  const set = (key: string, value: any) => {
+    if (value === null && notNull.has(key)) return;
+    data[key] = value;
+  };
+
   for (const field of fields) {
     if (field.i18n) {
       for (const suffix of ["En", "Si", "Ta"]) {
         const key = `${field.name}${suffix}`;
         const parsed = parseFieldValue(field, formData.get(key));
         // English base field is required by schema for required fields
-        data[key] = field.required && suffix === "En" ? (parsed ?? "") : parsed;
+        set(key, field.required && suffix === "En" ? (parsed ?? "") : parsed);
       }
     } else {
       const parsed = parseFieldValue(field, formData.get(field.name));
-      if (field.type === "boolean") data[field.name] = parsed;
-      else if (field.required) data[field.name] = parsed ?? "";
-      else data[field.name] = parsed;
+      if (field.type === "boolean") set(field.name, parsed);
+      else if (field.required) set(field.name, parsed ?? "");
+      else set(field.name, parsed);
     }
   }
   return data;
@@ -118,7 +151,7 @@ export async function saveEntity(
     const entity = getEntity(slug);
     if (!entity || entity.readOnly) throw new Error("Unknown entity");
     validateRequired(entity.fields, formData);
-    const data = buildData(entity.fields, formData);
+    const data = buildData(entity.model, entity.fields, formData);
 
     // Auto-generate a unique URL slug from the English title when left empty
     if ((SLUGGED_MODELS as readonly string[]).includes(entity.model)) {
@@ -149,6 +182,50 @@ export async function deleteEntity(slug: string, id: number): Promise<ActionResu
     return { ok: true };
   } catch (error) {
     return { ok: false, error: toMessage(error, "Could not delete. Please try again.") };
+  }
+}
+
+/* --------------------------------- Inbox ---------------------------------- */
+
+/**
+ * Mark an enquiry read or unread. Only entities that opt in via `inbox.readFlag`
+ * are touched, so this can never be pointed at a content model.
+ */
+export async function setRecordRead(
+  slug: string,
+  id: number,
+  read: boolean
+): Promise<ActionResult> {
+  try {
+    await requireAdmin();
+    const entity = getEntity(slug);
+    if (!entity?.inbox?.readFlag) throw new Error("Unknown entity");
+    await delegate(entity.model).update({ where: { id }, data: { read } });
+    revalidatePath("/admin", "layout");
+    return { ok: true };
+  } catch (error) {
+    return { ok: false, error: toMessage(error, "Could not update that item.") };
+  }
+}
+
+/** Move an enquiry through its workflow, e.g. a booking from new to confirmed. */
+export async function setRecordStatus(
+  slug: string,
+  id: number,
+  status: string
+): Promise<ActionResult> {
+  try {
+    await requireAdmin();
+    const entity = getEntity(slug);
+    const allowed = entity?.inbox?.statuses;
+    if (!allowed) throw new Error("Unknown entity");
+    if (!allowed.some((s) => s.value === status))
+      throw new Error("Validation: That is not a status you can set.");
+    await delegate(entity!.model).update({ where: { id }, data: { status } });
+    revalidatePath("/admin", "layout");
+    return { ok: true };
+  } catch (error) {
+    return { ok: false, error: toMessage(error, "Could not update that item.") };
   }
 }
 

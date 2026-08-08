@@ -33,6 +33,17 @@ export interface FieldDef {
   addLabel?: string;
 }
 
+/**
+ * What an admin may change on a read-only record. Nothing here creates or
+ * edits content — it only tracks how far the team has got with an enquiry.
+ */
+export interface InboxDef {
+  /** Show a read / unread toggle. The model needs a `read` column. */
+  readFlag?: boolean;
+  /** Offer a status dropdown. The model needs a `status` column. */
+  statuses?: { value: string; label: string }[];
+}
+
 export interface EntityDef {
   slug: string;
   model: string; // prisma delegate name
@@ -42,6 +53,7 @@ export interface EntityDef {
   fields: FieldDef[];
   listFields: { name: string; label: string; type?: "date" | "boolean" | "money" | "image" }[];
   readOnly?: boolean; // inbox-style: list + view + delete only
+  inbox?: InboxDef;
   orderBy: Record<string, "asc" | "desc">;
 }
 
@@ -374,6 +386,14 @@ export const entities: EntityDef[] = [
     titleSingular: "Booking",
     description: "Appointment requests submitted through the community business page.",
     readOnly: true,
+    inbox: {
+      statuses: [
+        { value: "new", label: "New" },
+        { value: "confirmed", label: "Confirmed" },
+        { value: "completed", label: "Completed" },
+        { value: "cancelled", label: "Cancelled" },
+      ],
+    },
     orderBy: { createdAt: "desc" },
     fields: [],
     listFields: [
@@ -463,6 +483,7 @@ export const entities: EntityDef[] = [
     titleSingular: "Suggestion",
     description: "Suggestions submitted by visitors.",
     readOnly: true,
+    inbox: { readFlag: true },
     orderBy: { createdAt: "desc" },
     fields: [],
     listFields: [
@@ -479,6 +500,7 @@ export const entities: EntityDef[] = [
     titleSingular: "Message",
     description: "Messages from the contact form.",
     readOnly: true,
+    inbox: { readFlag: true },
     orderBy: { createdAt: "desc" },
     fields: [],
     listFields: [

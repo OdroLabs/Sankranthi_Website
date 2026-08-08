@@ -91,6 +91,8 @@ export function FileUploadField({
         onChange={(e) => {
           const file = e.target.files?.[0];
           if (file) handleFile(file);
+          // Allow picking the same file again after a Remove or a failure.
+          e.target.value = "";
         }}
       />
       {error && <p className="text-xs text-destructive">{error}</p>}

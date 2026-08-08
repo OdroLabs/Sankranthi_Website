@@ -7,7 +7,16 @@ import { deleteEntity } from "@/lib/actions";
 import { Button } from "@/components/ui/button";
 import { useToast } from "./toast";
 
-export function DeleteButton({ slug, id }: { slug: string; id: number }) {
+export function DeleteButton({
+  slug,
+  id,
+  /** Where to go afterwards. Omitted on lists, which just refresh in place. */
+  redirectTo,
+}: {
+  slug: string;
+  id: number;
+  redirectTo?: string;
+}) {
   const [deleting, setDeleting] = useState(false);
   const { toast, update } = useToast();
   const router = useRouter();
@@ -26,7 +35,8 @@ export function DeleteButton({ slug, id }: { slug: string; id: number }) {
           const result = await deleteEntity(slug, id);
           if (result.ok) {
             update(toastId, { title: "Deleted", variant: "success" });
-            router.refresh();
+            if (redirectTo) router.push(redirectTo);
+            else router.refresh();
           } else {
             update(toastId, {
               title: "Not deleted",

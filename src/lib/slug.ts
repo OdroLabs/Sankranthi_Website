@@ -21,13 +21,15 @@ export async function uniqueSlug(
   excludeId?: number | null
 ): Promise<string> {
   const delegate = (prisma as any)[model];
-  let candidate = base || "item";
+  // Fall back before numbering, so an untitled record becomes "item-2", not "-2".
+  const root = base || "item";
+  let candidate = root;
   for (let i = 2; ; i++) {
     const existing = await delegate.findFirst({
       where: { slug: candidate, ...(excludeId ? { id: { not: excludeId } } : {}) },
       select: { id: true },
     });
     if (!existing) return candidate;
-    candidate = `${base}-${i}`;
+    candidate = `${root}-${i}`;
   }
 }

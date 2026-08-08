@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Plus, Pencil, CheckCircle2, XCircle } from "lucide-react";
+import { Plus, Pencil, CheckCircle2, XCircle, Eye } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { getEntity, type EntityDef } from "@/lib/admin-config";
 import { formatDate, formatMoney } from "@/lib/utils";
@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DeleteButton } from "@/components/admin/delete-button";
+import { ReadToggle, StatusSelect } from "@/components/admin/inbox-actions";
 
 export default async function EntityListPage({ params }: { params: Promise<{ entity: string }> }) {
   const { entity: entitySlug } = await params;
@@ -19,8 +20,21 @@ export default async function EntityListPage({ params }: { params: Promise<{ ent
     orderBy: entity.orderBy,
   });
 
+  const statuses = entity.inbox?.statuses;
+
   function renderCell(row: Record<string, any>, col: EntityDef["listFields"][number]) {
     const value = row[col.name];
+    // An enquiry's status is editable in place — it is workflow state, not content.
+    if (statuses && col.name === "status") {
+      return (
+        <StatusSelect
+          slug={entity!.slug}
+          id={row.id}
+          value={String(value ?? statuses[0].value)}
+          options={statuses}
+        />
+      );
+    }
     if (col.type === "image") {
       return value ? (
         <div className="relative h-10 w-14 overflow-hidden rounded border">
@@ -68,25 +82,39 @@ export default async function EntityListPage({ params }: { params: Promise<{ ent
               </TableRow>
             </TableHeader>
             <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.id}>
-                  {entity.listFields.map((col) => (
-                    <TableCell key={col.name}>{renderCell(row, col)}</TableCell>
-                  ))}
-                  <TableCell className="text-right">
-                    <div className="flex items-center justify-end gap-1">
-                      {!entity.readOnly && (
-                        <Button asChild variant="ghost" size="icon" aria-label="Edit">
+              {rows.map((row) => {
+                // Unread enquiries are set in bold so a full inbox still scans.
+                const unread = entity.inbox?.readFlag && !row.read;
+                return (
+                  <TableRow key={row.id} className={unread ? "font-semibold" : undefined}>
+                    {entity.listFields.map((col) => (
+                      <TableCell key={col.name}>{renderCell(row, col)}</TableCell>
+                    ))}
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        {entity.inbox?.readFlag && (
+                          <ReadToggle slug={entity.slug} id={row.id} read={Boolean(row.read)} />
+                        )}
+                        <Button
+                          asChild
+                          variant="ghost"
+                          size="icon"
+                          aria-label={entity.readOnly ? "View" : "Edit"}
+                        >
                           <Link href={`/admin/content/${entity.slug}/${row.id}`}>
-                            <Pencil className="h-4 w-4" />
+                            {entity.readOnly ? (
+                              <Eye className="h-4 w-4" />
+                            ) : (
+                              <Pencil className="h-4 w-4" />
+                            )}
                           </Link>
                         </Button>
-                      )}
-                      <DeleteButton slug={entity.slug} id={row.id} />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
+                        <DeleteButton slug={entity.slug} id={row.id} />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
               {rows.length === 0 && (
                 <TableRow>
                   <TableCell

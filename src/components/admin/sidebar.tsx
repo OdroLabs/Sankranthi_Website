@@ -35,6 +35,7 @@ import {
   Inbox,
   LayoutList,
   Menu,
+  Newspaper,
   X,
   type LucideIcon,
 } from "lucide-react";
@@ -84,6 +85,7 @@ const navSections: NavSection[] = [
       { href: "/admin/content/projects", label: "Projects", icon: FolderKanban },
       { href: "/admin/content/services", label: "Services", icon: HandHeart },
       { href: "/admin/content/publications", label: "Publications", icon: FileText },
+      { href: "/admin/content/news", label: "News", icon: Newspaper },
       { href: "/admin/content/events", label: "Events", icon: CalendarDays },
       { href: "/admin/content/gallery", label: "Gallery", icon: Images },
       { href: "/admin/content/products", label: "Nail Spa Services", icon: Sparkles },

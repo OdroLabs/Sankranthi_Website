@@ -22,10 +22,25 @@ const langs = [
   { suffix: "Ta", label: "தமிழ் (Tamil)" },
 ];
 
+const pad = (n: number) => String(n).padStart(2, "0");
+
 function toInputValue(field: FieldDef, value: any): string {
   if (value == null) return "";
   if (field.type === "date") return String(value).slice(0, 10);
-  if (field.type === "datetime") return String(value).slice(0, 16);
+  if (field.type === "datetime") {
+    /*
+     * A stored timestamp arrives as UTC, but `datetime-local` reads and writes
+     * local time. Slicing the ISO string would show a Colombo 9.00 am event as
+     * 3.30 am and, on the next save, store that — dragging the time backwards
+     * by the UTC offset with every edit.
+     */
+    const d = new Date(value);
+    if (isNaN(d.getTime())) return "";
+    return (
+      `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}` +
+      `T${pad(d.getHours())}:${pad(d.getMinutes())}`
+    );
+  }
   return String(value);
 }
 
