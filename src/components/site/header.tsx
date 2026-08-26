@@ -78,7 +78,7 @@ export function SiteHeader({
 
   const pillClass = (active: boolean) =>
     cn(
-      "relative flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-semibold transition-colors duration-200",
+      "relative flex min-h-10 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-[13px] font-semibold transition-colors duration-200",
       active ? "bg-brand-50 text-primary" : "text-foreground/70 hover:bg-muted hover:text-primary"
     );
 
@@ -119,7 +119,7 @@ export function SiteHeader({
       {/* Utility strip — hidden when switched off, or when there is nothing to show */}
       {showTopbar && (hasContactStrip || showLangs) && (
         <div id="sec-topbar" className="hidden bg-navy-950 text-white md:block">
-          <div className="mx-auto flex max-w-[1400px] items-center justify-between px-4 py-2 text-xs md:px-6">
+          <div className="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-2 text-xs md:px-8">
             <div className="flex items-center gap-6 text-white/75">
               {phones.map((phone) => (
                 <a
@@ -157,8 +157,8 @@ export function SiteHeader({
       >
         <div
           className={cn(
-            "mx-auto flex max-w-[1400px] items-center justify-between gap-6 px-4 transition-[padding] duration-300 md:px-6",
-            scrolled ? "py-2" : "py-3"
+            "mx-auto flex max-w-[1280px] items-center justify-between gap-5 px-5 transition-[padding] duration-300 md:px-8",
+            scrolled ? "py-2.5" : "py-3.5"
           )}
         >
           <Link href={`/${locale}`} className="group flex shrink-0 items-center gap-2.5">
@@ -169,7 +169,7 @@ export function SiteHeader({
               <img
                 src={logoImage}
                 alt={siteName || shortName}
-                className="h-11 w-auto max-w-[190px] object-contain transition-transform duration-300 group-hover:scale-105"
+                className="h-12 w-auto max-w-[210px] object-contain transition-transform duration-300 group-hover:scale-[1.03]"
               />
             ) : (
               <>
@@ -197,7 +197,7 @@ export function SiteHeader({
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main">
+          <nav className="hidden items-center gap-1 min-[1360px]:flex" aria-label="Main">
             {primary.map((link) => {
               const active = isActive(link.href);
               return (
@@ -268,7 +268,7 @@ export function SiteHeader({
               <Button
                 asChild
                 size="sm"
-                className="hidden rounded-full bg-destructive px-5 font-bold hover:bg-destructive/90 md:inline-flex"
+                className="hidden min-h-10 rounded-full bg-destructive px-5 font-bold shadow-md shadow-destructive/20 hover:bg-destructive/90 md:inline-flex"
               >
                 <Link href={`/${locale}/donate`}>
                   <Heart className="h-4 w-4 fill-current" /> {donateLabel}
@@ -276,7 +276,7 @@ export function SiteHeader({
               </Button>
             )}
             <button
-              className="grid h-10 w-10 place-items-center rounded-full transition-colors hover:bg-muted lg:hidden"
+              className="grid h-10 w-10 place-items-center rounded-full transition-colors hover:bg-muted min-[1360px]:hidden"
               onClick={() => setOpen(!open)}
               aria-label={dict.nav.menu}
               aria-expanded={open}
@@ -288,8 +288,10 @@ export function SiteHeader({
 
         {/* Mobile menu — overlay panel anchored below the sticky bar */}
         <div
+          aria-hidden={!open}
+          inert={!open}
           className={cn(
-            "absolute inset-x-0 top-full lg:hidden",
+            "absolute inset-x-0 top-full min-[1360px]:hidden",
             open ? "pointer-events-auto" : "pointer-events-none"
           )}
         >

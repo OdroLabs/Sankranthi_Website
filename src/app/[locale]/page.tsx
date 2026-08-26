@@ -7,6 +7,9 @@ import {
   PhoneCall,
   Mail,
   Sparkles,
+  Network,
+  HeartHandshake,
+  UsersRound,
 } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { loc, type Locale } from "@/lib/i18n";
@@ -88,6 +91,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   const heroBadge = s(settings, "hero_badge", locale);
   const heroSubtitle = s(settings, "hero_subtitle", locale);
   const heroCta1 = s(settings, "hero_cta1_label", locale);
+  const heroCta2 = s(settings, "hero_cta2_label", locale);
+  const heroPoints = s(settings, "hero_points", locale)
+    .split(/\r?\n/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+  const heroFootnote = s(settings, "hero_footnote", locale);
 
   const aboutTitle = s(settings, "home_about_title", locale);
   const aboutText = s(settings, "home_about_text", locale);
@@ -139,127 +148,139 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   return (
     <>
       {/* ------------------------------------------------------------------ */}
-      {/* Hero — full-bleed photo with a floating glass content panel         */}
+      {/* Hero — focused message with a useful, always-populated support card */}
       {/* ------------------------------------------------------------------ */}
       {showHero && (
-        <section id="sec-hero" className="hero2 relative isolate overflow-hidden bg-navy-950 text-white">
+        <section id="sec-hero" className="hero-tech relative isolate overflow-hidden bg-[#050608] text-white">
           {heroImage && (
-            <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute inset-0 overflow-hidden" aria-hidden>
               <div
-                data-parallax="10"
-                className="hero2__bg absolute -inset-y-[12%] inset-x-0 scale-110 bg-cover bg-center"
+                className="hero-tech__image absolute inset-0 bg-cover bg-center"
                 style={{ backgroundImage: `url(${heroImage})` }}
               />
             </div>
           )}
-          {/* Scrim for text legibility — deepest bottom-left, fading toward the top-right */}
-          <div className="absolute inset-0 bg-gradient-to-t from-navy-950/95 via-navy-950/55 to-navy-950/25" />
-          <div className="absolute inset-0 bg-gradient-to-r from-navy-950/70 via-navy-950/10 to-transparent" />
+          <div className="absolute inset-0 bg-black/68" aria-hidden />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,6,8,0.99)_0%,rgba(5,6,8,0.95)_43%,rgba(5,6,8,0.7)_72%,rgba(5,6,8,0.9)_100%)]" aria-hidden />
+          <div className="hero-tech__grid absolute inset-0" aria-hidden />
+          <div className="hero-tech__scan absolute inset-y-0 left-[46%] hidden w-px lg:block" aria-hidden />
 
-          {/* Ambient glows */}
-          <span className="hero2__orb hero2__orb--1 pointer-events-none absolute -left-16 top-16 h-72 w-72 rounded-full bg-accent/25 blur-3xl" />
-          <span className="hero2__orb hero2__orb--2 pointer-events-none absolute bottom-0 right-1/3 h-80 w-80 rounded-full bg-brand-500/25 blur-3xl" />
+          <div className="hero-tech__markers pointer-events-none absolute inset-0 hidden lg:block" aria-hidden>
+            <span className="hero-tech__plus left-[7%] top-[18%]">+</span>
+            <span className="hero-tech__plus left-[43%] top-[30%]">+</span>
+            <span className="hero-tech__plus left-[26%] top-[76%]">+</span>
+            <span className="hero-tech__plus right-[8%] top-[15%]">+</span>
+            <span className="hero-tech__plus bottom-[18%] right-[42%]">+</span>
+          </div>
 
-          <div className="container relative grid gap-10 py-24 md:py-32 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:py-40">
-            <div>
+          <div className="hero-tech__frame container relative grid min-h-[calc(100svh-5rem)] items-center gap-10 py-16 md:py-20 lg:min-h-[calc(100svh-7rem)] lg:grid-cols-[1.08fr_0.92fr] lg:gap-12 lg:py-24">
+            <div className="hero-tech__content relative z-10 max-w-[780px]">
               {heroBadge && (
                 <span
-                  data-hero
-                  className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-accent backdrop-blur-md"
+                  className="hero-tech__eyebrow mb-7 inline-flex items-center gap-2.5 border border-white/15 bg-black/35 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.24em] text-accent backdrop-blur-sm"
                 >
-                  <Sparkles className="h-3.5 w-3.5" /> {heroBadge}
+                  <span className="h-1.5 w-1.5 bg-accent" />
+                  {heroBadge}
                 </span>
               )}
               {heroTitle && (
-                <h1
-                  data-hero
-                  className="max-w-2xl text-4xl font-extrabold leading-[1.15] tracking-tight text-white drop-shadow-sm md:text-6xl"
-                >
+                <h1 className="hero-tech__heading max-w-[820px] text-[clamp(3rem,6.4vw,6.8rem)] font-extrabold leading-[0.94] tracking-[-0.06em] text-white">
                   {heroTitle}
                 </h1>
               )}
               {heroSubtitle && (
-                <p data-hero className="mt-6 max-w-xl text-base leading-relaxed text-white/80 md:text-lg">
+                <p className="hero-tech__description mt-8 max-w-2xl border-l border-accent/70 pl-5 text-base leading-7 text-white/68 md:text-lg md:leading-8">
                   {heroSubtitle}
                 </p>
               )}
-              {heroCta1 && (
-                <div data-hero className="mt-9">
+              {(heroCta1 || heroCta2) && (
+                <div className="hero-tech__actions mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+                  {heroCta1 && (
                   <Button
                     asChild
                     size="lg"
-                    className="group rounded-full bg-accent px-8 font-bold text-navy-950 shadow-glow hover:bg-accent/90"
+                    className="group min-h-[52px] rounded-none bg-accent px-7 font-bold text-black shadow-none hover:bg-accent/90"
                   >
                     <Link href={link(locale, s(settings, "hero_cta1_link"))}>
                       {heroCta1}
                       <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
                     </Link>
                   </Button>
+                  )}
+                  {heroCta2 && (
+                    <Button
+                      asChild
+                      size="lg"
+                      variant="outline"
+                      className="min-h-[52px] rounded-none border-white/25 bg-transparent px-7 font-bold text-white hover:border-white/60 hover:bg-white/[0.06] hover:text-white"
+                    >
+                      <Link href={link(locale, s(settings, "hero_cta2_link"))}>{heroCta2}</Link>
+                    </Button>
+                  )}
+                </div>
+              )}
+              {heroFootnote && (
+                <div className="hero-tech__footnote mt-9 flex max-w-xl items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/45">
+                  <span className="text-accent">+</span>
+                  <span>{heroFootnote}</span>
+                  <span className="h-px flex-1 bg-white/10" />
                 </div>
               )}
             </div>
 
-            {news.length > 0 && (
-              <aside
-                data-hero
-                data-delay="0.2"
-                aria-label="Latest news and updates"
-                className="hero2__news relative w-full max-w-sm justify-self-start rounded-3xl border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-xl lg:justify-self-end"
-              >
-                <h2 className="mb-4 text-lg font-bold text-white">Latest News &amp; Updates</h2>
-                <ul className="space-y-4">
-                  {news.slice(0, 3).map((item) => (
-                    <li key={item.id} className="border-t border-white/15 pt-4 first:border-0 first:pt-0">
-                      <Link href={`/${locale}/news/${item.slug ?? item.id}`} className="group flex gap-3">
-                        {item.image && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            className="h-14 w-14 shrink-0 rounded-xl object-cover shadow-md"
-                            src={item.image}
-                            alt={loc(item, "title", locale)}
-                          />
-                        )}
-                        <span className="min-w-0">
-                          <span className="block line-clamp-2 text-sm font-semibold leading-snug text-white transition-colors group-hover:text-accent">
-                            {loc(item, "title", locale)}
-                          </span>
-                          <time
-                            dateTime={new Date(item.publishedAt).toISOString()}
-                            className="mt-1 block text-[11px] font-bold uppercase tracking-wide text-accent"
-                          >
-                            {formatDate(item.publishedAt, locale)}
-                          </time>
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                {s(settings, "facebook") && (
-                  <a
-                    href={s(settings, "facebook")}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-5 block border-t border-white/15 pt-4 text-center text-xs font-bold text-white/80 transition-colors hover:text-accent"
-                  >
-                    Follow us on Facebook
-                  </a>
+            <aside
+              className="hero-tech__visual relative hidden min-h-[560px] lg:block"
+              aria-label={heroFootnote || heroBadge || siteName}
+            >
+              <div className="hero-tech__network absolute inset-0" aria-hidden>
+                <span className="hero-tech__orbit hero-tech__orbit--outer" />
+                <span className="hero-tech__orbit hero-tech__orbit--inner" />
+                <span className="hero-tech__axis hero-tech__axis--x" />
+                <span className="hero-tech__axis hero-tech__axis--y" />
+
+                <span className="hero-tech__connector hero-tech__connector--a" />
+                <span className="hero-tech__connector hero-tech__connector--b" />
+
+                <div className="hero-tech__node hero-tech__node--core">
+                  <span className="hero-tech__node-ring" />
+                  <Network className="h-7 w-7" />
+                  <span className="hero-tech__node-code">CORE</span>
+                </div>
+
+                <div className="hero-tech__node hero-tech__node--a">
+                  <HeartHandshake className="h-5 w-5" />
+                  <span className="hero-tech__node-code">01</span>
+                </div>
+                <p className="hero-tech__label hero-tech__label--a">
+                  {heroPoints[0] || heroBadge || siteName}
+                </p>
+
+                <div className="hero-tech__node hero-tech__node--b">
+                  <UsersRound className="h-5 w-5" />
+                  <span className="hero-tech__node-code">02</span>
+                </div>
+                <p className="hero-tech__label hero-tech__label--b">
+                  {heroPoints[1] || heroFootnote || siteName}
+                </p>
+
+                <p className="hero-tech__label hero-tech__label--c">
+                  {heroPoints[2] || heroBadge || siteName}
+                </p>
+
+                {heroPoints[3] && (
+                  <p className="hero-tech__signal">
+                    <span className="hero-tech__signal-dot" />
+                    {heroPoints[3]}
+                  </p>
                 )}
-              </aside>
-            )}
+              </div>
+            </aside>
           </div>
 
-          {/* Floating Support Us tab */}
-          <Link
-            data-hero
-            href={`/${locale}/donate`}
-            aria-label="Support us"
-            className="hero2__donate group absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 items-center gap-2 rounded-l-full bg-destructive py-4 pl-4 pr-3 text-xs font-bold text-white shadow-lg shadow-destructive/30 transition hover:bg-destructive/90 md:flex"
-          >
-            <Heart className="h-4 w-4 fill-white" />
-            <span className="[writing-mode:vertical-rl]">Support Us</span>
-          </Link>
-
-          <Curve flip className="absolute inset-x-0 -bottom-px text-background" />
+          <div className="hero-tech__edge absolute inset-x-0 bottom-0 h-px bg-white/15" aria-hidden>
+            <span className="absolute left-[8%] top-[-2px] h-[5px] w-12 bg-accent" />
+            <span className="absolute right-[12%] top-[-2px] h-[5px] w-5 bg-white/60" />
+          </div>
         </section>
       )}
 
@@ -267,10 +288,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Who we are                                                          */}
       {/* ------------------------------------------------------------------ */}
       {showAbout && (
-        <section id="sec-about" className="container py-20 md:py-28">
+        <section id="sec-about" className="container py-16 md:py-24">
           <div
-            className={`grid items-center gap-12 ${
-              aboutImage ? "lg:grid-cols-[1.05fr_0.95fr]" : ""
+            className={`grid items-center gap-12 lg:gap-20 ${
+              aboutImage ? "lg:grid-cols-[0.92fr_1.08fr]" : ""
             }`}
           >
             <div data-animate>
@@ -279,18 +300,18 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                   <SectionTag>{s(settings, "home_about_eyebrow", locale)}</SectionTag>
                 )}
                 {aboutTitle && (
-                  <h2 className="text-3xl font-extrabold tracking-tight text-navy-900 md:text-4xl">
+                  <h2 className="max-w-xl text-3xl font-extrabold leading-tight tracking-[-0.03em] text-navy-900 md:text-[2.65rem]">
                     {aboutTitle}
                   </h2>
                 )}
               </div>
               {aboutText && (
-                <p className="max-w-2xl whitespace-pre-line leading-relaxed text-muted-foreground">
+                <p className="max-w-xl whitespace-pre-line text-base leading-7 text-muted-foreground">
                   {aboutText}
                 </p>
               )}
               {aboutLinkLabel && (
-                <Button asChild variant="link" className="mt-4 px-0 font-bold">
+                <Button asChild variant="link" className="mt-5 h-auto px-0 py-2 font-bold">
                   <Link href={`/${locale}/about`}>
                     {aboutLinkLabel} <ArrowRight className="h-4 w-4" />
                   </Link>
@@ -300,9 +321,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
 
             {aboutImage && (
               <div data-animate data-delay="0.15" className="relative">
-                <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-brand-100 via-transparent to-accent/10" />
-                <div className="relative overflow-hidden rounded-3xl shadow-card-hover">
-                  <div className="aspect-[4/3] overflow-hidden">
+                <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-brand-100/80 via-transparent to-accent/15" />
+                <div className="relative overflow-hidden rounded-[2rem] border border-white shadow-card-hover">
+                  <div className="aspect-[5/4] overflow-hidden md:aspect-[16/11]">
                     <div
                       data-parallax="7"
                       className="h-full w-full scale-110 bg-cover bg-center"
