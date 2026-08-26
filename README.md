@@ -30,3 +30,12 @@ Change the starter password immediately after the first login.
 5. Start the site with `pnpm dev`.
 
 Use `pnpm build` for a production build.
+
+## Docker
+
+1. Build the image:
+	`docker build -t sankranthi-website .`
+2. Run the container:
+	`docker run --env-file .env -p 3000:3000 sankranthi-website`
+
+The app will be available at `http://localhost:3000`.
