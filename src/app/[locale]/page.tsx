@@ -7,9 +7,6 @@ import {
   PhoneCall,
   Mail,
   Sparkles,
-  Network,
-  HeartHandshake,
-  UsersRound,
 } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { loc, type Locale } from "@/lib/i18n";
@@ -21,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { TestimonialCarousel } from "@/components/site/testimonial-carousel";
 import { StatCounter } from "@/components/site/stat-counter";
 import { Curve } from "@/components/site/curve";
+import { HomeHero } from "@/components/site/home-hero";
 
 function SectionTag({ children, light }: { children: React.ReactNode; light?: boolean }) {
   return (
@@ -81,22 +79,18 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   ]);
 
   /* ------------------------------- Content ------------------------------- */
-  const siteName = s(settings, "site_name", locale);
   const phone = s(settings, "phone");
   const email = s(settings, "email");
   const address = s(settings, "address", locale);
 
   const heroImage = s(settings, "hero_image");
+  const heroRightsImage = s(settings, "hero_rights_image");
+  const heroOpportunityImage = s(settings, "hero_opportunity_image");
+  const heroCommunityImage = s(settings, "hero_community_image");
+  const heroDignityImage = s(settings, "hero_dignity_image");
   const heroTitle = s(settings, "hero_title", locale);
   const heroBadge = s(settings, "hero_badge", locale);
   const heroSubtitle = s(settings, "hero_subtitle", locale);
-  const heroCta1 = s(settings, "hero_cta1_label", locale);
-  const heroCta2 = s(settings, "hero_cta2_label", locale);
-  const heroPoints = s(settings, "hero_points", locale)
-    .split(/\r?\n/)
-    .map((item) => item.trim())
-    .filter(Boolean);
-  const heroFootnote = s(settings, "hero_footnote", locale);
 
   const aboutTitle = s(settings, "home_about_title", locale);
   const aboutText = s(settings, "home_about_text", locale);
@@ -151,137 +145,17 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Hero — focused message with a useful, always-populated support card */}
       {/* ------------------------------------------------------------------ */}
       {showHero && (
-        <section id="sec-hero" className="hero-tech relative isolate overflow-hidden bg-[#050608] text-white">
-          {heroImage && (
-            <div className="absolute inset-0 overflow-hidden" aria-hidden>
-              <div
-                className="hero-tech__image absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url(${heroImage})` }}
-              />
-            </div>
-          )}
-          <div className="absolute inset-0 bg-black/68" aria-hidden />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,6,8,0.99)_0%,rgba(5,6,8,0.95)_43%,rgba(5,6,8,0.7)_72%,rgba(5,6,8,0.9)_100%)]" aria-hidden />
-          <div className="hero-tech__grid absolute inset-0" aria-hidden />
-          <div className="hero-tech__scan absolute inset-y-0 left-[46%] hidden w-px lg:block" aria-hidden />
-
-          <div className="hero-tech__markers pointer-events-none absolute inset-0 hidden lg:block" aria-hidden>
-            <span className="hero-tech__plus left-[7%] top-[18%]">+</span>
-            <span className="hero-tech__plus left-[43%] top-[30%]">+</span>
-            <span className="hero-tech__plus left-[26%] top-[76%]">+</span>
-            <span className="hero-tech__plus right-[8%] top-[15%]">+</span>
-            <span className="hero-tech__plus bottom-[18%] right-[42%]">+</span>
-          </div>
-
-          <div className="hero-tech__frame container relative grid min-h-[calc(100svh-5rem)] items-center gap-10 py-16 md:py-20 lg:min-h-[calc(100svh-7rem)] lg:grid-cols-[1.08fr_0.92fr] lg:gap-12 lg:py-24">
-            <div className="hero-tech__content relative z-10 max-w-[780px]">
-              {heroBadge && (
-                <span
-                  className="hero-tech__eyebrow mb-7 inline-flex items-center gap-2.5 border border-white/15 bg-black/35 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.24em] text-accent backdrop-blur-sm"
-                >
-                  <span className="h-1.5 w-1.5 bg-accent" />
-                  {heroBadge}
-                </span>
-              )}
-              {heroTitle && (
-                <h1 className="hero-tech__heading max-w-[820px] text-[clamp(3rem,6.4vw,6.8rem)] font-extrabold leading-[0.94] tracking-[-0.06em] text-white">
-                  {heroTitle}
-                </h1>
-              )}
-              {heroSubtitle && (
-                <p className="hero-tech__description mt-8 max-w-2xl border-l border-accent/70 pl-5 text-base leading-7 text-white/68 md:text-lg md:leading-8">
-                  {heroSubtitle}
-                </p>
-              )}
-              {(heroCta1 || heroCta2) && (
-                <div className="hero-tech__actions mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
-                  {heroCta1 && (
-                  <Button
-                    asChild
-                    size="lg"
-                    className="group min-h-[52px] rounded-none bg-accent px-7 font-bold text-black shadow-none hover:bg-accent/90"
-                  >
-                    <Link href={link(locale, s(settings, "hero_cta1_link"))}>
-                      {heroCta1}
-                      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
-                    </Link>
-                  </Button>
-                  )}
-                  {heroCta2 && (
-                    <Button
-                      asChild
-                      size="lg"
-                      variant="outline"
-                      className="min-h-[52px] rounded-none border-white/25 bg-transparent px-7 font-bold text-white hover:border-white/60 hover:bg-white/[0.06] hover:text-white"
-                    >
-                      <Link href={link(locale, s(settings, "hero_cta2_link"))}>{heroCta2}</Link>
-                    </Button>
-                  )}
-                </div>
-              )}
-              {heroFootnote && (
-                <div className="hero-tech__footnote mt-9 flex max-w-xl items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/45">
-                  <span className="text-accent">+</span>
-                  <span>{heroFootnote}</span>
-                  <span className="h-px flex-1 bg-white/10" />
-                </div>
-              )}
-            </div>
-
-            <aside
-              className="hero-tech__visual relative hidden min-h-[560px] lg:block"
-              aria-label={heroFootnote || heroBadge || siteName}
-            >
-              <div className="hero-tech__network absolute inset-0" aria-hidden>
-                <span className="hero-tech__orbit hero-tech__orbit--outer" />
-                <span className="hero-tech__orbit hero-tech__orbit--inner" />
-                <span className="hero-tech__axis hero-tech__axis--x" />
-                <span className="hero-tech__axis hero-tech__axis--y" />
-
-                <span className="hero-tech__connector hero-tech__connector--a" />
-                <span className="hero-tech__connector hero-tech__connector--b" />
-
-                <div className="hero-tech__node hero-tech__node--core">
-                  <span className="hero-tech__node-ring" />
-                  <Network className="h-7 w-7" />
-                  <span className="hero-tech__node-code">CORE</span>
-                </div>
-
-                <div className="hero-tech__node hero-tech__node--a">
-                  <HeartHandshake className="h-5 w-5" />
-                  <span className="hero-tech__node-code">01</span>
-                </div>
-                <p className="hero-tech__label hero-tech__label--a">
-                  {heroPoints[0] || heroBadge || siteName}
-                </p>
-
-                <div className="hero-tech__node hero-tech__node--b">
-                  <UsersRound className="h-5 w-5" />
-                  <span className="hero-tech__node-code">02</span>
-                </div>
-                <p className="hero-tech__label hero-tech__label--b">
-                  {heroPoints[1] || heroFootnote || siteName}
-                </p>
-
-                <p className="hero-tech__label hero-tech__label--c">
-                  {heroPoints[2] || heroBadge || siteName}
-                </p>
-
-                {heroPoints[3] && (
-                  <p className="hero-tech__signal">
-                    <span className="hero-tech__signal-dot" />
-                    {heroPoints[3]}
-                  </p>
-                )}
-              </div>
-            </aside>
-          </div>
-
-          <div className="hero-tech__edge absolute inset-x-0 bottom-0 h-px bg-white/15" aria-hidden>
-            <span className="absolute left-[8%] top-[-2px] h-[5px] w-12 bg-accent" />
-            <span className="absolute right-[12%] top-[-2px] h-[5px] w-5 bg-white/60" />
-          </div>
-        </section>
+        <HomeHero
+          locale={locale}
+          image={heroImage || undefined}
+          exploreHref={link(locale, s(settings, "hero_cta1_link"))}
+          storyImages={[
+            heroRightsImage || projects[0]?.image || heroImage,
+            heroOpportunityImage || services[0]?.image || heroImage,
+            heroCommunityImage || projects[1]?.image || heroImage,
+            heroDignityImage || contactImage || aboutImage || heroImage,
+          ]}
+        />
       )}
 
       {/* ------------------------------------------------------------------ */}
