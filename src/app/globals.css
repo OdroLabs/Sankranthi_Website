@@ -578,3 +578,113 @@ html.anim .hero2__donate {
     animation: none;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Lenis smooth scroll
+   Native CSS smooth-scroll would fight Lenis's own inertia on anchor jumps,
+   so it's switched off once Lenis takes over (see LenisProvider).
+--------------------------------------------------------------------------- */
+html.lenis-active {
+  scroll-behavior: auto;
+}
+
+/* ---------------------------------------------------------------------------
+   Fluid display typography
+   clamp()-based sizes for the homepage's largest headings, so type scales
+   continuously between mobile and desktop instead of jumping at breakpoints.
+--------------------------------------------------------------------------- */
+.text-display-hero {
+  font-size: clamp(2.25rem, 1.5rem + 3.6vw, 4.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+.text-display-xl {
+  font-size: clamp(1.875rem, 1.5rem + 1.7vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+.text-display-lg {
+  font-size: clamp(1.5rem, 1.3rem + 0.9vw, 2.25rem);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+}
+
+/* ---------------------------------------------------------------------------
+   Texture + glow helpers
+   Extremely subtle by design — a hint of grain and light, never neon.
+--------------------------------------------------------------------------- */
+.bg-grain {
+  position: relative;
+  isolation: isolate;
+}
+.bg-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.bg-grid-fade {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 40%, transparent 85%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 40%, transparent 85%);
+}
+
+.card-glow {
+  transition: box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.card-glow:hover {
+  border-color: rgba(168, 128, 252, 0.45);
+  box-shadow: 0 0 0 1px rgba(168, 128, 252, 0.18), 0 24px 48px -18px rgba(123, 47, 247, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-grain::before {
+    display: none;
+  }
+}
+
+/* Hero scroll-cue: a small light travelling down the vertical line */
+@keyframes hero-scrollline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+html.anim .hero-scrollline {
+  animation: hero-scrollline 1.8s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-scrollline {
+    animation: none;
+  }
+}
+
+/* Slow-drifting gradient wash used behind dark CTA bands */
+.cta-gradient-shift {
+  background-size: 160% 160%;
+  animation: cta-gradient-shift 14s ease-in-out infinite;
+}
+@keyframes cta-gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cta-gradient-shift {
+    animation: none;
+  }
+}

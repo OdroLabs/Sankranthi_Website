@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, Heart, Facebook, Youtube, Instagram, Twitter, Linkedin, Music2 } from "lucide-react";
 import type { Dictionary } from "@/lib/dictionaries";
 import { buildNav, buildSocials } from "@/lib/nav";
@@ -60,7 +63,7 @@ export function SiteFooter({
       <div className="pointer-events-none absolute -top-24 left-1/4 h-64 w-64 rounded-full bg-accent/10 blur-3xl" />
 
       <div
-        className={`container relative grid gap-10 py-16 md:grid-cols-2 ${
+        className={`mx-auto w-full max-w-[1400px] px-4 md:px-6 relative grid gap-10 py-16 md:grid-cols-2 ${
           columnCount >= 4 ? "lg:grid-cols-4" : columnCount === 3 ? "lg:grid-cols-3" : ""
         }`}
       >
@@ -129,16 +132,19 @@ export function SiteFooter({
                 {socials.map((social) => {
                   const Icon = SOCIAL_ICONS[social.key] ?? Heart;
                   return (
-                    <a
+                    <motion.a
                       key={social.key}
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={social.label}
+                      whileHover={{ y: -3, scale: 1.06 }}
+                      whileTap={{ scale: 0.95 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 18 }}
                       className="grid h-9 w-9 place-items-center rounded-full bg-white/10 text-white/80 transition-colors hover:bg-accent hover:text-navy-950"
                     >
                       <Icon className="h-4 w-4" />
-                    </a>
+                    </motion.a>
                   );
                 })}
               </div>
@@ -203,7 +209,7 @@ export function SiteFooter({
 
       {(copyright || credit) && (
         <div id="sec-footer-bottom" className="relative border-t border-white/10 py-5">
-          <div className="container space-y-1 text-center text-xs text-white/50">
+          <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 space-y-1 text-center text-xs text-white/50">
             {copyright && (
               <p className="flex flex-wrap items-center justify-center gap-1.5">
                 © {year} {copyright}

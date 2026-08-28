@@ -7,6 +7,7 @@ import { getSettings, s, sBool } from "@/lib/settings";
 import { SiteHeader } from "@/components/site/header";
 import { SiteFooter } from "@/components/site/footer";
 import { ScrollFX } from "@/components/site/scroll-fx";
+import { LenisProvider } from "@/components/site/lenis-provider";
 import { ScrollProgress } from "@/components/site/scroll-progress";
 import { FloatingDonate } from "@/components/site/floating-donate";
 import { PrideStripe } from "@/components/pride-stripe";
@@ -67,6 +68,7 @@ export default async function LocaleLayout({
 
   return (
     <div className="flex min-h-screen flex-col">
+      <LenisProvider />
       <ScrollFX />
       <ScrollProgress />
       <PrideStripe />

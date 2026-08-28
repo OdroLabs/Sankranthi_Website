@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
+import "lenis/dist/lenis.css";
+import { PageLoader } from "@/components/site/page-loader";
 
 /**
  * Bare fallback only. The public site's real title, description, favicon and
@@ -30,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        <PageLoader />
         <Script
           id="anim-bootstrap"
           strategy="beforeInteractive"

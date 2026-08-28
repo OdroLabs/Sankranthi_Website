@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X, Heart, Phone, Mail, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LocaleSwitcher } from "./locale-switcher";
@@ -29,6 +30,30 @@ export interface HeaderProps {
   showLangs: boolean;
   showDonate: boolean;
 }
+
+const menuOverlay = {
+  hidden: { clipPath: "inset(0% 0% 100% 0%)" },
+  visible: {
+    clipPath: "inset(0% 0% 0% 0%)",
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
+  },
+  exit: {
+    clipPath: "inset(0% 0% 100% 0%)",
+    transition: { duration: 0.4, ease: [0.6, 0, 0.4, 1] as const },
+  },
+};
+
+const menuList = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } },
+  exit: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
+};
+
+const menuItem = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const } },
+  exit: { opacity: 0, y: 12, transition: { duration: 0.25 } },
+};
 
 export function SiteHeader({
   locale,
@@ -78,39 +103,19 @@ export function SiteHeader({
 
   const pillClass = (active: boolean) =>
     cn(
-      "relative flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-semibold transition-colors duration-200",
+      "group/pill relative flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-semibold transition-colors duration-200",
       active ? "bg-brand-50 text-primary" : "text-foreground/70 hover:bg-muted hover:text-primary"
     );
 
   const pillUnderline = (active: boolean) => (
     <span
+      aria-hidden
       className={cn(
-        "absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-gradient-to-r from-primary to-accent transition-opacity duration-200",
-        active ? "opacity-100" : "opacity-0"
+        "pointer-events-none absolute inset-x-3 -bottom-px h-0.5 origin-center scale-x-0 rounded-full bg-gradient-to-r from-primary to-accent transition-transform duration-300 ease-out group-hover/pill:scale-x-100",
+        active && "scale-x-100"
       )}
     />
   );
-
-  const mobileLink = (link: NavItem) => {
-    const active = isActive(link.href);
-    return (
-      <Link
-        key={link.href}
-        href={`/${locale}${link.href}`}
-        onClick={() => setOpen(false)}
-        aria-current={active ? "page" : undefined}
-        className={cn(
-          "flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition-colors",
-          active
-            ? "bg-brand-50 text-primary"
-            : "text-foreground/80 hover:bg-muted hover:text-primary"
-        )}
-      >
-        {link.label}
-        {active && <span className="h-1.5 w-1.5 rounded-full bg-accent" />}
-      </Link>
-    );
-  };
 
   const mobileItems = contact ? [...primary, contact] : primary;
 
@@ -161,7 +166,7 @@ export function SiteHeader({
             scrolled ? "py-2" : "py-3"
           )}
         >
-          <Link href={`/${locale}`} className="group flex shrink-0 items-center gap-2.5">
+          <Link href={`/${locale}`} className="group relative z-[60] flex shrink-0 items-center gap-2.5">
             {logoImage ? (
               /* An uploaded logo usually carries the name already, so the
                  text wordmark beside it would only repeat it. */
@@ -268,7 +273,7 @@ export function SiteHeader({
               <Button
                 asChild
                 size="sm"
-                className="hidden rounded-full bg-destructive px-5 font-bold hover:bg-destructive/90 md:inline-flex"
+                className="hidden rounded-full bg-destructive px-5 font-bold transition-transform duration-200 hover:-translate-y-0.5 hover:bg-destructive/90 md:inline-flex"
               >
                 <Link href={`/${locale}/donate`}>
                   <Heart className="h-4 w-4 fill-current" /> {donateLabel}
@@ -276,94 +281,146 @@ export function SiteHeader({
               </Button>
             )}
             <button
-              className="grid h-10 w-10 place-items-center rounded-full transition-colors hover:bg-muted lg:hidden"
-              onClick={() => setOpen(!open)}
+              className="relative z-[60] grid h-10 w-10 place-items-center rounded-full transition-colors hover:bg-muted lg:hidden"
+              onClick={() => setOpen((v) => !v)}
               aria-label={dict.nav.menu}
               aria-expanded={open}
             >
-              {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              <span className="relative block h-4 w-5">
+                <motion.span
+                  className="absolute left-0 top-0 block h-0.5 w-5 rounded-full bg-navy-900"
+                  animate={open ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
+                />
+                <motion.span
+                  className="absolute left-0 top-1/2 block h-0.5 w-5 -translate-y-1/2 rounded-full bg-navy-900"
+                  animate={open ? { opacity: 0 } : { opacity: 1 }}
+                  transition={{ duration: 0.15 }}
+                />
+                <motion.span
+                  className="absolute bottom-0 left-0 block h-0.5 w-5 rounded-full bg-navy-900"
+                  animate={open ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
+                />
+              </span>
             </button>
           </div>
         </div>
 
-        {/* Mobile menu — overlay panel anchored below the sticky bar */}
-        <div
-          className={cn(
-            "absolute inset-x-0 top-full lg:hidden",
-            open ? "pointer-events-auto" : "pointer-events-none"
-          )}
-        >
-          {/* Backdrop (starts at the bottom edge of the header) */}
-          <div
-            aria-hidden
-            onClick={() => setOpen(false)}
-            className={cn(
-              "absolute inset-x-0 top-0 h-screen bg-navy-950/45 backdrop-blur-sm transition-opacity duration-300",
-              open ? "opacity-100" : "opacity-0"
-            )}
-          />
-          {/* Panel */}
-          <nav
-            aria-label="Mobile"
-            className={cn(
-              "relative max-h-[calc(100dvh-4.5rem)] overflow-y-auto rounded-b-3xl border-b border-border bg-white shadow-2xl shadow-navy-950/20 transition-all duration-300 ease-out",
-              open ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0"
-            )}
-          >
-            <div className="mx-auto max-w-[1400px] px-4 py-4 md:px-6">
-              <div className="grid gap-1 sm:grid-cols-2">{mobileItems.map(mobileLink)}</div>
+        {/* Mobile menu — premium fullscreen overlay */}
+        <AnimatePresence>
+          {open && (
+            <motion.nav
+              key="mobile-menu"
+              aria-label="Mobile"
+              variants={menuOverlay}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="fixed inset-0 z-50 overflow-y-auto bg-navy-950 text-white lg:hidden"
+            >
+              <div className="mx-auto flex min-h-full max-w-[560px] flex-col px-6 pb-10 pt-24">
+                <motion.div variants={menuList} initial="hidden" animate="visible" exit="exit" className="flex-1">
+                  <div className="grid gap-1">
+                    {mobileItems.map((link) => {
+                      const active = isActive(link.href);
+                      return (
+                        <motion.div key={link.href} variants={menuItem}>
+                          <Link
+                            href={`/${locale}${link.href}`}
+                            onClick={() => setOpen(false)}
+                            aria-current={active ? "page" : undefined}
+                            className={cn(
+                              "flex items-center justify-between border-b border-white/10 py-4 text-3xl font-extrabold tracking-tight transition-colors",
+                              active ? "text-accent" : "text-white/90 hover:text-accent"
+                            )}
+                          >
+                            {link.label}
+                            {active && <span className="h-2 w-2 rounded-full bg-accent" />}
+                          </Link>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
 
-              {groups.map((group) => (
-                <div key={group.label} className="mt-3 border-t pt-3">
-                  <p className="px-4 pb-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                    {group.label}
-                  </p>
-                  <div className="grid gap-1 sm:grid-cols-2">{group.items.map(mobileLink)}</div>
-                </div>
-              ))}
+                  {groups.map((group) => (
+                    <motion.div key={group.label} variants={menuItem} className="mt-2">
+                      <p className="pb-1 pt-5 text-[11px] font-bold uppercase tracking-[0.16em] text-white/40">
+                        {group.label}
+                      </p>
+                      <div className="grid gap-1">
+                        {group.items.map((item) => {
+                          const itemActive = isActive(item.href);
+                          return (
+                            <Link
+                              key={item.href}
+                              href={`/${locale}${item.href}`}
+                              onClick={() => setOpen(false)}
+                              aria-current={itemActive ? "page" : undefined}
+                              className={cn(
+                                "flex items-center justify-between border-b border-white/10 py-3 text-lg font-semibold transition-colors",
+                                itemActive ? "text-accent" : "text-white/80 hover:text-accent"
+                              )}
+                            >
+                              {item.label}
+                              {itemActive && <span className="h-1.5 w-1.5 rounded-full bg-accent" />}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  ))}
 
-              {(showLangs || (showDonate && donateLabel)) && (
-                <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t pt-4">
-                  {showLangs && <LocaleSwitcher current={locale} />}
-                  {showDonate && donateLabel && (
-                    <Button
-                      asChild
-                      size="sm"
-                      className="rounded-full bg-destructive px-6 font-bold hover:bg-destructive/90"
+                  {(showLangs || (showDonate && donateLabel)) && (
+                    <motion.div
+                      variants={menuItem}
+                      className="mt-6 flex flex-wrap items-center justify-between gap-3"
                     >
-                      <Link href={`/${locale}/donate`} onClick={() => setOpen(false)}>
-                        <Heart className="h-4 w-4 fill-current" /> {donateLabel}
-                      </Link>
-                    </Button>
+                      {showLangs && <LocaleSwitcher current={locale} dark />}
+                      {showDonate && donateLabel && (
+                        <Button
+                          asChild
+                          size="sm"
+                          className="rounded-full bg-destructive px-6 font-bold hover:bg-destructive/90"
+                        >
+                          <Link href={`/${locale}/donate`} onClick={() => setOpen(false)}>
+                            <Heart className="h-4 w-4 fill-current" /> {donateLabel}
+                          </Link>
+                        </Button>
+                      )}
+                    </motion.div>
                   )}
-                </div>
-              )}
 
-              {hasContactStrip && (
-                <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 border-t pt-4 text-xs text-muted-foreground">
-                  {phones.map((phone) => (
-                    <a
-                      key={phone}
-                      href={`tel:${phone.replace(/\s/g, "")}`}
-                      className="flex items-center gap-1.5 hover:text-primary"
+                  {hasContactStrip && (
+                    <motion.div
+                      variants={menuItem}
+                      className="mt-6 flex flex-wrap gap-x-6 gap-y-2 border-t border-white/10 pt-6 text-sm text-white/60"
                     >
-                      <Phone className="h-3.5 w-3.5 text-primary" /> {phone}
-                    </a>
-                  ))}
-                  {emails.map((email) => (
-                    <a
-                      key={email}
-                      href={`mailto:${email}`}
-                      className="flex items-center gap-1.5 hover:text-primary"
-                    >
-                      <Mail className="h-3.5 w-3.5 text-primary" /> {email}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-          </nav>
-        </div>
+                      {phones.map((phone) => (
+                        <a
+                          key={phone}
+                          href={`tel:${phone.replace(/\s/g, "")}`}
+                          className="flex items-center gap-1.5 hover:text-accent"
+                        >
+                          <Phone className="h-3.5 w-3.5 text-accent" /> {phone}
+                        </a>
+                      ))}
+                      {emails.map((email) => (
+                        <a
+                          key={email}
+                          href={`mailto:${email}`}
+                          className="flex items-center gap-1.5 hover:text-accent"
+                        >
+                          <Mail className="h-3.5 w-3.5 text-accent" /> {email}
+                        </a>
+                      ))}
+                    </motion.div>
+                  )}
+                </motion.div>
+              </div>
+            </motion.nav>
+          )}
+        </AnimatePresence>
       </header>
     </>
   );

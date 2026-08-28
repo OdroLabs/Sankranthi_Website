@@ -15,9 +15,12 @@ import { getSettings, s, sNum, show } from "@/lib/settings";
 import { formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { TestimonialCarousel } from "@/components/site/testimonial-carousel";
-import { StatCounter } from "@/components/site/stat-counter";
+import { TestimonialsPanel } from "@/components/site/testimonials-panel";
 import { Curve } from "@/components/site/curve";
+import { Hero, type HeroNewsItem } from "@/components/site/hero";
+import { ServiceCard } from "@/components/site/service-card";
+import { TiltCard } from "@/components/site/tilt-card";
+import { Reveal, StaggerContainer, StaggerItem, Parallax, ImageReveal, CountUp } from "@/components/animations";
 
 function SectionTag({ children, light }: { children: React.ReactNode; light?: boolean }) {
   return (
@@ -136,150 +139,51 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   const showPartners = show(settings, "show_home_partners", partners);
   const showDonate = show(settings, "show_home_donate", donateTitle, donateText);
 
+  const heroNews: HeroNewsItem[] = news.slice(0, 3).map((item) => ({
+    id: item.id,
+    href: `/${locale}/news/${item.slug ?? item.id}`,
+    title: loc(item, "title", locale),
+    date: formatDate(item.publishedAt, locale),
+    image: item.image ?? undefined,
+  }));
+
   return (
     <>
       {/* ------------------------------------------------------------------ */}
       {/* Hero — full-bleed photo with a floating glass content panel         */}
       {/* ------------------------------------------------------------------ */}
       {showHero && (
-        <section id="sec-hero" className="hero2 relative isolate overflow-hidden bg-navy-950 text-white">
-          {heroImage && (
-            <div className="absolute inset-0 overflow-hidden">
-              <div
-                data-parallax="10"
-                className="hero2__bg absolute -inset-y-[12%] inset-x-0 scale-110 bg-cover bg-center"
-                style={{ backgroundImage: `url(${heroImage})` }}
-              />
-            </div>
-          )}
-          {/* Scrim for text legibility — deepest bottom-left, fading toward the top-right */}
-          <div className="absolute inset-0 bg-gradient-to-t from-navy-950/95 via-navy-950/55 to-navy-950/25" />
-          <div className="absolute inset-0 bg-gradient-to-r from-navy-950/70 via-navy-950/10 to-transparent" />
-
-          {/* Ambient glows */}
-          <span className="hero2__orb hero2__orb--1 pointer-events-none absolute -left-16 top-16 h-72 w-72 rounded-full bg-accent/25 blur-3xl" />
-          <span className="hero2__orb hero2__orb--2 pointer-events-none absolute bottom-0 right-1/3 h-80 w-80 rounded-full bg-brand-500/25 blur-3xl" />
-
-          <div className="container relative grid gap-10 py-24 md:py-32 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:py-40">
-            <div>
-              {heroBadge && (
-                <span
-                  data-hero
-                  className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-accent backdrop-blur-md"
-                >
-                  <Sparkles className="h-3.5 w-3.5" /> {heroBadge}
-                </span>
-              )}
-              {heroTitle && (
-                <h1
-                  data-hero
-                  className="max-w-2xl text-4xl font-extrabold leading-[1.15] tracking-tight text-white drop-shadow-sm md:text-6xl"
-                >
-                  {heroTitle}
-                </h1>
-              )}
-              {heroSubtitle && (
-                <p data-hero className="mt-6 max-w-xl text-base leading-relaxed text-white/80 md:text-lg">
-                  {heroSubtitle}
-                </p>
-              )}
-              {heroCta1 && (
-                <div data-hero className="mt-9">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="group rounded-full bg-accent px-8 font-bold text-navy-950 shadow-glow hover:bg-accent/90"
-                  >
-                    <Link href={link(locale, s(settings, "hero_cta1_link"))}>
-                      {heroCta1}
-                      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
-                    </Link>
-                  </Button>
-                </div>
-              )}
-            </div>
-
-            {news.length > 0 && (
-              <aside
-                data-hero
-                data-delay="0.2"
-                aria-label="Latest news and updates"
-                className="hero2__news relative w-full max-w-sm justify-self-start rounded-3xl border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-xl lg:justify-self-end"
-              >
-                <h2 className="mb-4 text-lg font-bold text-white">Latest News &amp; Updates</h2>
-                <ul className="space-y-4">
-                  {news.slice(0, 3).map((item) => (
-                    <li key={item.id} className="border-t border-white/15 pt-4 first:border-0 first:pt-0">
-                      <Link href={`/${locale}/news/${item.slug ?? item.id}`} className="group flex gap-3">
-                        {item.image && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            className="h-14 w-14 shrink-0 rounded-xl object-cover shadow-md"
-                            src={item.image}
-                            alt={loc(item, "title", locale)}
-                          />
-                        )}
-                        <span className="min-w-0">
-                          <span className="block line-clamp-2 text-sm font-semibold leading-snug text-white transition-colors group-hover:text-accent">
-                            {loc(item, "title", locale)}
-                          </span>
-                          <time
-                            dateTime={new Date(item.publishedAt).toISOString()}
-                            className="mt-1 block text-[11px] font-bold uppercase tracking-wide text-accent"
-                          >
-                            {formatDate(item.publishedAt, locale)}
-                          </time>
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                {s(settings, "facebook") && (
-                  <a
-                    href={s(settings, "facebook")}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-5 block border-t border-white/15 pt-4 text-center text-xs font-bold text-white/80 transition-colors hover:text-accent"
-                  >
-                    Follow us on Facebook
-                  </a>
-                )}
-              </aside>
-            )}
-          </div>
-
-          {/* Floating Support Us tab */}
-          <Link
-            data-hero
-            href={`/${locale}/donate`}
-            aria-label="Support us"
-            className="hero2__donate group absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 items-center gap-2 rounded-l-full bg-destructive py-4 pl-4 pr-3 text-xs font-bold text-white shadow-lg shadow-destructive/30 transition hover:bg-destructive/90 md:flex"
-          >
-            <Heart className="h-4 w-4 fill-white" />
-            <span className="[writing-mode:vertical-rl]">Support Us</span>
-          </Link>
-
-          <Curve flip className="absolute inset-x-0 -bottom-px text-background" />
-        </section>
+        <Hero
+          locale={locale}
+          heroImage={heroImage || undefined}
+          heroBadge={heroBadge || undefined}
+          heroTitle={heroTitle || undefined}
+          heroSubtitle={heroSubtitle || undefined}
+          heroCta1={heroCta1 || undefined}
+          heroCta1Href={heroCta1 ? link(locale, s(settings, "hero_cta1_link")) : undefined}
+          news={heroNews}
+          facebookUrl={s(settings, "facebook") || undefined}
+          donateHref={`/${locale}/donate`}
+        />
       )}
 
       {/* ------------------------------------------------------------------ */}
       {/* Who we are                                                          */}
       {/* ------------------------------------------------------------------ */}
       {showAbout && (
-        <section id="sec-about" className="container py-20 md:py-28">
+        <section id="sec-about" className="mx-auto w-full max-w-[1400px] px-4 md:px-6 py-20 md:py-28">
           <div
             className={`grid items-center gap-12 ${
               aboutImage ? "lg:grid-cols-[1.05fr_0.95fr]" : ""
             }`}
           >
-            <div data-animate>
+            <Reveal direction="left">
               <div className="mb-6 space-y-3">
                 {s(settings, "home_about_eyebrow", locale) && (
                   <SectionTag>{s(settings, "home_about_eyebrow", locale)}</SectionTag>
                 )}
                 {aboutTitle && (
-                  <h2 className="text-3xl font-extrabold tracking-tight text-navy-900 md:text-4xl">
+                  <h2 className="text-display-xl font-extrabold tracking-tight text-navy-900">
                     {aboutTitle}
                   </h2>
                 )}
@@ -290,34 +194,44 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 </p>
               )}
               {aboutLinkLabel && (
-                <Button asChild variant="link" className="mt-4 px-0 font-bold">
+                <Button
+                  asChild
+                  variant="link"
+                  className="group mt-4 px-0 font-bold"
+                >
                   <Link href={`/${locale}/about`}>
-                    {aboutLinkLabel} <ArrowRight className="h-4 w-4" />
+                    <span className="border-b-2 border-transparent transition-colors group-hover:border-primary">
+                      {aboutLinkLabel}
+                    </span>
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 </Button>
               )}
-            </div>
+            </Reveal>
 
             {aboutImage && (
-              <div data-animate data-delay="0.15" className="relative">
+              <div className="relative">
                 <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-brand-100 via-transparent to-accent/10" />
-                <div className="relative overflow-hidden rounded-3xl shadow-card-hover">
-                  <div className="aspect-[4/3] overflow-hidden">
+                <ImageReveal delay={0.1} className="relative rounded-3xl shadow-card-hover">
+                  <Parallax strength={14} className="aspect-[4/3] overflow-hidden">
                     <div
-                      data-parallax="7"
                       className="h-full w-full scale-110 bg-cover bg-center"
                       style={{ backgroundImage: `url(${aboutImage})` }}
                     />
-                  </div>
+                  </Parallax>
                   {aboutCaption && (
-                    <div className="glass-light absolute bottom-4 left-4 right-4 flex items-center gap-3 rounded-2xl px-5 py-4">
+                    <Reveal
+                      direction="scale"
+                      delay={0.5}
+                      className="glass-light absolute bottom-4 left-4 right-4 flex items-center gap-3 rounded-2xl px-5 py-4"
+                    >
                       <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-brand-600 to-accent text-white">
                         <Sparkles className="h-5 w-5" />
                       </span>
                       <p className="text-sm font-bold text-navy-900">{aboutCaption}</p>
-                    </div>
+                    </Reveal>
                   )}
-                </div>
+                </ImageReveal>
               </div>
             )}
           </div>
@@ -329,52 +243,50 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* ------------------------------------------------------------------ */}
       {showStats && (
         <section id="sec-stats">
-          <Curve className="-mb-px text-navy-950" />
-          <div className="relative overflow-hidden bg-navy-950 py-16 text-white md:py-24">
+          <Curve variant="arc" className="-mb-px text-navy-950" />
+          <div className="bg-grain relative overflow-hidden bg-navy-950 py-16 text-white md:py-24">
             {statsImage && (
               <div className="absolute inset-0 overflow-hidden">
                 <div
-                  data-parallax="10"
                   className="absolute -inset-y-[14%] inset-x-0 scale-110 bg-cover bg-center opacity-15"
                   style={{ backgroundImage: `url(${statsImage})` }}
                 />
               </div>
             )}
             <div className="absolute inset-0 bg-gradient-to-b from-navy-950/70 via-transparent to-navy-950/70" />
+            <div className="pointer-events-none absolute inset-0 bg-grid-fade opacity-40" />
             <div className="pointer-events-none absolute right-0 top-0 h-72 w-72 rounded-full bg-accent/10 blur-3xl" />
+            <div className="pointer-events-none absolute -left-10 bottom-0 h-64 w-64 rounded-full bg-brand-500/10 blur-3xl" />
 
-            <div className="container relative">
+            <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative">
               {(statsTitle || s(settings, "home_stats_eyebrow", locale)) && (
-                <div data-animate className="mx-auto mb-12 max-w-2xl space-y-3 text-center">
+                <Reveal className="mx-auto mb-12 max-w-2xl space-y-3 text-center">
                   {s(settings, "home_stats_eyebrow", locale) && (
                     <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
                       {s(settings, "home_stats_eyebrow", locale)}
                     </p>
                   )}
                   {statsTitle && (
-                    <h2 className="text-3xl font-extrabold tracking-tight md:text-4xl">
-                      {statsTitle}
-                    </h2>
+                    <h2 className="text-display-xl font-extrabold tracking-tight">{statsTitle}</h2>
                   )}
                   <span className="mx-auto block h-1 w-16 rounded-full bg-gradient-to-r from-accent to-brand-400" />
-                </div>
+                </Reveal>
               )}
-              <div data-stagger className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
+              <StaggerContainer className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
                 {stats.map((stat) => (
-                  <div
-                    key={stat.id}
-                    className="glass-dark group rounded-3xl p-7 text-center transition-all duration-300 hover:-translate-y-1 hover:bg-white/10"
-                  >
-                    <p className="font-number text-3xl font-extrabold text-gradient md:text-4xl">
-                      <StatCounter value={stat.value} />
-                    </p>
-                    <p className="mt-2.5 text-sm text-white/70">{loc(stat, "label", locale)}</p>
-                  </div>
+                  <StaggerItem key={stat.id}>
+                    <div className="card-glow glass-dark group h-full rounded-3xl border border-white/10 p-7 text-center transition-all duration-300 hover:-translate-y-1.5 hover:bg-white/10">
+                      <p className="font-number text-3xl font-extrabold text-gradient md:text-4xl">
+                        <CountUp value={stat.value} />
+                      </p>
+                      <p className="mt-2.5 text-sm text-white/70">{loc(stat, "label", locale)}</p>
+                    </div>
+                  </StaggerItem>
                 ))}
-              </div>
+              </StaggerContainer>
             </div>
           </div>
-          <Curve flip className="-mt-px text-navy-950" />
+          <Curve variant="arc" flip className="-mt-px text-navy-950" />
         </section>
       )}
 
@@ -382,59 +294,48 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Services                                                            */}
       {/* ------------------------------------------------------------------ */}
       {showServices && (
-        <section id="sec-services" className="container py-16 md:py-24">
-          {(servicesTitle || servicesText || s(settings, "home_services_eyebrow", locale)) && (
-            <div data-animate className="mx-auto mb-12 max-w-2xl space-y-3 text-center">
-              {s(settings, "home_services_eyebrow", locale) && (
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-                  {s(settings, "home_services_eyebrow", locale)}
-                </p>
-              )}
-              {servicesTitle && (
-                <h2 className="text-3xl font-extrabold tracking-tight text-navy-900 md:text-4xl">
-                  {servicesTitle}
-                </h2>
-              )}
-              {servicesText && (
-                <p className="leading-relaxed text-muted-foreground">{servicesText}</p>
-              )}
-              <span className="mx-auto block h-1 w-16 rounded-full bg-gradient-to-r from-primary to-accent" />
-            </div>
-          )}
-          <div data-stagger className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((service) => (
-              <Link
-                key={service.id}
-                href={`/${locale}/services/${service.slug ?? service.id}`}
-                className="group relative block h-full overflow-hidden rounded-3xl border border-border bg-white p-7 shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:border-brand-200 hover:shadow-card-hover"
-              >
-                {/* Top accent that grows on hover */}
-                <span className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-primary to-accent transition-transform duration-300 group-hover:scale-x-100" />
-                {service.icon && (
-                  <span className="mb-5 grid h-[52px] w-[52px] place-items-center rounded-2xl bg-gradient-to-br from-brand-50 to-brand-100 text-2xl ring-1 ring-brand-100 transition-transform duration-300 group-hover:scale-110">
-                    {service.icon}
-                  </span>
+        <section id="sec-services" className="relative overflow-hidden py-16 md:py-24">
+          <div className="pointer-events-none absolute inset-0 bg-grid-fade opacity-[0.15]" />
+          <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative">
+            {(servicesTitle || servicesText || s(settings, "home_services_eyebrow", locale)) && (
+              <Reveal className="mx-auto mb-12 max-w-2xl space-y-3 text-center">
+                {s(settings, "home_services_eyebrow", locale) && (
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                    {s(settings, "home_services_eyebrow", locale)}
+                  </p>
                 )}
-                <h3 className="mb-2 text-lg font-bold text-navy-900 transition-colors group-hover:text-primary">
-                  {loc(service, "title", locale)}
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {loc(service, "description", locale)}
-                </p>
-                <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-primary">
-                  {dict.common.readMore}
-                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
-                </span>
-              </Link>
-            ))}
+                {servicesTitle && (
+                  <h2 className="text-display-xl font-extrabold tracking-tight text-navy-900">
+                    {servicesTitle}
+                  </h2>
+                )}
+                {servicesText && (
+                  <p className="leading-relaxed text-muted-foreground">{servicesText}</p>
+                )}
+                <span className="mx-auto block h-1 w-16 rounded-full bg-gradient-to-r from-primary to-accent" />
+              </Reveal>
+            )}
+            <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {services.map((service) => (
+                <StaggerItem key={service.id} className="h-full">
+                  <ServiceCard
+                    href={`/${locale}/services/${service.slug ?? service.id}`}
+                    icon={service.icon}
+                    title={loc(service, "title", locale)}
+                    description={loc(service, "description", locale)}
+                    readMoreLabel={dict.common.readMore}
+                  />
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+            {servicesLinkLabel && (
+              <Reveal className="mt-12 text-center">
+                <Button asChild variant="outline" size="lg" className="rounded-full px-8 font-semibold">
+                  <Link href={`/${locale}/services`}>{servicesLinkLabel}</Link>
+                </Button>
+              </Reveal>
+            )}
           </div>
-          {servicesLinkLabel && (
-            <div data-animate className="mt-12 text-center">
-              <Button asChild variant="outline" size="lg" className="rounded-full px-8 font-semibold">
-                <Link href={`/${locale}/services`}>{servicesLinkLabel}</Link>
-              </Button>
-            </div>
-          )}
         </section>
       )}
 
@@ -444,31 +345,39 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {showProjects && (
         <section id="sec-projects" className="relative overflow-hidden bg-muted/60 py-16 md:py-24">
           <div className="pointer-events-none absolute -left-32 top-0 h-72 w-72 rounded-full bg-brand-100/60 blur-3xl" />
-          <div className="container relative">
+          <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative">
             {(projectsTitle || projectsText || s(settings, "home_projects_eyebrow", locale)) && (
-              <div data-animate className="mb-12 max-w-3xl space-y-3">
+              <Reveal className="mb-12 max-w-3xl space-y-3">
                 {s(settings, "home_projects_eyebrow", locale) && (
                   <SectionTag>{s(settings, "home_projects_eyebrow", locale)}</SectionTag>
                 )}
                 {projectsTitle && (
-                  <h2 className="text-3xl font-extrabold tracking-tight text-navy-900 md:text-4xl">
+                  <h2 className="text-display-xl font-extrabold tracking-tight text-navy-900">
                     {projectsTitle}
                   </h2>
                 )}
                 {projectsText && (
                   <p className="leading-relaxed text-muted-foreground">{projectsText}</p>
                 )}
-              </div>
+              </Reveal>
             )}
-            <div data-stagger className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {projects.map((project) => (
+
+            {(() => {
+              const [featured, ...rest] = projects;
+              const projectCard = (project: (typeof projects)[number], big?: boolean) => (
                 <Link
                   key={project.id}
                   href={`/${locale}/projects/${project.slug ?? project.id}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover"
+                  className={`group flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover ${
+                    big ? "lg:flex-row" : ""
+                  }`}
                 >
                   {project.image && (
-                    <div className="relative aspect-[5/4] overflow-hidden">
+                    <div
+                      className={`relative overflow-hidden ${
+                        big ? "aspect-[5/4] lg:aspect-auto lg:w-1/2" : "aspect-[5/4]"
+                      }`}
+                    >
                       <div
                         className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110"
                         style={{ backgroundImage: `url(${project.image})` }}
@@ -479,11 +388,21 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                       </Badge>
                     </div>
                   )}
-                  <div className="flex flex-1 flex-col gap-2 p-6">
-                    <h3 className="font-bold leading-snug text-navy-900 transition-colors group-hover:text-primary">
+                  <div
+                    className={`flex flex-1 flex-col gap-2 p-6 ${big ? "lg:justify-center lg:p-10" : ""}`}
+                  >
+                    <h3
+                      className={`font-bold leading-snug text-navy-900 transition-colors group-hover:text-primary ${
+                        big ? "text-xl md:text-2xl" : ""
+                      }`}
+                    >
                       {loc(project, "title", locale)}
                     </h3>
-                    <p className="line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+                    <p
+                      className={`leading-relaxed text-muted-foreground ${
+                        big ? "line-clamp-3 text-base" : "line-clamp-3 text-sm"
+                      }`}
+                    >
                       {loc(project, "description", locale)}
                     </p>
                     <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-bold text-primary">
@@ -492,10 +411,28 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     </span>
                   </div>
                 </Link>
-              ))}
-            </div>
+              );
+
+              return (
+                <div className="space-y-6">
+                  {featured && (
+                    <StaggerContainer>
+                      <StaggerItem>{projectCard(featured, true)}</StaggerItem>
+                    </StaggerContainer>
+                  )}
+                  {rest.length > 0 && (
+                    <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                      {rest.map((project) => (
+                        <StaggerItem key={project.id}>{projectCard(project)}</StaggerItem>
+                      ))}
+                    </StaggerContainer>
+                  )}
+                </div>
+              );
+            })()}
+
             {projectsLinkLabel && (
-              <div data-animate className="mt-12 text-center">
+              <Reveal className="mt-12 text-center">
                 <Button
                   asChild
                   variant="outline"
@@ -504,7 +441,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 >
                   <Link href={`/${locale}/projects`}>{projectsLinkLabel}</Link>
                 </Button>
-              </div>
+              </Reveal>
             )}
           </div>
         </section>
@@ -515,12 +452,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* ------------------------------------------------------------------ */}
       {showContact && (
         <section id="sec-contact">
-          <Curve className={`-mb-px text-navy-950 ${showProjects ? "bg-muted/60" : ""}`} />
-          <div className="relative overflow-hidden bg-navy-950 py-16 text-white md:py-24">
+          <Curve variant="tilt" className={`-mb-px text-navy-950 ${showProjects ? "bg-muted/60" : ""}`} />
+          <div className="cta-gradient-shift relative overflow-hidden bg-gradient-to-br from-navy-950 via-navy-900 to-brand-950 py-16 text-white md:py-24">
             {contactImage && (
               <div className="absolute inset-0 overflow-hidden">
                 <div
-                  data-parallax="10"
                   className="absolute -inset-y-[14%] inset-x-0 scale-110 bg-cover bg-center opacity-15"
                   style={{ backgroundImage: `url(${contactImage})` }}
                 />
@@ -528,9 +464,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
             )}
             <div className="absolute inset-0 bg-gradient-to-b from-navy-950/70 via-transparent to-navy-950/70" />
 
-            <div className="container relative grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr]">
-              <div data-animate>
-                <div className="relative mx-auto w-full max-w-sm overflow-hidden rounded-3xl bg-gradient-to-br from-destructive to-red-700 p-10 text-center shadow-glow ring-1 ring-white/15">
+            <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr]">
+              <Reveal direction="scale">
+                <TiltCard className="relative mx-auto w-full max-w-sm overflow-hidden rounded-3xl bg-gradient-to-br from-destructive to-red-700 p-10 text-center shadow-glow ring-1 ring-white/15">
                   <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
                   <span className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-full bg-white/15 ring-2 ring-white/30">
                     <PhoneCall className="h-6 w-6" />
@@ -556,16 +492,16 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                       <Mail className="h-3.5 w-3.5" /> {email}
                     </a>
                   )}
-                </div>
-              </div>
-              <div data-animate data-delay="0.15">
+                </TiltCard>
+              </Reveal>
+              <Reveal delay={0.15}>
                 {s(settings, "home_contact_eyebrow", locale) && (
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-red-400">
                     {s(settings, "home_contact_eyebrow", locale)}
                   </p>
                 )}
                 {contactTitle && (
-                  <h2 className="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">
+                  <h2 className="text-display-xl mt-3 font-extrabold tracking-tight">
                     {contactTitle}
                   </h2>
                 )}
@@ -582,17 +518,17 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                   <Button
                     asChild
                     size="lg"
-                    className="mt-8 rounded-full bg-destructive px-8 font-bold shadow-lg shadow-destructive/30 hover:bg-destructive/90"
+                    className="mt-8 rounded-full bg-destructive px-8 font-bold shadow-lg shadow-destructive/30 transition-transform duration-300 hover:-translate-y-0.5 hover:bg-destructive/90"
                   >
                     <Link href={`/${locale}/contact`}>
                       {contactButton} <ArrowRight className="h-4 w-4" />
                     </Link>
                   </Button>
                 )}
-              </div>
+              </Reveal>
             </div>
           </div>
-          <Curve flip className="-mt-px text-navy-950" />
+          <Curve variant="tilt" flip className="-mt-px text-navy-950" />
         </section>
       )}
 
@@ -600,30 +536,17 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Testimonials                                                        */}
       {/* ------------------------------------------------------------------ */}
       {showTestimonials && (
-        <section id="sec-testimonials" className="container py-16 md:py-24">
-          <div className="grid items-center gap-10 lg:grid-cols-[0.7fr_1.3fr]">
-            <div data-animate className="space-y-3">
-              {s(settings, "home_testimonials_eyebrow", locale) && (
-                <SectionTag>{s(settings, "home_testimonials_eyebrow", locale)}</SectionTag>
-              )}
-              {testimonialsTitle && (
-                <h2 className="text-3xl font-extrabold tracking-tight text-navy-900 md:text-4xl">
-                  {testimonialsTitle}
-                </h2>
-              )}
-            </div>
-            <div data-animate data-delay="0.15" className="relative">
-              <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-brand-50 via-transparent to-accent/10" />
-              <div className="relative rounded-3xl border border-border bg-white p-8 shadow-card md:p-10">
-                <TestimonialCarousel
-                  items={testimonials.map((t) => ({
-                    quote: loc(t, "quote", locale),
-                    author: loc(t, "author", locale),
-                  }))}
-                />
-              </div>
-            </div>
-          </div>
+        <section id="sec-testimonials" className="mx-auto w-full max-w-[1400px] px-4 md:px-6 py-16 md:py-24">
+          <Reveal>
+            <TestimonialsPanel
+              eyebrow={s(settings, "home_testimonials_eyebrow", locale) || undefined}
+              title={testimonialsTitle || undefined}
+              items={testimonials.map((t) => ({
+                quote: loc(t, "quote", locale),
+                author: loc(t, "author", locale),
+              }))}
+            />
+          </Reveal>
         </section>
       )}
 
@@ -631,7 +554,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* News — migrated 1:1 from the legacy static site's news-section      */}
       {/* ------------------------------------------------------------------ */}
       {showNews && (
-        <section id="sec-news" data-animate className="news-ref container pb-16 md:pb-24">
+        <section id="sec-news" data-animate className="news-ref mx-auto w-full max-w-[1400px] px-4 md:px-6 pb-16 md:pb-24">
           <div className="news-ref__heading">
             {s(settings, "home_news_eyebrow", locale) && <span>{s(settings, "home_news_eyebrow", locale)}</span>}
             {newsTitle && <h2>{newsTitle}</h2>}
@@ -667,51 +590,55 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Events                                                              */}
       {/* ------------------------------------------------------------------ */}
       {showEvents && (
-        <section className="container pb-16 md:pb-24">
-          <div id="sec-events" data-animate className="mx-auto max-w-2xl">
-            <div className="mb-8 space-y-3 text-center">
+        <section className="mx-auto w-full max-w-[1400px] px-4 md:px-6 pb-16 md:pb-24">
+          <div id="sec-events" className="mx-auto max-w-2xl">
+            <Reveal className="mb-8 space-y-3 text-center">
               {s(settings, "home_events_eyebrow", locale) && (
                 <SectionTag>{s(settings, "home_events_eyebrow", locale)}</SectionTag>
               )}
               {eventsTitle && (
-                <h2 className="text-2xl font-extrabold tracking-tight text-navy-900 md:text-3xl">{eventsTitle}</h2>
+                <h2 className="text-display-lg font-extrabold tracking-tight text-navy-900">{eventsTitle}</h2>
               )}
-            </div>
-            <div className="space-y-5">
+            </Reveal>
+            <StaggerContainer className="divide-y divide-border overflow-hidden rounded-3xl border border-border bg-white shadow-card">
               {events.map((event) => (
-                <Link
-                  key={event.id}
-                  href={`/${locale}/events/${event.slug ?? event.id}`}
-                  className="group flex gap-4 rounded-3xl border border-border bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-card-hover"
-                >
-                  <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-brand-700 to-accent text-white shadow-md shadow-brand-600/20">
-                    <span className="font-number text-xl font-bold leading-none">
-                      {new Date(event.startDate).getDate()}
-                    </span>
-                    <span className="mt-0.5 text-[10px] uppercase">
-                      {new Date(event.startDate).toLocaleString("en", { month: "short" })}
-                    </span>
-                  </div>
-                  <div>
-                    <h3 className="font-bold leading-snug text-navy-900 transition-colors group-hover:text-primary">
-                      {loc(event, "title", locale)}
-                    </h3>
-                    {event.location && (
-                      <p className="mt-1.5 flex items-center gap-1 text-xs text-muted-foreground">
-                        <MapPin className="h-3 w-3 text-primary" /> {event.location}
-                      </p>
-                    )}
-                  </div>
-                </Link>
+                <StaggerItem key={event.id}>
+                  <Link
+                    href={`/${locale}/events/${event.slug ?? event.id}`}
+                    className="group relative flex items-center gap-4 px-6 py-5 transition-colors duration-300 hover:bg-brand-50/60"
+                  >
+                    <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-brand-700 to-accent text-white shadow-md shadow-brand-600/20 transition-transform duration-300 group-hover:scale-105">
+                      <span className="font-number text-xl font-bold leading-none">
+                        {new Date(event.startDate).getDate()}
+                      </span>
+                      <span className="mt-0.5 text-[10px] uppercase">
+                        {new Date(event.startDate).toLocaleString("en", { month: "short" })}
+                      </span>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-bold leading-snug text-navy-900 transition-colors group-hover:text-primary">
+                        {loc(event, "title", locale)}
+                      </h3>
+                      {event.location && (
+                        <p className="mt-1.5 flex items-center gap-1 text-xs text-muted-foreground">
+                          <MapPin className="h-3 w-3 text-primary" /> {event.location}
+                        </p>
+                      )}
+                    </div>
+                    <ArrowRight className="h-4 w-4 shrink-0 text-primary opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100" />
+                  </Link>
+                </StaggerItem>
               ))}
-              {eventsLinkLabel && (
+            </StaggerContainer>
+            {eventsLinkLabel && (
+              <Reveal className="mt-5">
                 <Button asChild variant="outline" className="w-full rounded-full font-semibold">
                   <Link href={`/${locale}/events`}>
                     <CalendarDays className="h-4 w-4" /> {eventsLinkLabel}
                   </Link>
                 </Button>
-              )}
-            </div>
+              </Reveal>
+            )}
           </div>
         </section>
       )}
@@ -720,7 +647,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Partners                                                            */}
       {/* ------------------------------------------------------------------ */}
       {showPartners && (
-        <section id="sec-partners" className="container pb-16 md:pb-24">
+        <section id="sec-partners" className="mx-auto w-full max-w-[1400px] px-4 md:px-6 pb-16 md:pb-24">
           {(partnersTitle || s(settings, "home_partners_eyebrow", locale)) && (
             <div data-animate className="mx-auto mb-10 max-w-2xl text-center">
               {s(settings, "home_partners_eyebrow", locale) && (
@@ -762,57 +689,54 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Donate CTA                                                          */}
       {/* ------------------------------------------------------------------ */}
       {showDonate && (
-        <section id="sec-donate" className="container pb-20 md:pb-28">
-          <div
-            data-animate
-            className="relative grid items-center gap-8 overflow-hidden rounded-[2rem] bg-gradient-to-br from-navy-900 via-brand-800 to-brand-600 p-10 text-white shadow-glow md:grid-cols-[1.2fr_auto] md:p-14"
-          >
-            <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-accent/20 blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-20 left-1/3 h-56 w-56 rounded-full bg-destructive/15 blur-3xl" />
-            <div className="relative">
-              {s(settings, "home_donate_eyebrow", locale) && (
-                <p className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] text-accent">
-                  <span className="block h-0.5 w-8 rounded-full bg-accent" />
-                  {s(settings, "home_donate_eyebrow", locale)}
-                </p>
-              )}
-              {donateTitle && (
-                <h2 className="mt-4 max-w-2xl text-2xl font-extrabold md:text-4xl">
-                  {donateTitle}
-                </h2>
-              )}
-              {donateText && (
-                <p className="mt-3 max-w-xl whitespace-pre-line leading-relaxed text-white/80">
-                  {donateText}
-                </p>
-              )}
-            </div>
-            {(donateButton || donateButton2) && (
-              <div className="relative flex flex-wrap gap-3">
-                {donateButton && (
-                  <Button
-                    asChild
-                    size="lg"
-                    className="rounded-full bg-white px-8 font-bold text-brand-700 shadow-xl shadow-navy-950/20 hover:bg-white/90"
-                  >
-                    <Link href={`/${locale}/donate`}>
-                      <Heart className="h-4 w-4 fill-destructive text-destructive" /> {donateButton}
-                    </Link>
-                  </Button>
+        <section id="sec-donate" className="mx-auto w-full max-w-[1400px] px-4 md:px-6 pb-20 md:pb-28">
+          <Reveal direction="scale">
+            <div className="bg-grain cta-gradient-shift relative grid items-center gap-8 overflow-hidden rounded-[2rem] bg-gradient-to-br from-navy-900 via-brand-800 to-brand-600 p-10 text-white shadow-glow md:grid-cols-[1.2fr_auto] md:p-14">
+              <span className="hero2__orb hero2__orb--1 pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-accent/20 blur-3xl" />
+              <span className="hero2__orb hero2__orb--2 pointer-events-none absolute -bottom-20 left-1/3 h-56 w-56 rounded-full bg-destructive/15 blur-3xl" />
+              <div className="relative">
+                {s(settings, "home_donate_eyebrow", locale) && (
+                  <p className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] text-accent">
+                    <span className="block h-0.5 w-8 rounded-full bg-accent" />
+                    {s(settings, "home_donate_eyebrow", locale)}
+                  </p>
                 )}
-                {donateButton2 && (
-                  <Button
-                    asChild
-                    size="lg"
-                    variant="outline"
-                    className="rounded-full border-white/50 bg-transparent px-8 font-semibold text-white hover:border-white hover:bg-white/15 hover:text-white"
-                  >
-                    <Link href={`/${locale}/contact`}>{donateButton2}</Link>
-                  </Button>
+                {donateTitle && (
+                  <h2 className="text-display-xl mt-4 max-w-2xl font-extrabold">{donateTitle}</h2>
+                )}
+                {donateText && (
+                  <p className="mt-3 max-w-xl whitespace-pre-line leading-relaxed text-white/80">
+                    {donateText}
+                  </p>
                 )}
               </div>
-            )}
-          </div>
+              {(donateButton || donateButton2) && (
+                <div className="relative flex flex-wrap gap-3">
+                  {donateButton && (
+                    <Button
+                      asChild
+                      size="lg"
+                      className="rounded-full bg-white px-8 font-bold text-brand-700 shadow-xl shadow-navy-950/20 transition-transform duration-300 hover:-translate-y-0.5 hover:bg-white/90"
+                    >
+                      <Link href={`/${locale}/donate`}>
+                        <Heart className="h-4 w-4 fill-destructive text-destructive" /> {donateButton}
+                      </Link>
+                    </Button>
+                  )}
+                  {donateButton2 && (
+                    <Button
+                      asChild
+                      size="lg"
+                      variant="outline"
+                      className="rounded-full border-white/50 bg-transparent px-8 font-semibold text-white transition-transform duration-300 hover:-translate-y-0.5 hover:border-white hover:bg-white/15 hover:text-white"
+                    >
+                      <Link href={`/${locale}/contact`}>{donateButton2}</Link>
+                    </Button>
+                  )}
+                </div>
+              )}
+            </div>
+          </Reveal>
         </section>
       )}
     </>
