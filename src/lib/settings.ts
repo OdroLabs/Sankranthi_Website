@@ -397,7 +397,31 @@ export const settingPages: SettingPage[] = [
           T("hero_badge", "Badge line above the title"),
           T("hero_title", "Title"),
           TA("hero_subtitle", "Subtitle"),
-          IMG("hero_image", "Background image"),
+          IMG(
+            "hero_image",
+            "Main hero photograph",
+            "Large editorial photograph beside the hero headline. Use a warm, authentic people-focused image."
+          ),
+          IMG(
+            "hero_rights_image",
+            "Rights & wellbeing photograph",
+            "Shown in the first scroll chapter."
+          ),
+          IMG(
+            "hero_opportunity_image",
+            "Opportunity photograph",
+            "Main photograph in the second scroll chapter mosaic."
+          ),
+          IMG(
+            "hero_community_image",
+            "Community photograph",
+            "Second photograph in the closing mosaic."
+          ),
+          IMG(
+            "hero_dignity_image",
+            "Dignity photograph",
+            "Third photograph in the closing mosaic."
+          ),
           T("hero_cta1_label", "Primary button text", "Leave blank to hide the button."),
           P("hero_cta1_link", "Primary button link", "Relative path such as /contact, or a full URL."),
           T("hero_cta2_label", "Secondary button text", "Leave blank to hide the button."),

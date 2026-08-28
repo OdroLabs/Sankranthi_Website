@@ -81,12 +81,15 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   ]);
 
   /* ------------------------------- Content ------------------------------- */
-  const siteName = s(settings, "site_name", locale);
   const phone = s(settings, "phone");
   const email = s(settings, "email");
   const address = s(settings, "address", locale);
 
   const heroImage = s(settings, "hero_image");
+  const heroRightsImage = s(settings, "hero_rights_image");
+  const heroOpportunityImage = s(settings, "hero_opportunity_image");
+  const heroCommunityImage = s(settings, "hero_community_image");
+  const heroDignityImage = s(settings, "hero_dignity_image");
   const heroTitle = s(settings, "hero_title", locale);
   const heroBadge = s(settings, "hero_badge", locale);
   const heroSubtitle = s(settings, "hero_subtitle", locale);
@@ -150,7 +153,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   return (
     <>
       {/* ------------------------------------------------------------------ */}
-      {/* Hero — full-bleed photo with a floating glass content panel         */}
+      {/* Hero — focused message with a useful, always-populated support card */}
       {/* ------------------------------------------------------------------ */}
       {showHero && (
         <Hero
@@ -173,8 +176,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {showAbout && (
         <section id="sec-about" className="mx-auto w-full max-w-[1400px] px-4 md:px-6 py-20 md:py-28">
           <div
-            className={`grid items-center gap-12 ${
-              aboutImage ? "lg:grid-cols-[1.05fr_0.95fr]" : ""
+            className={`grid items-center gap-12 lg:gap-20 ${
+              aboutImage ? "lg:grid-cols-[0.92fr_1.08fr]" : ""
             }`}
           >
             <Reveal direction="left">
@@ -189,7 +192,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 )}
               </div>
               {aboutText && (
-                <p className="max-w-2xl whitespace-pre-line leading-relaxed text-muted-foreground">
+                <p className="max-w-xl whitespace-pre-line text-base leading-7 text-muted-foreground">
                   {aboutText}
                 </p>
               )}

@@ -5,6 +5,14 @@ const prisma = new PrismaClient();
 
 const COMMUNITY_IMAGE =
   "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=1600&q=85";
+const HERO_EDITORIAL_IMAGE =
+  "https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=1800&q=88";
+const RIGHTS_WELLBEING_IMAGE =
+  "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1600&q=86";
+const OPPORTUNITY_IMAGE =
+  "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1600&q=86";
+const COMMUNITY_STORY_IMAGE =
+  "https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop&w=1600&q=86";
 const SPA_IMAGE =
   "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=1600&q=85";
 
@@ -55,7 +63,11 @@ async function main() {
     hero_badge: "Sankranthi Foundation · Sri Lanka",
     hero_title: "A turning point for stronger communities.",
     hero_subtitle: "We listen, connect and act—bringing practical care, safer opportunities and community-led solutions closer to the people who need them.",
-    hero_image: COMMUNITY_IMAGE,
+    hero_image: HERO_EDITORIAL_IMAGE,
+    hero_rights_image: RIGHTS_WELLBEING_IMAGE,
+    hero_opportunity_image: OPPORTUNITY_IMAGE,
+    hero_community_image: COMMUNITY_STORY_IMAGE,
+    hero_dignity_image: COMMUNITY_IMAGE,
     hero_points: "Confidential support for special cases\nCommunity-led projects\nVolunteer-powered action\nLivelihood opportunities for women",
     hero_footnote: "Every person deserves to be heard, respected and supported.",
     hero_cta1_label: "Explore our work",

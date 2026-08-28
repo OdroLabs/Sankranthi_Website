@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import "./globals.css";
 import "lenis/dist/lenis.css";
 import { PageLoader } from "@/components/site/page-loader";
@@ -25,19 +24,32 @@ export const viewport: Viewport = {
  * hidden without a flash — but only when JS runs and the user has not asked
  * for reduced motion. Without JS (or with reduced motion) content stays fully
  * visible.
+ *
+ * Rendered as a plain <script> in <head> (not next/script) on purpose: a
+ * `beforeInteractive` next/script is tracked by React as a hoistable
+ * "resource", and any later client-side re-render of the root layout (e.g.
+ * a dev Fast Refresh touching an unrelated file) makes React think the
+ * script is being newly inserted client-side and log "Encountered a script
+ * tag while rendering React component" — it also refuses to (re)run it.
+ * A raw <script> tag isn't tracked that way, so it isn't affected by that
+ * warning/behavior, and for a synchronous inline snippet like this one, a
+ * head <script> already runs before the body paints — the same timing
+ * `beforeInteractive` was providing.
  */
 const animBootstrap = `try{var p=new URLSearchParams(location.search);if(!p.has("adminPreview")&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("anim")}catch(e){}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
-        <PageLoader />
-        <Script
+      <head>
+        <script
           id="anim-bootstrap"
-          strategy="beforeInteractive"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: animBootstrap }}
         />
+      </head>
+      <body>
+        <PageLoader />
         {children}
       </body>
     </html>
