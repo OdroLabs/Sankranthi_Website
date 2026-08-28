@@ -5,7 +5,17 @@ import { buildSocials } from "@/lib/nav";
 import { getSettings, s, show } from "@/lib/settings";
 import { PageHero } from "@/components/site/page-hero";
 import { ContactForm } from "@/components/site/contact-form";
-import { Card, CardContent } from "@/components/ui/card";
+import { TiltCard } from "@/components/site/tilt-card";
+import { Reveal, StaggerContainer, StaggerItem } from "@/components/animations";
+
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="mb-4 flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] text-primary">
+      <span className="block h-0.5 w-8 rounded-full bg-primary" />
+      {children}
+    </p>
+  );
+}
 
 export default async function ContactPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
@@ -43,72 +53,117 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
       />
 
       {(showDetails || showForm) && (
-        <div
-          className={`container grid gap-10 py-12 ${
-            showDetails && showForm ? "lg:grid-cols-5" : ""
-          }`}
-        >
-          {showDetails && (
-            <div id="sec-details" className={`space-y-4 ${showForm ? "lg:col-span-2" : "max-w-xl"}`}>
-              {detailsTitle && <h2 className="text-xl font-bold text-navy-900">{detailsTitle}</h2>}
-              {items.map((item, i) => (
-                <Card key={`${item.label}-${i}`}>
-                  <CardContent className="flex items-start gap-3 pt-5">
-                    <item.icon className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
-                    <div>
-                      <p className="text-sm font-semibold">{item.label}</p>
-                      <p className="whitespace-pre-line text-sm text-muted-foreground">
-                        {item.value}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-              {socials.length > 0 && (
-                <Card>
-                  <CardContent className="pt-5">
-                    <p className="mb-2 text-sm font-semibold">{dict.contact.followUs}</p>
-                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
-                      {socials.map((social) => (
-                        <a
-                          key={social.key}
-                          href={social.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-primary hover:underline"
-                        >
-                          {social.label}
-                        </a>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-          )}
+        <div className="relative overflow-hidden">
+          <div className="pointer-events-none absolute -left-40 -top-40 h-96 w-96 rounded-full bg-brand-200/30 blur-[100px]" />
+          <div className="pointer-events-none absolute -right-32 bottom-0 h-[26rem] w-[26rem] rounded-full bg-accent/15 blur-[110px]" />
 
-          {showForm && (
-            <div id="sec-form" className={showDetails ? "lg:col-span-3" : "mx-auto w-full max-w-2xl"}>
-              {formTitle && <h2 className="mb-2 text-xl font-bold text-navy-900">{formTitle}</h2>}
-              {formNote && (
-                <p className="mb-4 whitespace-pre-line text-sm text-muted-foreground">{formNote}</p>
-              )}
-              <ContactForm dict={dict} successMessage={successMessage} />
-            </div>
-          )}
+          <div
+            className={`relative mx-auto w-full max-w-[1400px] px-4 py-20 md:px-6 md:py-28 ${
+              showDetails && showForm ? "grid gap-12 lg:grid-cols-5" : ""
+            }`}
+          >
+            {showDetails && (
+              <div id="sec-details" className={showForm ? "lg:col-span-2" : "max-w-xl"}>
+                <Eyebrow>Get in Touch</Eyebrow>
+                {detailsTitle && (
+                  <Reveal direction="left">
+                    <h2 className="mb-6 text-display-lg font-extrabold tracking-tight text-navy-900">
+                      {detailsTitle}
+                    </h2>
+                  </Reveal>
+                )}
+                <Reveal direction="left">
+                  <TiltCard>
+                    <div className="card-glow overflow-hidden rounded-3xl border border-border bg-white shadow-card transition-shadow duration-300">
+                      <StaggerContainer>
+                        {items.map((item, i) => (
+                          <StaggerItem key={`${item.label}-${i}`}>
+                            <div
+                              className={`flex items-start gap-4 p-6 ${
+                                i !== 0 ? "border-t border-border/70" : ""
+                              }`}
+                            >
+                              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-600 to-accent text-white shadow-glow">
+                                <item.icon className="h-5 w-5" />
+                              </span>
+                              <div>
+                                <p className="text-sm font-bold text-navy-900">{item.label}</p>
+                                <p className="whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
+                                  {item.value}
+                                </p>
+                              </div>
+                            </div>
+                          </StaggerItem>
+                        ))}
+                        {socials.length > 0 && (
+                          <StaggerItem>
+                            <div className="border-t border-border/70 p-6">
+                              <p className="mb-3 text-sm font-bold text-navy-900">{dict.contact.followUs}</p>
+                              <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+                                {socials.map((social) => (
+                                  <a
+                                    key={social.key}
+                                    href={social.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="font-semibold text-primary transition-colors hover:text-accent"
+                                  >
+                                    {social.label}
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
+                          </StaggerItem>
+                        )}
+                      </StaggerContainer>
+                    </div>
+                  </TiltCard>
+                </Reveal>
+              </div>
+            )}
+
+            {showForm && (
+              <Reveal
+                direction="right"
+                className={showDetails ? "lg:col-span-3" : "mx-auto w-full max-w-2xl"}
+              >
+                <div className="card-glow rounded-[2rem] border border-border bg-white p-8 shadow-card md:p-10">
+                  <Eyebrow>Send a Message</Eyebrow>
+                  {formTitle && (
+                    <h2 className="mb-2 text-display-lg font-extrabold tracking-tight text-navy-900">
+                      {formTitle}
+                    </h2>
+                  )}
+                  {formNote && (
+                    <p className="mb-6 whitespace-pre-line leading-relaxed text-muted-foreground">
+                      {formNote}
+                    </p>
+                  )}
+                  <ContactForm dict={dict} successMessage={successMessage} />
+                </div>
+              </Reveal>
+            )}
+          </div>
         </div>
       )}
 
       {showMap && (
-        <div id="sec-map" className="container pb-12">
-          <iframe
-            src={mapEmbed}
-            className="h-80 w-full rounded-xl border-0"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Map"
-          />
-        </div>
+        <Reveal>
+          <div
+            id="sec-map"
+            className="mx-auto w-full max-w-[1400px] px-4 pb-20 md:px-6 md:pb-28"
+          >
+            <div className="overflow-hidden rounded-[2rem] border border-border shadow-card">
+              <iframe
+                src={mapEmbed}
+                className="h-80 w-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Map"
+              />
+            </div>
+          </div>
+        </Reveal>
       )}
     </>
   );

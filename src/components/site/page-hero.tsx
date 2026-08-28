@@ -44,14 +44,14 @@ export function PageHero({
       <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-accent/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-32 left-1/4 h-72 w-72 rounded-full bg-brand-500/15 blur-3xl" />
 
-      <div className="container relative pb-20 pt-16 md:pb-28 md:pt-20">
+      <div className="relative mx-auto w-full max-w-[1400px] px-4 pb-20 pt-16 md:px-6 md:pb-28 md:pt-20">
         {eyebrow && (
           <p data-hero className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-accent">
             {eyebrow}
           </p>
         )}
         {title && (
-          <h1 data-hero className="text-3xl font-extrabold tracking-tight md:text-5xl">
+          <h1 data-hero className="text-display-xl max-w-2xl font-extrabold tracking-tight">
             {title}
           </h1>
         )}

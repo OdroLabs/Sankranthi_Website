@@ -143,7 +143,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   const showDonate = show(settings, "show_home_donate", donateTitle, donateText);
 
   const heroNews: HeroNewsItem[] = news.slice(0, 3).map((item) => ({
-    id: item.id,
+    id: String(item.id),
     href: `/${locale}/news/${item.slug ?? item.id}`,
     title: loc(item, "title", locale),
     date: formatDate(item.publishedAt, locale),
