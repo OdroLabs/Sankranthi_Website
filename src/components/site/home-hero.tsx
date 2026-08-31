@@ -12,13 +12,18 @@ gsap.registerPlugin(ScrollTrigger);
 type Point = { x: number; y: number };
 
 type HomeHeroProps = {
-  locale: string;
   image?: string;
-  exploreHref: string;
+  badge?: string;
+  title?: string;
+  subtitle?: string;
+  primaryAction?: { label: string; href: string };
+  secondaryAction?: { label: string; href: string };
+  points?: string[];
+  footnote?: string;
   storyImages?: Array<string | undefined>;
 };
 
-const story = [
+const defaultStory = [
   {
     number: "01",
     label: "Rights & wellbeing",
@@ -41,7 +46,7 @@ const story = [
       { name: "Community & dignity", line: "Stronger people. Stronger communities." },
     ],
   },
-] as const;
+];
 
 function cubicPoint(p0: Point, p1: Point, p2: Point, p3: Point, t: number): Point {
   const mt = 1 - t;
@@ -95,7 +100,17 @@ function buildThreadPoints(width: number, height: number): Point[] {
   );
 }
 
-export function HomeHero({ locale, image, exploreHref, storyImages = [] }: HomeHeroProps) {
+export function HomeHero({
+  image,
+  badge,
+  title,
+  subtitle,
+  primaryAction,
+  secondaryAction,
+  points = [],
+  footnote,
+  storyImages = [],
+}: HomeHeroProps) {
   const experienceRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const threadProgress = useRef(0);
@@ -179,36 +194,67 @@ export function HomeHero({ locale, image, exploreHref, storyImages = [] }: HomeH
         const progress = { value: 0 };
 
         const entrance = gsap.timeline({ defaults: { ease: "power4.out" } });
-        entrance
-          .fromTo(
+        if (heroImage) {
+          entrance.fromTo(
             heroImage,
             { clipPath: "inset(0 0 100% 0 round 2.5rem)", scale: 1.04 },
             { clipPath: "inset(0 0 0% 0 round 2.5rem)", scale: 1, duration: 1.35 },
             0.08
-          )
-          .fromTo(label, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.65 }, 0.18)
-          .fromTo(
+          );
+        }
+        if (label) {
+          entrance.fromTo(
+            label,
+            { autoAlpha: 0, y: 14 },
+            { autoAlpha: 1, y: 0, duration: 0.65 },
+            0.18
+          );
+        }
+        if (headlineLines.length > 0) {
+          entrance.fromTo(
             headlineLines,
             { yPercent: 112 },
             { yPercent: 0, duration: 0.92, stagger: 0.12 },
             0.24
-          )
-          .fromTo(copy, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.72 }, 0.6)
-          .fromTo(actions, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.72 }, 0.74)
-          .fromTo(scrollCue, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.7 }, 1.02)
-          .to(
-            progress,
-            {
-              value: 0.23,
-              duration: 1.5,
-              ease: "power2.inOut",
-              onUpdate: () => {
-                threadProgress.current = progress.value;
-                drawThread(progress.value);
-              },
-            },
-            0.65
           );
+        }
+        if (copy) {
+          entrance.fromTo(
+            copy,
+            { autoAlpha: 0, y: 18 },
+            { autoAlpha: 1, y: 0, duration: 0.72 },
+            0.6
+          );
+        }
+        if (actions) {
+          entrance.fromTo(
+            actions,
+            { autoAlpha: 0, y: 16 },
+            { autoAlpha: 1, y: 0, duration: 0.72 },
+            0.74
+          );
+        }
+        if (scrollCue) {
+          entrance.fromTo(
+            scrollCue,
+            { autoAlpha: 0 },
+            { autoAlpha: 1, duration: 0.7 },
+            1.02
+          );
+        }
+        entrance.to(
+          progress,
+          {
+            value: 0.23,
+            duration: 1.5,
+            ease: "power2.inOut",
+            onUpdate: () => {
+              threadProgress.current = progress.value;
+              drawThread(progress.value);
+            },
+          },
+          0.65
+        );
 
         if (desktop) {
           const hero = root.querySelector<HTMLElement>("[data-hero-scene]");
@@ -326,7 +372,21 @@ export function HomeHero({ locale, image, exploreHref, storyImages = [] }: HomeH
     };
   }, [drawThread]);
 
+  const story = defaultStory.map((chapter, chapterIndex) => {
+    const chapterPoints = points.slice(chapterIndex * 2, chapterIndex * 2 + 2);
+    return {
+      ...chapter,
+      themes:
+        chapterPoints.length > 0
+          ? chapterPoints.map((point) => ({ name: point, line: "" }))
+          : chapter.themes,
+    };
+  });
   const images = story.map((_, index) => storyImages[index] || image).filter(Boolean) as string[];
+  const titleLines = title
+    ?.split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
 
   return (
     <section ref={experienceRef} id="sec-hero" className={styles.experience}>
@@ -342,48 +402,59 @@ export function HomeHero({ locale, image, exploreHref, storyImages = [] }: HomeH
 
         <div className={styles.heroScene} data-hero-scene>
           <div className={styles.heroCopy}>
-            <p className={styles.missionLabel} data-hero-label>
-              <span aria-hidden />
-              Sankranthi Foundation · Sri Lanka
-            </p>
-            <h1>
-              <span className={styles.headlineMask}>
-                <span data-headline-line>Dignity. Rights.</span>
-              </span>
-              <span className={styles.headlineMask}>
-                <span data-headline-line>Opportunity.</span>
-              </span>
-              <span className={styles.headlineMask}>
-                <span data-headline-line>For everyone.</span>
-              </span>
-            </h1>
-            <p className={styles.heroDescription} data-hero-copy>
-              We work alongside LGBTQIA+ and marginalized communities in Sri Lanka to advance
-              rights, health, wellbeing and economic opportunity.
-            </p>
-            <div className={styles.heroActions} data-hero-actions>
-              <Link className={styles.supportAction} href={`/${locale}/donate`}>
-                <span className={styles.buttonThread} aria-hidden />
-                <HandHeart className={styles.supportIcon} aria-hidden />
-                <span>Support Our Work</span>
-                <ArrowRight className={styles.actionArrow} aria-hidden />
-              </Link>
-              <Link className={styles.exploreAction} href={exploreHref}>
-                Explore What We Do
-                <ArrowRight aria-hidden />
-              </Link>
-            </div>
+            {badge && (
+              <p className={styles.missionLabel} data-hero-label>
+                <span aria-hidden />
+                {badge}
+              </p>
+            )}
+            {titleLines && titleLines.length > 0 && (
+              <h1>
+                {titleLines.map((line, index) => (
+                  <span key={`${line}-${index}`} className={styles.headlineMask}>
+                    <span data-headline-line>{line}</span>
+                  </span>
+                ))}
+              </h1>
+            )}
+            {subtitle && (
+              <p className={styles.heroDescription} data-hero-copy>
+                {subtitle}
+              </p>
+            )}
+            {(primaryAction || secondaryAction) && (
+              <div className={styles.heroActions} data-hero-actions>
+                {primaryAction && (
+                  <Link className={styles.supportAction} href={primaryAction.href}>
+                    <span className={styles.buttonThread} aria-hidden />
+                    <HandHeart className={styles.supportIcon} aria-hidden />
+                    <span>{primaryAction.label}</span>
+                    <ArrowRight className={styles.actionArrow} aria-hidden />
+                  </Link>
+                )}
+                {secondaryAction && (
+                  <Link className={styles.exploreAction} href={secondaryAction.href}>
+                    {secondaryAction.label}
+                    <ArrowRight aria-hidden />
+                  </Link>
+                )}
+              </div>
+            )}
           </div>
 
-          <figure className={styles.heroFigure}>
-            <div className={styles.heroImage} data-hero-image>
-              {image && <img src={image} alt="Sankranthi Foundation community members together" />}
-            </div>
-            <figcaption>
-              <span>People before programmes.</span>
-              <strong>Dignity in every connection.</strong>
-            </figcaption>
-          </figure>
+          {image && (
+            <figure className={styles.heroFigure}>
+              <div className={styles.heroImage} data-hero-image>
+                <img src={image} alt={title || badge || "Sankranthi Foundation"} />
+              </div>
+              {footnote && (
+                <figcaption>
+                  <span>People before programmes.</span>
+                  <strong>{footnote}</strong>
+                </figcaption>
+              )}
+            </figure>
+          )}
 
           <div className={styles.scrollCue} data-scroll-cue aria-hidden>
             <span>Follow the living thread</span>

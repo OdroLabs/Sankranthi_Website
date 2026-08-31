@@ -395,7 +395,11 @@ export const settingPages: SettingPage[] = [
         hideNote: "Clear the title to hide the whole hero.",
         items: [
           T("hero_badge", "Badge line above the title"),
-          T("hero_title", "Title"),
+          TA(
+            "hero_title",
+            "Title",
+            "Add a line break where you want the large hero headline to wrap."
+          ),
           TA("hero_subtitle", "Subtitle"),
           IMG(
             "hero_image",
@@ -426,12 +430,12 @@ export const settingPages: SettingPage[] = [
           P("hero_cta1_link", "Primary button link", "Relative path such as /contact, or a full URL."),
           T("hero_cta2_label", "Secondary button text", "Leave blank to hide the button."),
           P("hero_cta2_link", "Secondary button link"),
-          LINES("hero_points", "Highlight card items", {
-            itemLabel: "Point",
+          LINES("hero_points", "Story highlight items", {
+            itemLabel: "Highlight",
             addLabel: "Add highlight",
-            help: "Shown in the glass card beside the hero. Remove them all to hide the card.",
+            help: "Up to four items appear across the two living-thread story chapters.",
           }),
-          T("hero_footnote", "Highlight card footnote"),
+          T("hero_footnote", "Photograph caption"),
         ],
       },
       {

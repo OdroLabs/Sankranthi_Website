@@ -11,13 +11,13 @@ import {
 import { prisma } from "@/lib/prisma";
 import { loc, type Locale } from "@/lib/i18n";
 import { getLabels } from "@/lib/labels";
-import { getSettings, s, sNum, show } from "@/lib/settings";
+import { getSettings, s, sList, sNum, show } from "@/lib/settings";
 import { formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { TestimonialsPanel } from "@/components/site/testimonials-panel";
 import { Curve } from "@/components/site/curve";
-import { Hero, type HeroNewsItem } from "@/components/site/hero";
+import { HomeHero } from "@/components/site/home-hero";
 import { ServiceCard } from "@/components/site/service-card";
 import { TiltCard } from "@/components/site/tilt-card";
 import { Reveal, StaggerContainer, StaggerItem, Parallax, ImageReveal, CountUp } from "@/components/animations";
@@ -93,7 +93,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   const heroTitle = s(settings, "hero_title", locale);
   const heroBadge = s(settings, "hero_badge", locale);
   const heroSubtitle = s(settings, "hero_subtitle", locale);
-  const heroCta1 = s(settings, "hero_cta1_label", locale);
+  const heroCta1Label = s(settings, "hero_cta1_label", locale);
+  const heroCta2Label = s(settings, "hero_cta2_label", locale);
+  const heroPoints = sList(settings, "hero_points", locale);
+  const heroFootnote = s(settings, "hero_footnote", locale);
 
   const aboutTitle = s(settings, "home_about_title", locale);
   const aboutText = s(settings, "home_about_text", locale);
@@ -142,31 +145,41 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   const showPartners = show(settings, "show_home_partners", partners);
   const showDonate = show(settings, "show_home_donate", donateTitle, donateText);
 
-  const heroNews: HeroNewsItem[] = news.slice(0, 3).map((item) => ({
-    id: String(item.id),
-    href: `/${locale}/news/${item.slug ?? item.id}`,
-    title: loc(item, "title", locale),
-    date: formatDate(item.publishedAt, locale),
-    image: item.image ?? undefined,
-  }));
-
   return (
     <>
       {/* ------------------------------------------------------------------ */}
-      {/* Hero — focused message with a useful, always-populated support card */}
+      {/* Hero — scroll-driven living-thread story */}
       {/* ------------------------------------------------------------------ */}
       {showHero && (
-        <Hero
-          locale={locale}
-          heroImage={heroImage || undefined}
-          heroBadge={heroBadge || undefined}
-          heroTitle={heroTitle || undefined}
-          heroSubtitle={heroSubtitle || undefined}
-          heroCta1={heroCta1 || undefined}
-          heroCta1Href={heroCta1 ? link(locale, s(settings, "hero_cta1_link")) : undefined}
-          news={heroNews}
-          facebookUrl={s(settings, "facebook") || undefined}
-          donateHref={`/${locale}/donate`}
+        <HomeHero
+          image={heroImage || undefined}
+          badge={heroBadge || undefined}
+          title={heroTitle || undefined}
+          subtitle={heroSubtitle || undefined}
+          primaryAction={
+            heroCta1Label
+              ? {
+                  label: heroCta1Label,
+                  href: link(locale, s(settings, "hero_cta1_link")),
+                }
+              : undefined
+          }
+          secondaryAction={
+            heroCta2Label
+              ? {
+                  label: heroCta2Label,
+                  href: link(locale, s(settings, "hero_cta2_link")),
+                }
+              : undefined
+          }
+          points={heroPoints}
+          footnote={heroFootnote || undefined}
+          storyImages={[
+            heroRightsImage || projects[0]?.image || heroImage,
+            heroOpportunityImage || services[0]?.image || heroImage,
+            heroCommunityImage || projects[1]?.image || heroImage,
+            heroDignityImage || contactImage || aboutImage || heroImage,
+          ]}
         />
       )}
 
