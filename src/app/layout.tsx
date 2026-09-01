@@ -38,6 +38,10 @@ export const viewport: Viewport = {
  */
 const animBootstrap = `try{var p=new URLSearchParams(location.search);if(!p.has("adminPreview")&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("anim")}catch(e){}`;
 
+// Some browser extensions inject this attribute before/during hydration,
+// causing noisy SSR/client mismatch warnings in development.
+const stripInjectedAttrs = `(function(){try{var attr="bis_skin_checked";var scrub=function(root){if(!root||root.nodeType!==1)return;root.removeAttribute&&root.removeAttribute(attr);if(root.querySelectorAll){var nodes=root.querySelectorAll("["+attr+"]");for(var i=0;i<nodes.length;i++)nodes[i].removeAttribute(attr);}};scrub(document.documentElement);new MutationObserver(function(mutations){for(var i=0;i<mutations.length;i++){var m=mutations[i];if(m.type==="attributes"&&m.attributeName===attr&&m.target&&m.target.nodeType===1){m.target.removeAttribute(attr);}if(m.addedNodes){for(var j=0;j<m.addedNodes.length;j++){scrub(m.addedNodes[j]);}}}}).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:[attr]});}catch(e){}})();`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -47,8 +51,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: animBootstrap }}
         />
+        <script
+          id="strip-injected-attrs"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: stripInjectedAttrs }}
+        />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <PageLoader />
         {children}
       </body>
