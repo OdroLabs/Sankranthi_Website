@@ -199,7 +199,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                   <SectionTag>{s(settings, "home_about_eyebrow", locale)}</SectionTag>
                 )}
                 {aboutTitle && (
-                  <h2 className="text-display-xl font-extrabold tracking-tight text-navy-900">
+                  <h2 className="text-display-xl font-extrabold tracking-tight text-brand-900">
                     {aboutTitle}
                   </h2>
                 )}
@@ -251,7 +251,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                       <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-brand-600 to-accent text-white">
                         <Sparkles className="h-5 w-5" />
                       </span>
-                      <p className="text-sm font-bold text-navy-900">{aboutCaption}</p>
+                      <p className="text-sm font-bold text-brand-900">{aboutCaption}</p>
                     </Reveal>
                   )}
                 </div>
@@ -262,12 +262,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       )}
 
       {/* ------------------------------------------------------------------ */}
-      {/* Impact stats — navy band with curves                                */}
+      {/* Impact stats — rainbow band with curves                             */}
       {/* ------------------------------------------------------------------ */}
       {showStats && (
         <section id="sec-stats">
-          <Curve variant="arc" className="-mb-px text-navy-950" />
-          <div className="bg-grain relative overflow-hidden bg-navy-950 py-16 text-white md:py-24">
+          <Curve variant="arc" className="-mb-px text-brand-950" />
+          <div className="bg-grain cta-gradient-shift relative overflow-hidden bg-gradient-to-br from-brand-950 via-pride-violet to-pride-pink py-16 text-white md:py-24">
             {statsImage && (
               <div className="absolute inset-0 overflow-hidden">
                 <div
@@ -276,10 +276,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 />
               </div>
             )}
-            <div className="absolute inset-0 bg-gradient-to-b from-navy-950/70 via-transparent to-navy-950/70" />
+            <div className="absolute inset-0 bg-gradient-to-b from-brand-950/70 via-transparent to-brand-950/70" />
             <div className="pointer-events-none absolute inset-0 bg-grid-fade opacity-40" />
-            <div className="pointer-events-none absolute right-0 top-0 h-72 w-72 rounded-full bg-accent/10 blur-3xl" />
-            <div className="pointer-events-none absolute -left-10 bottom-0 h-64 w-64 rounded-full bg-brand-500/10 blur-3xl" />
+            <div className="pointer-events-none absolute right-0 top-0 h-72 w-72 rounded-full bg-pride-orange/15 blur-3xl" />
+            <div className="pointer-events-none absolute -left-10 bottom-0 h-64 w-64 rounded-full bg-teal-500/15 blur-3xl" />
+            <div className="pointer-events-none absolute left-1/3 top-1/4 h-56 w-56 rounded-full bg-pride-yellow/10 blur-3xl" />
+            <div className="pointer-events-none absolute right-1/4 bottom-1/4 h-52 w-52 rounded-full bg-pride-blue/10 blur-3xl" />
 
             <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative">
               {(statsTitle || s(settings, "home_stats_eyebrow", locale)) && (
@@ -309,7 +311,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
               </StaggerContainer>
             </div>
           </div>
-          <Curve variant="arc" flip className="-mt-px text-navy-950" />
+          <Curve variant="arc" flip className="-mt-px text-brand-950" />
         </section>
       )}
 
@@ -328,7 +330,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     <SectionTag>{s(settings, "home_services_eyebrow", locale)}</SectionTag>
                   )}
                   {servicesTitle && (
-                    <h2 className="text-display-xl mt-3 font-serif font-medium tracking-tight text-navy-900">
+                    <h2 className="text-display-xl mt-3 font-serif font-medium tracking-tight text-brand-900">
                       {servicesTitle}
                     </h2>
                   )}
@@ -378,7 +380,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                   <SectionTag>{s(settings, "home_projects_eyebrow", locale)}</SectionTag>
                 )}
                 {projectsTitle && (
-                  <h2 className="text-display-xl font-serif font-medium tracking-tight text-navy-900">
+                  <h2 className="text-display-xl font-serif font-medium tracking-tight text-brand-900">
                     {projectsTitle}
                   </h2>
                 )}
@@ -408,8 +410,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                         className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110"
                         style={{ backgroundImage: `url(${project.image})` }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 via-navy-950/10 to-transparent transition-opacity duration-300 group-hover:opacity-80" />
-                      <Badge className="glass-light absolute left-4 top-4 rounded-full border-0 font-semibold capitalize text-navy-900 shadow-sm hover:bg-white/80">
+                      <div className="absolute inset-0 bg-gradient-to-t from-brand-950/60 via-brand-950/10 to-transparent transition-opacity duration-300 group-hover:opacity-80" />
+                      <Badge className="glass-light absolute left-4 top-4 rounded-full border-0 font-semibold capitalize text-brand-900 shadow-sm hover:bg-white/80">
                         {(dict.common as any)[project.status] ?? project.status}
                       </Badge>
                     </div>
@@ -418,7 +420,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     className={`flex flex-1 flex-col gap-2 p-6 ${big ? "lg:justify-center lg:p-10" : ""}`}
                   >
                     <h3
-                      className={`font-bold leading-snug text-navy-900 transition-colors group-hover:text-primary ${
+                      className={`font-bold leading-snug text-brand-900 transition-colors group-hover:text-primary ${
                         big ? "text-xl md:text-2xl" : ""
                       }`}
                     >
@@ -474,12 +476,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       )}
 
       {/* ------------------------------------------------------------------ */}
-      {/* Get in touch — navy band                                            */}
+      {/* Get in touch — rainbow band                                         */}
       {/* ------------------------------------------------------------------ */}
       {showContact && (
         <section id="sec-contact">
-          <Curve variant="tilt" className={`-mb-px text-navy-950 ${showProjects ? "bg-muted/60" : ""}`} />
-          <div className="cta-gradient-shift relative overflow-hidden bg-gradient-to-br from-navy-950 via-navy-900 to-brand-950 py-16 text-white md:py-24">
+          <Curve variant="tilt" className={`-mb-px text-brand-950 ${showProjects ? "bg-muted/60" : ""}`} />
+          <div className="cta-gradient-shift relative overflow-hidden bg-gradient-to-br from-brand-950 via-pride-violet to-pride-orange py-16 text-white md:py-24">
             {contactImage && (
               <div className="absolute inset-0 overflow-hidden">
                 <div
@@ -488,7 +490,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 />
               </div>
             )}
-            <div className="absolute inset-0 bg-gradient-to-b from-navy-950/70 via-transparent to-navy-950/70" />
+            <div className="absolute inset-0 bg-gradient-to-b from-brand-950/70 via-transparent to-brand-950/70" />
 
             <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr]">
               <Reveal direction="scale">
@@ -554,7 +556,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
               </Reveal>
             </div>
           </div>
-          <Curve variant="tilt" flip className="-mt-px text-navy-950" />
+          <Curve variant="tilt" flip className="-mt-px text-brand-950" />
         </section>
       )}
 
@@ -587,7 +589,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 <SectionTag>{s(settings, "home_news_eyebrow", locale)}</SectionTag>
               )}
               {newsTitle && (
-                <h2 className="text-display-xl font-serif font-medium tracking-tight text-navy-900">
+                <h2 className="text-display-xl font-serif font-medium tracking-tight text-brand-900">
                   {newsTitle}
                 </h2>
               )}
@@ -616,7 +618,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                       alt={loc(item, "title", locale)}
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-navy-950/50 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-brand-950/50 via-transparent to-transparent" />
                   </div>
                 )}
                 <div className={`flex flex-1 flex-col gap-2.5 p-6 ${big ? "lg:justify-center lg:p-10" : ""}`}>
@@ -627,7 +629,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     {formatDate(item.publishedAt, locale)}
                   </time>
                   <h3
-                    className={`font-bold leading-snug text-navy-900 transition-colors group-hover:text-primary ${
+                    className={`font-bold leading-snug text-brand-900 transition-colors group-hover:text-primary ${
                       big ? "text-xl md:text-2xl" : "text-base"
                     }`}
                   >
@@ -682,7 +684,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 <SectionTag>{s(settings, "home_events_eyebrow", locale)}</SectionTag>
               )}
               {eventsTitle && (
-                <h2 className="text-display-lg font-serif font-medium tracking-tight text-navy-900">{eventsTitle}</h2>
+                <h2 className="text-display-lg font-serif font-medium tracking-tight text-brand-900">{eventsTitle}</h2>
               )}
             </Reveal>
             <StaggerContainer className="divide-y divide-border overflow-hidden rounded-3xl border border-border bg-white shadow-card">
@@ -701,7 +703,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                       </span>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-bold leading-snug text-navy-900 transition-colors group-hover:text-primary">
+                      <h3 className="font-bold leading-snug text-brand-900 transition-colors group-hover:text-primary">
                         {loc(event, "title", locale)}
                       </h3>
                       {event.location && (
@@ -741,7 +743,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 </p>
               )}
               {partnersTitle && (
-                <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-navy-900 md:text-3xl">
+                <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-brand-900 md:text-3xl">
                   {partnersTitle}
                 </h2>
               )}
@@ -762,7 +764,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     className="h-10 w-auto object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
                   />
                 ) : (
-                  <span className="text-sm font-semibold text-navy-800">{partner.name}</span>
+                  <span className="text-sm font-semibold text-brand-800">{partner.name}</span>
                 )}
               </div>
             ))}
@@ -776,7 +778,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {showDonate && (
         <section id="sec-donate" className="mx-auto w-full max-w-[1400px] px-4 md:px-6 pb-20 md:pb-28">
           <Reveal direction="scale">
-            <div className="bg-grain cta-gradient-shift relative grid items-center gap-8 overflow-hidden rounded-[2rem] bg-gradient-to-br from-navy-900 via-brand-800 to-brand-600 p-10 text-white shadow-glow md:grid-cols-[1.2fr_auto] md:p-14">
+            <div className="bg-grain cta-gradient-shift relative grid items-center gap-8 overflow-hidden rounded-[2rem] bg-gradient-to-br from-pride-violet via-brand-700 to-pride-orange p-10 text-white shadow-glow md:grid-cols-[1.2fr_auto] md:p-14">
               <span className="hero2__orb hero2__orb--1 pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-accent/20 blur-3xl" />
               <span className="hero2__orb hero2__orb--2 pointer-events-none absolute -bottom-20 left-1/3 h-56 w-56 rounded-full bg-destructive/15 blur-3xl" />
               <div className="relative">
@@ -801,7 +803,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     <Button
                       asChild
                       size="lg"
-                      className="rounded-full bg-white px-8 font-bold text-brand-700 shadow-xl shadow-navy-950/20 transition-transform duration-300 hover:-translate-y-0.5 hover:bg-white/90"
+                      className="rounded-full bg-white px-8 font-bold text-brand-700 shadow-xl shadow-brand-950/20 transition-transform duration-300 hover:-translate-y-0.5 hover:bg-white/90"
                     >
                       <Link href={`/${locale}/donate`}>
                         <Heart className="h-4 w-4 fill-destructive text-destructive" /> {donateButton}

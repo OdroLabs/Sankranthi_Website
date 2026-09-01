@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { FileUploadField } from "./image-upload";
 import { ToggleField } from "./toggle-field";
+import { NavItemsField } from "./nav-items-field";
 import { LineListField, PairListField } from "./repeater-field";
 import { RichTextField } from "./rich-text-field";
 import { SectionPreview, type PreviewSection } from "./section-preview";
@@ -43,6 +44,15 @@ function SettingField({ item, settings }: { item: SettingDef; settings: Settings
         defaultValue={valueFor(settings, item.key, "valueEn")}
         label={item.label}
         help={item.help}
+      />
+    );
+  }
+
+  if (item.type === "nav-items") {
+    return (
+      <NavItemsField
+        name={`${item.key}__en`}
+        defaultValue={valueFor(settings, item.key, "valueEn")}
       />
     );
   }

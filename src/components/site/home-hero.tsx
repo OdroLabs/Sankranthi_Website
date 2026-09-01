@@ -398,8 +398,6 @@ export function HomeHero({
           ))}
         </div>
 
-        <canvas ref={canvasRef} className={styles.threadCanvas} aria-hidden />
-
         <div className={styles.heroScene} data-hero-scene>
           <div className={styles.heroCopy}>
             {badge && (

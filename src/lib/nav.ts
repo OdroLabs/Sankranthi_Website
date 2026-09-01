@@ -1,5 +1,6 @@
 import type { Dictionary } from "./dictionaries";
 import { s, sBool, type SettingsMap } from "./settings";
+import { NAV_ITEM_CATALOG, parseNavItemStates, type NavItemState } from "./nav-catalog";
 
 export interface NavItem {
   href: string;
@@ -27,63 +28,90 @@ export interface SocialLink {
 }
 
 /**
- * Build the menu from the admin toggles. Anything switched off under
- * Site Settings → Header & Navigation disappears from the header, the mobile
- * menu and the footer columns.
+ * Resolves the current order + on/off state of every menu item. Reads the
+ * single `nav_menu_items` setting (saved by the drag-and-drop list under
+ * Site Settings -> Header & Navigation -> Menu items) once it exists; a site
+ * that hasn't saved that list yet falls back to the legacy per-item
+ * `nav_show_*` switches (or the catalog default) so nothing changes on
+ * upgrade until an admin actually touches the new list.
+ */
+export function resolveNavItemStates(settings: SettingsMap): NavItemState[] {
+  const raw = s(settings, "nav_menu_items");
+  if (raw) return parseNavItemStates(raw);
+  return NAV_ITEM_CATALOG.map((item) => ({
+    key: item.key,
+    on: sBool(settings, `nav_show_${item.key}`, item.fallback),
+  }));
+}
+
+const ITEM_HREF: Record<string, string> = {
+  about: "/about",
+  projects: "/projects",
+  services: "/services",
+  publications: "/publications",
+  news: "/news",
+  events: "/events",
+  business: "/business",
+  suggestions: "/suggestions",
+  contact: "/contact",
+};
+
+const ITEM_LABEL: Record<string, (dict: Dictionary) => string> = {
+  about: (d) => d.nav.about,
+  projects: (d) => d.nav.projects,
+  services: (d) => d.nav.services,
+  publications: (d) => d.nav.publications,
+  news: (d) => d.nav.news,
+  events: (d) => d.nav.events,
+  business: (d) => d.nav.business,
+  suggestions: (d) => d.nav.suggestions,
+  contact: (d) => d.nav.contact,
+};
+
+/**
+ * Build the menu from the admin's Menu items list. Anything switched off
+ * disappears from the header, the mobile menu and the footer columns; the
+ * order the admin dragged items into is followed everywhere that item
+ * appears (within each existing group — Menu items doesn't change which
+ * dropdown or footer column an item belongs to, only its position there).
  */
 export function buildNav(settings: SettingsMap, dict: Dictionary): NavConfig {
-  // Every item is controlled by a "nav_show_*" switch under
-  // Site Settings -> Header & Navigation -> Menu items in the admin panel.
-  // `fallback` is what a page does when the admin hasn't touched its switch
-  // yet: About, Our Work (Projects), Social Enterprise (Business) and
-  // Contact ship on by default; Services, Publications, News, Events and
-  // Suggestions ship off by default and can be switched on from the admin
-  // panel without a code change.
-  const on = (key: string, fallback = true) => sBool(settings, key, fallback);
+  const states = resolveNavItemStates(settings);
+  const enabledOrder = states.filter((state) => state.on).map((state) => state.key);
+  const item = (key: string): NavItem => ({ href: ITEM_HREF[key], label: ITEM_LABEL[key](dict) });
+  // Enabled items that belong to `keys`, kept in the admin's drag order.
+  const pick = (keys: string[]) => enabledOrder.filter((key) => keys.includes(key)).map(item);
 
-  const primary: NavItem[] = [{ href: "", label: dict.nav.home }];
-  if (on("nav_show_about")) primary.push({ href: "/about", label: dict.nav.about });
-  if (on("nav_show_projects")) primary.push({ href: "/projects", label: dict.nav.projects });
-  if (on("nav_show_business")) primary.push({ href: "/business", label: dict.nav.business });
-  if (on("nav_show_services", false)) primary.push({ href: "/services", label: dict.nav.services });
+  const primary: NavItem[] = [
+    { href: "", label: dict.nav.home },
+    ...pick(["about", "projects", "business", "services"]),
+  ];
 
-  const resourceItems: NavItem[] = [];
-  if (on("nav_show_publications", false))
-    resourceItems.push({ href: "/publications", label: dict.nav.publications });
-  if (on("nav_show_news", false)) resourceItems.push({ href: "/news", label: dict.nav.news });
-
-  const volunteerItems: NavItem[] = [];
-  if (on("nav_show_events", false)) volunteerItems.push({ href: "/events", label: dict.nav.events });
-
-  const involvedItems: NavItem[] = [];
-  if (on("nav_show_suggestions", false))
-    involvedItems.push({ href: "/suggestions", label: dict.nav.suggestions });
+  const resourceItems = pick(["publications", "news"]);
+  const volunteerItems = pick(["events"]);
+  const involvedItems = pick(["suggestions"]);
 
   const groups: NavGroup[] = [];
   if (resourceItems.length) groups.push({ label: "Resources", items: resourceItems });
   if (volunteerItems.length) groups.push({ label: "Volunteers", items: volunteerItems });
   if (involvedItems.length) groups.push({ label: dict.nav.getInvolved, items: involvedItems });
 
-  const contact = on("nav_show_contact") ? { href: "/contact", label: dict.nav.contact } : null;
+  const contact = enabledOrder.includes("contact") ? item("contact") : null;
 
-  // Footer columns mirror the same visibility rules.
-  const explore: NavItem[] = [];
-  if (on("nav_show_about")) explore.push({ href: "/about", label: dict.nav.about });
-  if (on("nav_show_projects")) explore.push({ href: "/projects", label: dict.nav.projects });
-  if (on("nav_show_services", false)) explore.push({ href: "/services", label: dict.nav.services });
-  if (on("nav_show_publications", false))
-    explore.push({ href: "/publications", label: dict.nav.publications });
-  if (on("nav_show_news", false)) explore.push({ href: "/news", label: dict.nav.news });
-  // Legal pages always show under Explore — content is edited from
-  // Site Settings -> Other Pages -> Privacy Policy / Terms & Conditions.
-  explore.push({ href: "/privacy", label: dict.nav.privacy });
-  explore.push({ href: "/terms", label: dict.nav.terms });
+  // Footer columns mirror the same visibility + order.
+  const explore: NavItem[] = [
+    ...pick(["about", "projects", "services", "publications", "news"]),
+    // Legal pages always show under Explore — content is edited from
+    // Site Settings -> Other Pages -> Privacy Policy / Terms & Conditions.
+    { href: "/privacy", label: dict.nav.privacy },
+    { href: "/terms", label: dict.nav.terms },
+  ];
 
-  const involved: NavItem[] = [];
-  if (on("nav_show_business")) involved.push({ href: "/business", label: dict.nav.business });
-  if (on("nav_show_events", false)) involved.push({ href: "/events", label: dict.nav.events });
-  involved.push({ href: "/donate", label: dict.nav.donate });
-  if (on("nav_show_contact")) involved.push({ href: "/contact", label: dict.nav.contact });
+  const involved: NavItem[] = [
+    ...pick(["business", "events"]),
+    { href: "/donate", label: dict.nav.donate },
+    ...(contact ? [contact] : []),
+  ];
 
   return { primary, groups, contact, explore, involved };
 }

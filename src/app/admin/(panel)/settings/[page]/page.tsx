@@ -1,6 +1,8 @@
 import { notFound, redirect } from "next/navigation";
 import { getSettings, getSettingPage, settingPages } from "@/lib/settings";
 import { getAdmin } from "@/lib/session";
+import { resolveNavItemStates } from "@/lib/nav";
+import { serializeNavItemStates } from "@/lib/nav-catalog";
 import { SettingsTabs } from "@/components/admin/settings-tabs";
 import { SettingsForm } from "@/components/admin/settings-form";
 import { LabelsForm } from "@/components/admin/labels-form";
@@ -17,6 +19,15 @@ export default async function SettingsPage({ params }: { params: Promise<{ page:
   if (!isLabels && !page) notFound();
 
   const settings = await getSettings();
+  // "Menu items" is drag-and-drop backed by one setting (nav_menu_items).
+  // Resolve it here (server side — the form below is a client component)
+  // so a site that hasn't saved the new list yet still shows the order and
+  // on/off state carried over from the old per-item nav_show_* switches.
+  settings.nav_menu_items = {
+    valueEn: serializeNavItemStates(resolveNavItemStates(settings)),
+    valueSi: null,
+    valueTa: null,
+  };
   const tabs = [
     ...settingPages.map((p) => ({ slug: p.slug, title: p.title })),
     { slug: "labels", title: "Labels & Translations" },

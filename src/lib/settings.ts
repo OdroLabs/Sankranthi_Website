@@ -105,7 +105,9 @@ export type SettingType =
   /** Repeatable single-value rows, stored one per line. */
   | "lines"
   /** Rich HTML, edited with the same block editor as News/Events/Projects/Services content. */
-  | "richtext";
+  | "richtext"
+  /** The header/footer menu list — on/off plus drag-to-reorder. See nav-catalog.ts. */
+  | "nav-items";
 
 export interface SettingDef {
   key: string;
@@ -330,17 +332,14 @@ export const settingPages: SettingPage[] = [
       {
         section: "Menu items",
         preview: { path: "", anchor: "sec-header" },
-        hideNote: "Turn an item off to remove it from both the desktop and mobile menus.",
+        hideNote:
+          "Turn an item off to remove it from both the desktop and mobile menus. Drag an item by its handle to reorder it — the same order is used in the header, the mobile menu and the footer.",
         items: [
-          SW("nav_show_about", "About Us"),
-          SW("nav_show_projects", "Projects"),
-          SW("nav_show_services", "Our Services"),
-          SW("nav_show_publications", "Publications"),
-          SW("nav_show_news", "News"),
-          SW("nav_show_events", "Events & Gallery"),
-          SW("nav_show_business", "Social Enterprise"),
-          SW("nav_show_suggestions", "Suggestions"),
-          SW("nav_show_contact", "Contact Us"),
+          {
+            key: "nav_menu_items",
+            label: "Menu items",
+            type: "nav-items",
+          },
         ],
       },
       {
