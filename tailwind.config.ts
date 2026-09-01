@@ -51,33 +51,44 @@ const config: Config = {
          * Kept separate from `brand`/`pride` so the logo and flag identity
          * colours are never approximated.
          */
-        cream: { DEFAULT: "#FFF9F5", 50: "#FFFDFB", 100: "#FFF9F5", 200: "#FFF4F1" },
-        blush: { 50: "#FFF9FB", 100: "#FFF0F4", 200: "#FDE7EF", 300: "#FFD6E0" },
-        lavender: { 50: "#F8F6FF", 100: "#EDE7FF", 200: "#E1D9FF", 300: "#AEB7FF" },
-        mint: { 50: "#F3FCF8", 100: "#E8F7EF", 200: "#D8F1E5", 300: "#A7E7D0" },
-        sky: { 50: "#F5FBFF", 100: "#EAF6FF", 200: "#DAEEFF" },
-        peach: { 50: "#FFF7EE", 100: "#FFEEDC", 200: "#F6C98B" },
-        charcoal: { 50: "#F4F5F6", 700: "#39424C", 800: "#2A323B", 900: "#1F2933", 950: "#171D24" },
-        /* Violet, anchored on the base of the logo's swirl (#7b2ff7 at 600). */
+        cream: { DEFAULT: "#FFF9F5", 50: "#FFFDF9", 100: "#FFF9F5", 200: "#FFF3ED" },
+        blush: { 50: "#FFF9FB", 100: "#FFF0F4", 200: "#FFE4EC", 300: "#FFD0DC" },
+        lavender: { 50: "#F5F1FF", 100: "#F5F1FF", 200: "#EDE7FF", 300: "#A995E8" },
+        mint: { 50: "#F4FBF7", 100: "#EFF9F4", 200: "#D8F3E8", 300: "#83D8B6" },
+        sky: { 50: "#F3FAFD", 100: "#E7F6FB", 200: "#C8EBF7" },
+        peach: { 50: "#FFF7F2", 100: "#FFF3ED", 200: "#FFE0D1" },
+        sun: { 50: "#FFFBE8", 100: "#FFF8DD", 200: "#FFE9A8" },
+        charcoal: { 50: "#F8F5F2", 700: "#667078", 800: "#3D4A52", 900: "#202B33", 950: "#202B33" },
+        /* Coral/rose brand — CTA and active states, not electric purple. */
         brand: {
-          50: "#f6f3ff",
-          100: "#ede7ff",
-          200: "#ddd1ff",
-          300: "#c4adff",
-          400: "#a880fc",
-          500: "#8f52f9",
-          600: "#7b2ff7",
-          700: "#681ddb",
-          800: "#5619b4",
-          900: "#471791",
-          950: "#2b0b63",
+          50: "#FFF0F4",
+          100: "#FFE0E8",
+          200: "#FFC2D1",
+          300: "#FF9AAD",
+          400: "#FF7A93",
+          500: "#FF6F91",
+          600: "#FF617F",
+          700: "#C94F72",
+          800: "#6D4A7D",
+          900: "#4A334F",
+          950: "#2C1F30",
         },
-        /* Deep indigo ink for dark sections — the footer, hero overlays. */
+        /* Charcoal ink for dark bands — footer, overlays, contact bar. */
         navy: {
-          700: "#37306b",
-          800: "#262052",
-          900: "#191540",
-          950: "#0f0c2b",
+          700: "#3D4A52",
+          800: "#2A353C",
+          900: "#202B33",
+          950: "#202B33",
+        },
+        spectrum: {
+          coral: "#FF716D",
+          pink: "#FF6F91",
+          orange: "#FF9B69",
+          yellow: "#FFD66B",
+          mint: "#83D8B6",
+          sky: "#83CDED",
+          lavender: "#A995E8",
+          plum: "#6D4A7D",
         },
         /*
          * Pride flag colours, kept at their official values so the identity is
@@ -113,17 +124,20 @@ const config: Config = {
          * `pride` and `pride-flag` are the full six-colour flag, reserved for
          * thin rules and dividers where the identity should be unmistakable.
          */
-        spectrum: "linear-gradient(100deg, #7b2ff7 0%, #e6338c 40%, #f5722b 72%, #f5c518 100%)",
+        spectrum: "linear-gradient(135deg, #FF617F 0%, #FF846F 100%)",
         pride:
-          "linear-gradient(90deg, #e40303 0%, #ff8c00 20%, #ffed00 40%, #008026 60%, #24408e 80%, #732982 100%)",
+          "linear-gradient(90deg, rgba(255,113,109,0.9), rgba(255,214,107,0.85), rgba(131,216,182,0.85), rgba(131,205,237,0.85), rgba(169,149,232,0.9))",
         "pride-flag":
-          "linear-gradient(90deg, #e40303 0 16.667%, #ff8c00 16.667% 33.333%, #ffed00 33.333% 50%, #008026 50% 66.667%, #24408e 66.667% 83.333%, #732982 83.333% 100%)",
-        /* Elegant pastel washes for hero/CTA panels and card highlights. */
+          "linear-gradient(90deg, rgba(255,113,109,0.9), rgba(255,214,107,0.85), rgba(131,216,182,0.85), rgba(131,205,237,0.85), rgba(169,149,232,0.9))",
+        "living-spectrum":
+          "linear-gradient(90deg, #FF716D, #FFD66B, #83D8B6, #83CDED, #A995E8)",
+        "cta-coral": "linear-gradient(135deg, #FF617F, #FF846F)",
+        "donate-coral": "linear-gradient(135deg, #FF6178, #FF826F)",
         "pastel-mesh":
-          "linear-gradient(120deg, #FFEAC2 0%, #FFDCEA 24%, #F0DEFF 46%, #DCEFFF 66%, #D8F5E6 84%, #FFEFD8 100%)",
-        "pastel-blush": "linear-gradient(120deg, #FFF4F1 0%, #FDE7EF 55%, #EDE7FF 100%)",
-        "pastel-mint": "linear-gradient(120deg, #E8F7EF 0%, #EAF6FF 100%)",
-        "pastel-peach": "linear-gradient(135deg, #FFD6E0 0%, #F6C98B 100%)",
+          "radial-gradient(circle at 18% 30%, rgba(255,111,145,0.10), transparent 32%), radial-gradient(circle at 70% 60%, rgba(131,216,182,0.08), transparent 36%)",
+        "pastel-blush": "linear-gradient(180deg, #FFF0F4 0%, #FFF9F5 100%)",
+        "pastel-mint": "linear-gradient(180deg, #EFF9F4 0%, #FFFDF9 100%)",
+        "pastel-peach": "linear-gradient(180deg, #FFF3ED 0%, #FFF9F5 100%)",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -131,10 +145,10 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        card: "0 1px 2px rgba(31, 41, 51, 0.04), 0 10px 28px -10px rgba(31, 41, 51, 0.10)",
-        "card-hover": "0 4px 10px rgba(31, 41, 51, 0.06), 0 24px 44px -14px rgba(174, 130, 255, 0.28)",
-        glow: "0 0 0 1px rgba(255,255,255,0.4), 0 30px 60px -20px rgba(246, 159, 141, 0.35)",
-        pastel: "0 18px 40px -18px rgba(246, 105, 141, 0.22)",
+        card: "0 15px 45px rgba(31, 41, 51, 0.06)",
+        "card-hover": "0 20px 50px rgba(31, 41, 51, 0.08)",
+        glow: "0 10px 28px rgba(255, 97, 127, 0.22)",
+        pastel: "0 15px 45px rgba(31, 41, 51, 0.06)",
       },
       keyframes: {
         "accordion-down": {

@@ -87,19 +87,19 @@ export default async function ServiceDetailPage({
         )}
         <div
           className={cn(
-            "absolute inset-0 bg-gradient-to-br from-navy-950 via-brand-900 to-navy-800",
+            "absolute inset-0 bg-gradient-to-br from-[#202B33] via-[#2A353C] to-[#202B33]",
             service.image && "opacity-85"
           )}
         />
-        <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-pride-pink/20 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-32 left-1/4 h-72 w-72 rounded-full bg-brand-500/20 blur-3xl" />
-        <div className="pointer-events-none absolute bottom-0 right-1/4 h-64 w-64 rounded-full bg-pride-yellow/10 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[#FF6F91]/[0.12] blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-32 left-1/4 h-72 w-72 rounded-full bg-[#83D8B6]/[0.10] blur-3xl" />
+        <div className="pointer-events-none absolute bottom-0 right-1/4 h-64 w-64 rounded-full bg-[#FFD66B]/[0.08] blur-3xl" />
 
         <div className="relative mx-auto w-full max-w-[1400px] px-4 pb-20 pt-16 text-center md:px-6 md:pb-28 md:pt-20">
           <h1 className="text-display-lg mx-auto max-w-2xl font-serif font-medium tracking-tight">
             {title}
           </h1>
-          <span className="mx-auto mt-6 block h-[3px] w-16 rounded-full bg-pride-flag" />
+          <span className="living-spectrum-line mx-auto mt-6" />
           <nav className="mt-7 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm backdrop-blur">
             <Link href={`/${locale}`} className="flex items-center gap-1.5 text-accent hover:text-white">
               <Home className="h-4 w-4" /> {dict.nav.home}
@@ -170,7 +170,7 @@ export default async function ServiceDetailPage({
                 <h3 className="font-serif text-xl font-medium tracking-tight text-navy-900 md:text-2xl">
                   {dict.common.benefits}
                 </h3>
-                <span className="block h-1 w-14 rounded-full bg-spectrum" />
+                <span className="block h-1 w-14 rounded-full bg-[#FF6F91]" />
               </Reveal>
               <StaggerContainer className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {benefits.map((b, i) => {
@@ -208,7 +208,7 @@ export default async function ServiceDetailPage({
             <div className="mt-14">
               <Reveal className="mb-7 space-y-3">
                 <h3 className="font-serif text-xl font-medium tracking-tight text-navy-900 md:text-2xl">FAQ</h3>
-                <span className="block h-1 w-14 rounded-full bg-spectrum" />
+                <span className="block h-1 w-14 rounded-full bg-[#FF6F91]" />
               </Reveal>
               <Reveal className="space-y-3">
                 {faqs.map((faq, i) => (
@@ -259,8 +259,8 @@ export default async function ServiceDetailPage({
 
           {/* Contact promo card */}
           <Reveal direction="right" delay={0.1}>
-            <div className="bg-grain relative overflow-hidden rounded-[24px] bg-gradient-to-br from-navy-950 via-brand-900 to-brand-700 p-7 text-white">
-              <div className="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-pride-pink/20 blur-3xl" />
+            <div className="bg-grain relative overflow-hidden rounded-[24px] bg-[#202B33] p-7 text-[#F8F5F2]">
+              <div className="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-[#FF6F91]/[0.14] blur-3xl" />
               <h3 className="relative font-serif text-2xl font-medium leading-tight">{dict.home.getSupport}</h3>
               {/* Body copy comes from Site Settings → Home Page → Get in touch band. */}
               {contactPromoText && (
@@ -289,19 +289,19 @@ export default async function ServiceDetailPage({
       {/* CTA band */}
       <section className="mx-auto w-full max-w-[1400px] px-4 pb-16 md:px-6">
         <Reveal direction="scale">
-          <div className="relative overflow-hidden rounded-[24px] bg-spectrum p-10 text-white shadow-glow md:p-12">
-            <div className="pointer-events-none absolute -right-10 -top-10 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
+          <div className="donate-spectrum-wash relative overflow-hidden rounded-[24px] border border-[rgba(32,43,51,0.07)] p-10 text-[#202B33] shadow-card md:p-12">
+            <div className="pointer-events-none absolute -right-10 -top-10 h-56 w-56 rounded-full bg-[#FF6F91]/[0.12] blur-3xl" />
             <div className="relative flex flex-wrap items-center justify-between gap-6">
               <div>
                 {donateTitle && (
                   <h2 className="max-w-xl font-serif text-2xl font-medium md:text-3xl">{donateTitle}</h2>
                 )}
-                {donateText && <p className="mt-2 max-w-xl text-white/85">{donateText}</p>}
+                {donateText && <p className="mt-2 max-w-xl text-[#667078]">{donateText}</p>}
               </div>
               <Button
                 asChild
                 size="lg"
-                className="rounded-full bg-white px-7 font-bold text-brand-700 hover:bg-white/90"
+                className="rounded-full bg-gradient-to-r from-[#FF6178] to-[#FF826F] px-7 font-bold text-white shadow-[0_10px_28px_rgba(255,97,127,0.22)]"
               >
                 <Link href={`/${locale}/donate`}>
                   {dict.home.makeDonation} <ArrowRight className="h-4 w-4" />

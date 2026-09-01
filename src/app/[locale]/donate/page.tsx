@@ -8,8 +8,8 @@ import { Reveal } from "@/components/animations";
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mb-4 flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] text-brand-300">
-      <span className="block h-0.5 w-8 rounded-full bg-brand-300" />
+    <p className="mb-4 flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] text-[#C94F72]">
+      <span className="block h-0.5 w-8 rounded-full bg-[#FF6F91]" />
       {children}
     </p>
   );
@@ -51,10 +51,10 @@ export default async function DonatePage({
         image={s(settings, "donate_hero_image") || undefined}
       />
 
-      <div className="bg-grain relative overflow-hidden bg-navy-950">
-        <div className="pointer-events-none absolute -left-40 -top-20 h-[28rem] w-[28rem] rounded-full bg-brand-600/30 blur-[120px]" />
-        <div className="pointer-events-none absolute -right-32 bottom-0 h-[26rem] w-[26rem] rounded-full bg-pride-pink/15 blur-[120px]" />
-        <div className="pointer-events-none absolute left-1/2 top-1/3 h-72 w-72 -translate-x-1/2 rounded-full bg-pride-sky/10 blur-[100px]" />
+      <div className="bg-grain relative overflow-hidden bg-[#FFF9F5]">
+        <div className="pointer-events-none absolute -left-40 -top-20 h-[28rem] w-[28rem] rounded-full bg-[#FF6F91]/[0.10] blur-[120px]" />
+        <div className="pointer-events-none absolute -right-32 bottom-0 h-[26rem] w-[26rem] rounded-full bg-[#83D8B6]/[0.12] blur-[120px]" />
+        <div className="pointer-events-none absolute left-1/2 top-1/3 h-72 w-72 -translate-x-1/2 rounded-full bg-[#FFD66B]/[0.10] blur-[100px]" />
 
         <div
           className={`relative container grid items-start gap-8 py-20 md:py-28 ${
@@ -65,13 +65,13 @@ export default async function DonatePage({
           {showOnline && (
             <div id="sec-online" className="relative">
               <Reveal direction="left">
-                <div className="card-glow overflow-hidden rounded-[2rem] border border-white/10 bg-white p-7 shadow-glow md:p-9">
+                <div className="card-glow overflow-hidden rounded-[2rem] border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] p-7 shadow-card md:p-9">
                   <Eyebrow>Give Today</Eyebrow>
                   <div className="mb-7 flex items-center gap-3">
-                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-pride-red to-brand-600 text-white shadow-md shadow-brand-600/25">
+                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#FF6178] to-[#FF826F] text-white shadow-[0_10px_24px_rgba(255,97,127,0.22)]">
                       <Heart className="h-5 w-5 fill-current" />
                     </span>
-                    <h2 className="text-display-lg font-extrabold tracking-tight text-navy-900">
+                    <h2 className="text-display-lg font-extrabold tracking-tight text-[#202B33]">
                       {dict.donate.donateNow}
                     </h2>
                   </div>
@@ -101,8 +101,8 @@ export default async function DonatePage({
               {showImpact && (
                 <div id="sec-impact">
                   <Reveal direction="right" delay={0.1}>
-                    <div className="card-glow relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-navy-900 via-brand-800 to-brand-600 p-8 text-white shadow-glow">
-                      <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-accent/20 blur-3xl" />
+                    <div className="card-glow relative overflow-hidden rounded-[28px] border border-[rgba(32,43,51,0.07)] bg-[#202B33] p-8 text-[#F8F5F2] shadow-card">
+                      <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-[#FF6F91]/[0.16] blur-3xl" />
                       {impactTitle && (
                         <h3 className="text-lg font-extrabold tracking-tight">{impactTitle}</h3>
                       )}
@@ -110,7 +110,7 @@ export default async function DonatePage({
                         {impactItems.map((item, i) => (
                           <li key={i} className="flex items-start gap-3">
                             <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white/10 ring-1 ring-white/20">
-                              <Sparkles className="h-4 w-4 text-pride-yellow" />
+                              <Sparkles className="h-4 w-4 text-[#FFD66B]" />
                             </span>
                             <span>
                               <span className="block font-semibold">{item.left}</span>
@@ -132,16 +132,16 @@ export default async function DonatePage({
               {showBank && (
                 <div id="sec-bank">
                   <Reveal direction="right" delay={0.18}>
-                    <div className="card-glow rounded-3xl border border-white/10 bg-white p-7 shadow-card">
+                    <div className="card-glow rounded-[28px] border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] p-7 shadow-card">
                       <div className="mb-4 flex items-center gap-3">
-                        <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-50 text-brand-600 ring-1 ring-brand-100">
+                        <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#FFF3ED] text-[#C94F72] ring-1 ring-[rgba(32,43,51,0.07)]">
                           <Landmark className="h-5 w-5" />
                         </span>
                         {bankTitle && (
-                          <h3 className="font-extrabold text-navy-900">{bankTitle}</h3>
+                          <h3 className="font-extrabold text-[#202B33]">{bankTitle}</h3>
                         )}
                       </div>
-                      <pre className="whitespace-pre-wrap rounded-2xl bg-muted p-5 font-sans text-sm leading-relaxed text-navy-900">
+                      <pre className="whitespace-pre-wrap rounded-2xl bg-[#FFF3ED] p-5 font-sans text-sm leading-relaxed text-[#202B33]">
                         {bankDetails}
                       </pre>
                     </div>

@@ -58,7 +58,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
                 <div className="absolute inset-0 bg-gradient-to-t from-navy-950/70 via-navy-950/0 to-navy-950/0 lg:hidden" />
               </div>
               <div className="relative flex flex-col justify-center p-8 md:p-12">
-                <span className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-pride-pink/10 blur-3xl" />
+                <span className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#FF6F91]/[0.08] blur-3xl" />
                 <div className="relative mb-5 flex flex-wrap items-center gap-3">
                   <Badge
                     variant={featured.status === "completed" ? "success" : "secondary"}
@@ -71,7 +71,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
                       {formatDate(featured.startDate, locale)}
                     </span>
                   )}
-                  <span className="rounded-full bg-spectrum bg-clip-text text-xs font-bold uppercase tracking-[0.2em] text-transparent">
+                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#C94F72]">
                     Featured
                   </span>
                 </div>

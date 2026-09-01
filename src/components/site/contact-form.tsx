@@ -27,7 +27,7 @@ export function ContactForm({
   if (done) {
     return (
       <div className="rounded-3xl border border-teal-500/30 bg-teal-50 p-8 text-center">
-        <span className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-full bg-teal-600 text-white shadow-glow">
+        <span className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-full bg-[#83D8B6] text-white shadow-[0_10px_24px_rgba(131,216,182,0.28)]">
           ✓
         </span>
         <p className="font-semibold text-teal-800">{successMessage || dict.common.thankYou}</p>
@@ -87,7 +87,7 @@ export function ContactForm({
         <Button
           type="submit"
           size="lg"
-          className="rounded-full bg-spectrum px-8 font-bold text-white shadow-lg shadow-brand-600/25 transition-transform duration-300 hover:-translate-y-0.5"
+          className="rounded-full bg-gradient-to-br from-[#FF617F] to-[#FF846F] px-8 font-bold text-white shadow-[0_10px_28px_rgba(255,97,127,0.22)] transition-transform duration-300 hover:-translate-y-0.5"
         >
           {dict.common.send}
         </Button>

@@ -121,14 +121,16 @@ export function SiteHeader({
   const pillClass = (active: boolean) =>
     cn(
       "group/pill relative flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-semibold transition-colors duration-200",
-      active ? "bg-brand-50 text-primary" : "text-foreground/70 hover:bg-muted hover:text-primary"
+      active
+        ? "bg-[#FFF0F4] text-[#C94F72]"
+        : "text-[#202B33]/70 hover:bg-[#FFF0F4] hover:text-[#C94F72]"
     );
 
   const pillUnderline = (active: boolean) => (
     <span
       aria-hidden
       className={cn(
-        "pointer-events-none absolute inset-x-3 -bottom-px h-0.5 origin-center scale-x-0 rounded-full bg-gradient-to-r from-primary to-accent transition-transform duration-300 ease-out group-hover/pill:scale-x-100",
+        "pointer-events-none absolute inset-x-3 -bottom-px h-0.5 origin-center scale-x-0 rounded-full bg-[#FF6F91] transition-transform duration-300 ease-out group-hover/pill:scale-x-100",
         active && "scale-x-100"
       )}
     />
@@ -140,25 +142,25 @@ export function SiteHeader({
     <>
       {/* Utility strip — hidden when switched off, or when there is nothing to show */}
       {showTopbar && (hasContactStrip || showLangs) && (
-        <div id="sec-topbar" className="hidden bg-charcoal-950 text-white md:block">
+        <div id="sec-topbar" className="hidden bg-[#202B33] text-[#F8F5F2] md:block">
           <div className="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-2 text-xs md:px-8">
-            <div className="flex items-center gap-6 text-white/75">
+            <div className="flex items-center gap-6 text-[#F8F5F2]/80">
               {phones.map((phone) => (
                 <a
                   key={phone}
                   href={`tel:${phone.replace(/\s/g, "")}`}
-                  className="flex items-center gap-1.5 transition-colors hover:text-white"
+                  className="flex items-center gap-1.5 transition-colors hover:text-[#F8F5F2]"
                 >
-                  <Phone className="h-3.5 w-3.5 text-accent" /> {phone}
+                  <Phone className="h-3.5 w-3.5 text-[#FF8A72]" /> {phone}
                 </a>
               ))}
               {emails.map((email) => (
                 <a
                   key={email}
                   href={`mailto:${email}`}
-                  className="flex items-center gap-1.5 transition-colors hover:text-white"
+                  className="flex items-center gap-1.5 transition-colors hover:text-[#F8F5F2]"
                 >
-                  <Mail className="h-3.5 w-3.5 text-accent" /> {email}
+                  <Mail className="h-3.5 w-3.5 text-[#FF6F91]" /> {email}
                 </a>
               ))}
             </div>
@@ -174,10 +176,10 @@ export function SiteHeader({
         className={cn(
           "sticky top-0 z-40 border-b transition-all duration-300",
           scrolled
-            ? "border-black/[0.06] bg-white/80 shadow-[0_10px_30px_rgba(25,37,47,0.06)] backdrop-blur-xl supports-[backdrop-filter]:bg-white/72"
+            ? "border-[rgba(32,43,51,0.06)] bg-[rgba(255,253,249,0.90)] shadow-[0_10px_30px_rgba(32,43,51,0.06)] backdrop-blur-xl supports-[backdrop-filter]:bg-[rgba(255,253,249,0.82)]"
             : isHome
-              ? "border-transparent bg-[rgba(255,249,245,0.28)] backdrop-blur-[10px] supports-[backdrop-filter]:bg-[rgba(255,249,245,0.18)]"
-              : "border-transparent bg-background"
+              ? "border-transparent bg-[rgba(255,253,249,0.28)] backdrop-blur-[10px] supports-[backdrop-filter]:bg-[rgba(255,253,249,0.18)]"
+              : "border-transparent bg-[#FFFDF9]"
         )}
       >
         <div
@@ -199,14 +201,14 @@ export function SiteHeader({
             ) : (
               <>
                 {logoLetter && (
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-spectrum text-lg font-bold text-white shadow-md shadow-brand-600/25 transition-transform duration-300 group-hover:scale-105">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-lg font-bold text-white shadow-[0_8px_18px_rgba(255,97,127,0.22)] transition-transform duration-300 group-hover:scale-105">
                     {logoLetter}
                   </span>
                 )}
                 {(shortName || siteName) && (
                   <span className="leading-tight">
                     {shortName && (
-                      <span className="block text-lg font-extrabold tracking-tight text-navy-900">
+                      <span className="block text-lg font-extrabold tracking-tight text-[#202B33]">
                         {shortName}
                       </span>
                     )}
@@ -250,7 +252,7 @@ export function SiteHeader({
                   </button>
                   {/* pt-2 bridges the hover gap between pill and panel */}
                   <div className="invisible absolute left-1/2 top-full z-50 -translate-x-1/2 translate-y-1 pt-2 opacity-0 transition-all duration-200 group-focus-within/nav:visible group-focus-within/nav:translate-y-0 group-focus-within/nav:opacity-100 group-hover/nav:visible group-hover/nav:translate-y-0 group-hover/nav:opacity-100">
-                    <div className="min-w-[230px] overflow-hidden rounded-2xl border border-border bg-white/95 p-2 shadow-xl shadow-navy-950/10 backdrop-blur-xl">
+                    <div className="min-w-[230px] overflow-hidden rounded-2xl border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9]/95 p-2 shadow-[0_15px_45px_rgba(31,41,51,0.08)] backdrop-blur-xl">
                       {group.items.map((item) => {
                         const itemActive = isActive(item.href);
                         return (
@@ -261,8 +263,8 @@ export function SiteHeader({
                             className={cn(
                               "flex items-center justify-between rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors",
                               itemActive
-                                ? "bg-brand-50 text-primary"
-                                : "text-foreground/75 hover:bg-muted hover:text-primary"
+                                ? "bg-[#FFF0F4] text-[#C94F72]"
+                                : "text-[#202B33]/75 hover:bg-[#FFF0F4] hover:text-[#C94F72]"
                             )}
                           >
                             {item.label}
@@ -293,7 +295,7 @@ export function SiteHeader({
               <Button
                 asChild
                 size="sm"
-                className="hidden rounded-full bg-gradient-to-r from-[#FF6687] to-[#FF8B75] px-5 font-bold text-white shadow-[0_8px_20px_rgba(255,102,135,0.32)] transition-transform duration-200 hover:-translate-y-0.5 hover:from-[#ff7a96] hover:to-[#ffa089] md:inline-flex"
+                className="hidden rounded-full bg-gradient-to-r from-[#FF6178] to-[#FF826F] px-5 font-bold text-white shadow-[0_10px_28px_rgba(255,97,127,0.22)] transition-transform duration-200 hover:-translate-y-0.5 hover:from-[#ff7388] hover:to-[#ff967f] md:inline-flex"
               >
                 <Link href={`/${locale}/donate`}>
                   <Heart className="h-4 w-4 fill-current" /> {donateLabel}
@@ -301,7 +303,7 @@ export function SiteHeader({
               </Button>
             )}
             <button
-              className="relative z-[60] grid h-10 w-10 place-items-center rounded-full transition-colors hover:bg-muted lg:hidden"
+              className="relative z-[60] grid h-10 w-10 place-items-center rounded-full transition-colors hover:bg-[#FFF0F4] lg:hidden"
               onClick={() => setOpen((v) => !v)}
               aria-label={dict.nav.menu}
               aria-expanded={open}
@@ -337,7 +339,7 @@ export function SiteHeader({
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="fixed inset-0 z-50 overflow-y-auto bg-charcoal-950 text-white lg:hidden"
+              className="fixed inset-0 z-50 overflow-y-auto bg-[#202B33] text-[#F8F5F2] lg:hidden"
             >
               <div className="mx-auto flex min-h-full max-w-[560px] flex-col px-6 pb-10 pt-24">
                 <motion.div variants={menuList} initial="hidden" animate="visible" exit="exit" className="flex-1">
@@ -401,7 +403,7 @@ export function SiteHeader({
                         <Button
                           asChild
                           size="sm"
-                          className="rounded-full bg-destructive px-6 font-bold hover:bg-destructive/90"
+                          className="rounded-full bg-gradient-to-r from-[#FF6178] to-[#FF826F] px-6 font-bold text-white shadow-[0_10px_28px_rgba(255,97,127,0.22)] hover:from-[#ff7388] hover:to-[#ff967f]"
                         >
                           <Link href={`/${locale}/donate`} onClick={() => setOpen(false)}>
                             <Heart className="h-4 w-4 fill-current" /> {donateLabel}

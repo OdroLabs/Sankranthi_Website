@@ -9,12 +9,12 @@ import { Reveal, StaggerContainer, StaggerItem } from "@/components/animations";
 // Cycled across the values grid so the section reads as a quiet spectrum
 // (one thin accent per card) rather than a flat, single-colour repeat.
 const VALUE_ACCENTS = [
-  "from-brand-600 to-accent",
-  "from-teal-600 to-brand-500",
-  "from-pride-blue to-brand-600",
-  "from-pride-violet to-pride-pink",
-  "from-teal-500 to-pride-sky",
-  "from-brand-500 to-pride-orange",
+  { bar: "from-[#FF6F91] to-[#FF716D]", tint: "bg-[#FFF0F4]" },
+  { bar: "from-[#83D8B6] to-[#83CDED]", tint: "bg-[#EFF9F4]" },
+  { bar: "from-[#FF9B69] to-[#FFD66B]", tint: "bg-[#FFF8DD]" },
+  { bar: "from-[#A995E8] to-[#83CDED]", tint: "bg-[#F5F1FF]" },
+  { bar: "from-[#FF716D] to-[#FF9B69]", tint: "bg-[#FFF3ED]" },
+  { bar: "from-[#83CDED] to-[#A995E8]", tint: "bg-[#FFFDF9]" },
 ];
 
 export default async function AboutPage({ params }: { params: Promise<{ locale: Locale }> }) {
@@ -46,8 +46,8 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
 
   // Each card only appears when it has text.
   const blocks = [
-    { icon: Eye, title: visionTitle, text: vision, gradient: "from-brand-600 to-accent" },
-    { icon: Target, title: missionTitle, text: mission, gradient: "from-teal-600 to-brand-500" },
+    { icon: Eye, title: visionTitle, text: vision, gradient: "from-[#FF617F] to-[#FF846F]" },
+    { icon: Target, title: missionTitle, text: mission, gradient: "from-[#83D8B6] to-[#83CDED]" },
   ].filter((b) => b.text);
 
   /**
@@ -91,14 +91,14 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
             <div className="max-w-xl">
               {title && (
                 <div className="mb-5 flex items-center gap-4">
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-600 to-accent text-white shadow-glow">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-white shadow-[0_10px_24px_rgba(255,97,127,0.22)]">
                     <Icon className="h-5 w-5" />
                   </span>
                   <span className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
                 </div>
               )}
               {title && (
-                <h2 className="text-display-xl font-serif font-medium tracking-tight text-navy-900">
+                <h2 className="text-display-xl font-serif font-medium tracking-tight text-[#202B33]">
                   {title}
                 </h2>
               )}
@@ -114,7 +114,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={image} alt={title} className="aspect-[4/3] w-full object-cover" />
-            <span className="pointer-events-none absolute inset-x-6 -bottom-3 h-[3px] rounded-full bg-spectrum opacity-90" />
+            <span className="pointer-events-none absolute inset-x-6 -bottom-3 h-[2px] rounded-full bg-living-spectrum opacity-70" />
           </div>
         </section>
       );
@@ -124,7 +124,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       <section id={id} className="grid gap-8 lg:grid-cols-[minmax(0,220px)_1fr] lg:gap-16">
         <Reveal direction="up">
           <div className="flex items-center gap-4 lg:flex-col lg:items-start lg:gap-6">
-            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-600 to-accent text-white shadow-glow">
+            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-white shadow-[0_10px_24px_rgba(255,97,127,0.22)]">
               <Icon className="h-6 w-6" />
             </span>
             <span className="hidden h-28 w-px bg-gradient-to-b from-border to-transparent lg:block" />
@@ -133,7 +133,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         <Reveal direction="up" delay={0.08}>
           <div className="max-w-2xl">
             {title && (
-              <h2 className="text-display-xl font-serif font-medium tracking-tight text-navy-900">
+              <h2 className="text-display-xl font-serif font-medium tracking-tight text-[#202B33]">
                 {title}
               </h2>
             )}
@@ -154,7 +154,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         image={s(settings, "about_hero_image") || undefined}
       />
 
-      <div className="mx-auto w-full max-w-[1400px] space-y-20 px-4 py-20 md:space-y-28 md:px-6 md:py-28">
+      <div className="surface-ivory mx-auto w-full max-w-[1400px] space-y-20 px-4 py-20 md:space-y-28 md:px-6 md:py-28">
         <TextBlock
           id="sec-overview"
           icon={BookOpen}
@@ -172,29 +172,29 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
                   <StaggerItem key={block.title || block.text}>
                     <TiltCard className="h-full">
                       <div
-                        className={`card-glow group relative h-full overflow-hidden rounded-3xl p-9 shadow-card transition-shadow duration-300 md:p-11 ${
+                        className={`card-glow group relative h-full overflow-hidden rounded-[28px] p-9 shadow-card transition-shadow duration-300 md:p-11 ${
                           dark
-                            ? "bg-grain bg-gradient-to-br from-navy-950 via-brand-900 to-brand-700 text-white shadow-glow"
-                            : "border border-border bg-white text-navy-900"
+                            ? "bg-[#202B33] text-white"
+                            : "border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] text-[#202B33]"
                         }`}
                       >
                         {dark ? (
                           <>
-                            <div className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-pride-pink/20 blur-3xl" />
-                            <div className="pointer-events-none absolute -bottom-16 -left-6 h-52 w-52 rounded-full bg-teal-500/20 blur-3xl" />
+                            <div className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-[#FF6F91]/[0.16] blur-3xl" />
+                            <div className="pointer-events-none absolute -bottom-16 -left-6 h-52 w-52 rounded-full bg-[#83D8B6]/[0.14] blur-3xl" />
                           </>
                         ) : (
-                          <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-brand-50/70 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                          <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#FFF0F4]/80 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                         )}
                         <div className="relative">
                           <span
-                            className={`mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${block.gradient} text-white shadow-glow`}
+                            className={`mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${block.gradient} text-white shadow-[0_10px_24px_rgba(255,97,127,0.18)]`}
                           >
                             <block.icon className="h-6 w-6" />
                           </span>
                           {block.title && (
                             <h3
-                              className={`text-display-lg font-serif font-medium tracking-tight ${dark ? "text-white" : "text-navy-900"}`}
+                              className={`text-display-lg font-serif font-medium tracking-tight ${dark ? "text-white" : "text-[#202B33]"}`}
                             >
                               {block.title}
                             </h3>
@@ -219,14 +219,14 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
             {valuesTitle && (
               <Reveal className="mb-12 flex flex-col items-center gap-4 text-center">
                 <div className="flex items-center gap-3">
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-600 to-accent text-white shadow-glow">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-white shadow-[0_10px_24px_rgba(255,97,127,0.22)]">
                     <Sparkles className="h-5 w-5" />
                   </span>
-                  <h2 className="text-display-xl font-serif font-medium tracking-tight text-navy-900">
+                  <h2 className="text-display-xl font-serif font-medium tracking-tight text-[#202B33]">
                     {valuesTitle}
                   </h2>
                 </div>
-                <span className="block h-[3px] w-20 rounded-full bg-pride-flag" />
+                <span className="living-spectrum-line" />
               </Reveal>
             )}
             <StaggerContainer className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -235,16 +235,16 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
                 return (
                   <StaggerItem key={i}>
                     <TiltCard className="h-full">
-                      <div className="card-glow group relative h-full overflow-hidden rounded-3xl border border-border bg-white p-7 shadow-card transition-shadow duration-300">
+                      <div className={`card-glow group relative h-full overflow-hidden rounded-[28px] border border-[rgba(32,43,51,0.07)] p-7 shadow-card transition-shadow duration-300 ${accent.tint}`}>
                         <span
-                          className={`absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r ${accent} opacity-70 transition-opacity duration-300 group-hover:opacity-100`}
+                          className={`absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r ${accent.bar} opacity-70 transition-opacity duration-300 group-hover:opacity-100`}
                         />
                         <span
-                          className={`font-serif text-5xl font-medium tracking-tight bg-gradient-to-br ${accent} bg-clip-text text-transparent`}
+                          className={`bg-gradient-to-br ${accent.bar} bg-clip-text font-serif text-5xl font-medium tracking-tight text-transparent`}
                         >
                           {String(i + 1).padStart(2, "0")}
                         </span>
-                        <h3 className="mt-3 font-bold text-navy-900">{value.left}</h3>
+                        <h3 className="mt-3 font-bold text-[#202B33]">{value.left}</h3>
                         {value.right && (
                           <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
                             {value.right}
@@ -274,18 +274,18 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           <Reveal>
             <section
               id="sec-extra"
-              className="cta-gradient-shift bg-grain relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-navy-900 via-brand-800 to-brand-600 p-10 text-white shadow-glow md:p-14"
+              className="donate-spectrum-wash bg-grain relative overflow-hidden rounded-[2rem] border border-[rgba(32,43,51,0.07)] p-10 text-[#202B33] shadow-card md:p-14"
             >
-              <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-pride-pink/20 blur-3xl" />
-              <div className="pointer-events-none absolute -bottom-20 -left-10 h-72 w-72 rounded-full bg-brand-400/20 blur-3xl" />
-              <div className="pointer-events-none absolute bottom-0 right-1/4 h-56 w-56 rounded-full bg-pride-yellow/10 blur-3xl" />
+              <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-[#FF6F91]/[0.12] blur-3xl" />
+              <div className="pointer-events-none absolute -bottom-20 -left-10 h-72 w-72 rounded-full bg-[#83D8B6]/[0.12] blur-3xl" />
+              <div className="pointer-events-none absolute bottom-0 right-1/4 h-56 w-56 rounded-full bg-[#FFD66B]/[0.10] blur-3xl" />
               <div className="relative">
                 {extraTitle && (
                   <h2 className="text-display-xl font-serif font-medium tracking-tight">
                     {extraTitle}
                   </h2>
                 )}
-                <p className="mt-4 max-w-3xl whitespace-pre-line leading-relaxed text-white/80 md:text-lg">
+                <p className="mt-4 max-w-3xl whitespace-pre-line leading-relaxed text-[#667078] md:text-lg">
                   {extraText}
                 </p>
               </div>

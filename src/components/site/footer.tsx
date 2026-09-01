@@ -22,12 +22,12 @@ const SOCIAL_ICONS: Record<string, typeof Facebook> = {
 // accent, so the row itself reads as a small rainbow the way the pride
 // stripe does — a detail rather than a loud effect.
 const SOCIAL_HOVER_BG = [
-  "hover:bg-pride-pink",
-  "hover:bg-pride-orange",
-  "hover:bg-pride-yellow",
-  "hover:bg-teal-500",
-  "hover:bg-pride-blue",
-  "hover:bg-pride-violet",
+  "hover:bg-[#FF716D]",
+  "hover:bg-[#FF9B69]",
+  "hover:bg-[#FFD66B]",
+  "hover:bg-[#83D8B6]",
+  "hover:bg-[#83CDED]",
+  "hover:bg-[#A995E8]",
 ];
 
 export function SiteFooter({
@@ -68,15 +68,12 @@ export function SiteFooter({
     1 + Number(showExplore) + Number(showInvolved) + Number(showNewsletter);
 
   return (
-    <footer id="sec-footer" className="relative bg-charcoal-950 text-white/90">
-      {/* Brand gradient rule */}
-      <PrideStripe className="h-1.5" />
-      {/* Rainbow glow blooms — echoes the hero/PageHero treatment, kept soft
-          so the footer stays calm and readable rather than a solid block. */}
-      <div className="pointer-events-none absolute -top-24 left-1/4 h-64 w-64 rounded-full bg-lavender-300/25 blur-3xl" />
-      <div className="pointer-events-none absolute -top-16 right-[8%] h-56 w-56 rounded-full bg-blush-300/25 blur-3xl" />
-      <div className="pointer-events-none absolute bottom-0 left-[6%] h-64 w-64 rounded-full bg-peach-200/20 blur-3xl" />
-      <div className="pointer-events-none absolute bottom-0 right-1/4 h-56 w-56 rounded-full bg-mint-300/20 blur-3xl" />
+    <footer id="sec-footer" className="relative z-[1] bg-[#202B33] text-[#F8F5F2]/90">
+      <PrideStripe className="h-[2px] opacity-70" />
+      <div className="pointer-events-none absolute -top-24 left-1/4 h-64 w-64 rounded-full bg-[#A995E8]/[0.12] blur-3xl" />
+      <div className="pointer-events-none absolute -top-16 right-[8%] h-56 w-56 rounded-full bg-[#FF6F91]/[0.10] blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 left-[6%] h-64 w-64 rounded-full bg-[#FFD66B]/[0.08] blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 right-1/4 h-56 w-56 rounded-full bg-[#83D8B6]/[0.10] blur-3xl" />
 
       <div
         className={`mx-auto w-full max-w-[1400px] px-4 md:px-6 relative grid gap-10 py-16 md:grid-cols-2 ${
@@ -91,7 +88,7 @@ export function SiteFooter({
             ) : (
               <>
                 {logoLetter && (
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-spectrum text-lg font-bold shadow-lg shadow-accent/20">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-lg font-bold shadow-[0_10px_24px_rgba(255,97,127,0.22)]">
                     {logoLetter}
                   </span>
                 )}
@@ -112,7 +109,7 @@ export function SiteFooter({
             <ul className="space-y-3 text-sm text-white/75">
               {address && (
                 <li className="flex items-start gap-2.5">
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#FF8A72]" />
                   <span className="whitespace-pre-line">{address}</span>
                 </li>
               )}
@@ -122,7 +119,7 @@ export function SiteFooter({
                     href={`tel:${phone.replace(/\s/g, "")}`}
                     className="flex items-center gap-2.5 transition-colors hover:text-white"
                   >
-                    <Phone className="h-4 w-4 shrink-0 text-accent" /> {phone}
+                    <Phone className="h-4 w-4 shrink-0 text-[#FF8A72]" /> {phone}
                   </a>
                 </li>
               ))}
@@ -132,7 +129,7 @@ export function SiteFooter({
                     href={`mailto:${email}`}
                     className="flex items-center gap-2.5 transition-colors hover:text-white"
                   >
-                    <Mail className="h-4 w-4 shrink-0 text-accent" /> {email}
+                    <Mail className="h-4 w-4 shrink-0 text-[#FF6F91]" /> {email}
                   </a>
                 </li>
               ))}
@@ -178,10 +175,10 @@ export function SiteFooter({
               {nav.explore.map((l) => (
                 <li key={l.href}>
                   <Link
-                    className="inline-flex items-center gap-2 transition-colors hover:text-accent"
+                    className="inline-flex items-center gap-2 transition-colors hover:text-[#FF6F91]"
                     href={`/${locale}${l.href}`}
                   >
-                    <span className="h-px w-3 bg-spectrum" />
+                    <span className="h-px w-3 rounded-full bg-[#FF6F91]/70" />
                     {l.label}
                   </Link>
                 </li>
@@ -199,10 +196,10 @@ export function SiteFooter({
               {nav.involved.map((l) => (
                 <li key={l.href}>
                   <Link
-                    className="inline-flex items-center gap-2 transition-colors hover:text-accent"
+                    className="inline-flex items-center gap-2 transition-colors hover:text-[#FF6F91]"
                     href={`/${locale}${l.href}`}
                   >
-                    <span className="h-px w-3 bg-spectrum" />
+                    <span className="h-px w-3 rounded-full bg-[#FF6F91]/70" />
                     {l.label}
                   </Link>
                 </li>
@@ -230,7 +227,7 @@ export function SiteFooter({
             {copyright && (
               <p className="flex flex-wrap items-center justify-center gap-1.5">
                 © {year} {copyright}
-                <Heart className="h-3 w-3 fill-destructive text-destructive" />
+                <Heart className="h-3 w-3 fill-[#FF6F91] text-[#FF6F91]" />
               </p>
             )}
             {credit && <p>{credit}</p>}

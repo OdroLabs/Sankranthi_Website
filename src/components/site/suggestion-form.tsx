@@ -38,7 +38,7 @@ export function SuggestionForm({
   return (
     <>
       <div className="mb-7 flex items-center gap-3">
-        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-600 to-accent text-white shadow-glow">
+        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-white shadow-[0_10px_24px_rgba(255,97,127,0.22)]">
           <MessageSquare className="h-5 w-5" />
         </span>
         <h2 className="text-display-lg font-extrabold tracking-tight text-navy-900">
@@ -84,7 +84,7 @@ export function SuggestionForm({
         <Button
           type="submit"
           size="lg"
-          className="rounded-full bg-spectrum px-8 font-bold text-white shadow-lg shadow-brand-600/25 transition-transform duration-300 hover:-translate-y-0.5"
+          className="rounded-full bg-gradient-to-br from-[#FF617F] to-[#FF846F] px-8 font-bold text-white shadow-[0_10px_28px_rgba(255,97,127,0.22)] transition-transform duration-300 hover:-translate-y-0.5"
         >
           {dict.common.submit}
         </Button>

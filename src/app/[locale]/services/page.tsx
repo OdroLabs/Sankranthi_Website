@@ -18,46 +18,44 @@ import { cn } from "@/lib/utils";
  */
 const ACCENTS = [
   {
-    bar: "bg-gradient-to-r from-brand-500 to-brand-300",
-    icon: "bg-gradient-to-br from-brand-50 to-brand-100 ring-1 ring-brand-200/70",
-    glow: "bg-brand-500/10",
-    ring: "hover:ring-brand-300/50",
-    link: "text-brand-700",
+    bar: "bg-gradient-to-r from-[#FF6F91] to-[#FF716D]",
+    icon: "bg-[#FFF0F4] ring-1 ring-[rgba(32,43,51,0.07)]",
+    glow: "bg-[#FF6F91]/10",
+    tint: "bg-[#FFF0F4]",
+    ring: "hover:border-[rgba(255,111,145,0.25)]",
+    link: "text-[#FF6F91]",
   },
   {
-    bar: "bg-gradient-to-r from-pride-blue to-brand-400",
-    icon: "bg-gradient-to-br from-blue-50 to-indigo-100 ring-1 ring-pride-blue/25",
-    glow: "bg-pride-blue/10",
-    ring: "hover:ring-pride-blue/30",
-    link: "text-navy-800",
+    bar: "bg-gradient-to-r from-[#83D8B6] to-[#83CDED]",
+    icon: "bg-[#EFF9F4] ring-1 ring-[rgba(32,43,51,0.07)]",
+    glow: "bg-[#83D8B6]/12",
+    tint: "bg-[#EFF9F4]",
+    ring: "hover:border-[rgba(131,216,182,0.35)]",
+    link: "text-[#3A9A78]",
   },
   {
-    bar: "bg-gradient-to-r from-teal-500 to-brand-300",
-    icon: "bg-gradient-to-br from-teal-50 to-teal-100 ring-1 ring-teal-200/70",
-    glow: "bg-teal-500/10",
-    ring: "hover:ring-teal-300/50",
-    link: "text-teal-700",
+    bar: "bg-gradient-to-r from-[#FF9B69] to-[#FFD66B]",
+    icon: "bg-[#FFF8DD] ring-1 ring-[rgba(32,43,51,0.07)]",
+    glow: "bg-[#FFD66B]/20",
+    tint: "bg-[#FFF8DD]",
+    ring: "hover:border-[rgba(255,155,105,0.28)]",
+    link: "text-[#C96A3A]",
   },
   {
-    bar: "bg-gradient-to-r from-pride-pink to-pride-violet",
-    icon: "bg-gradient-to-br from-pink-50 to-rose-100 ring-1 ring-pride-pink/40",
-    glow: "bg-pride-pink/15",
-    ring: "hover:ring-pride-pink/40",
-    link: "text-pride-violet",
+    bar: "bg-gradient-to-r from-[#A995E8] to-[#83CDED]",
+    icon: "bg-[#F5F1FF] ring-1 ring-[rgba(32,43,51,0.07)]",
+    glow: "bg-[#A995E8]/12",
+    tint: "bg-[#F5F1FF]",
+    ring: "hover:border-[rgba(169,149,232,0.28)]",
+    link: "text-[#6D4A7D]",
   },
   {
-    bar: "bg-gradient-to-r from-pride-orange to-pride-yellow",
-    icon: "bg-gradient-to-br from-orange-50 to-amber-100 ring-1 ring-pride-orange/30",
-    glow: "bg-pride-orange/10",
-    ring: "hover:ring-pride-orange/40",
-    link: "text-orange-700",
-  },
-  {
-    bar: "bg-gradient-to-r from-pride-green to-teal-400",
-    icon: "bg-gradient-to-br from-green-50 to-emerald-100 ring-1 ring-pride-green/25",
-    glow: "bg-pride-green/10",
-    ring: "hover:ring-pride-green/40",
-    link: "text-pride-green",
+    bar: "bg-gradient-to-r from-[#FF716D] to-[#FF9B69]",
+    icon: "bg-[#FFF3ED] ring-1 ring-[rgba(32,43,51,0.07)]",
+    glow: "bg-[#FF716D]/10",
+    tint: "bg-[#FFF3ED]",
+    ring: "hover:border-[rgba(255,113,109,0.25)]",
+    link: "text-[#C94F72]",
   },
 ] as const;
 
@@ -76,7 +74,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         intro={s(settings, "services_hero_intro", locale)}
         image={s(settings, "services_hero_image") || undefined}
       />
-      <section className="relative overflow-hidden py-16 md:py-24">
+      <section className="surface-peach relative overflow-hidden py-16 md:py-24">
         <div className="pointer-events-none absolute inset-0 bg-grid-fade opacity-[0.15]" />
         <div className="relative mx-auto w-full max-w-[1400px] px-4 md:px-6">
           <StaggerContainer className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -88,7 +86,8 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                     <Link
                       href={`/${locale}/services/${service.slug ?? service.id}`}
                       className={cn(
-                        "group relative flex h-full flex-col overflow-hidden rounded-[24px] border border-border bg-white shadow-card ring-1 ring-transparent transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover",
+                        "group relative flex h-full flex-col overflow-hidden rounded-[28px] border border-[rgba(32,43,51,0.07)] shadow-card ring-1 ring-transparent transition-all duration-300 hover:-translate-y-[5px] hover:shadow-card-hover",
+                        accent.tint,
                         accent.ring
                       )}
                     >
@@ -121,7 +120,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                             {service.icon}
                           </span>
                         )}
-                        <h2 className="mb-2.5 font-serif text-xl font-medium leading-snug text-navy-900 transition-colors group-hover:text-primary">
+                        <h2 className="mb-2.5 font-serif text-xl font-medium leading-snug text-[#202B33] transition-colors group-hover:text-[#C94F72]">
                           {loc(service, "title", locale)}
                         </h2>
                         <p className="mb-6 line-clamp-4 text-sm leading-relaxed text-muted-foreground">

@@ -94,8 +94,8 @@ export default async function ProjectDetailPage({
             />
           </>
         )}
-        <div className="absolute inset-0 bg-gradient-to-br from-navy-950 via-brand-900/90 to-navy-800/85" />
-        <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-pride-pink/15 blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#202B33] via-[#2A353C]/90 to-[#202B33]/85" />
+        <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[#FF6F91]/[0.10] blur-3xl" />
         <div className="pointer-events-none absolute -bottom-32 left-1/4 h-72 w-72 rounded-full bg-brand-500/20 blur-3xl" />
 
         <div className="relative mx-auto w-full max-w-[1400px] px-4 pb-16 pt-12 md:px-6 md:pb-24 md:pt-16">
@@ -129,7 +129,7 @@ export default async function ProjectDetailPage({
             <h1 className="text-display-hero max-w-3xl font-serif font-medium tracking-tight">
               {title}
             </h1>
-            <span className="mt-7 block h-[3px] w-20 rounded-full bg-pride-flag" />
+            <span className="mt-7 block living-spectrum-line" />
           </Reveal>
         </div>
       </section>
@@ -231,8 +231,8 @@ export default async function ProjectDetailPage({
 
           {/* Donate card — hidden when the donate CTA text is cleared in the admin */}
           {(donateTitle || donateText) && (
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-navy-950 via-brand-900 to-brand-700 p-7 text-white shadow-glow">
-              <span className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-pride-pink/20 blur-2xl" />
+            <div className="relative overflow-hidden rounded-2xl bg-[#202B33] p-7 text-[#F8F5F2] shadow-card">
+              <span className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-[#FF6F91]/[0.14] blur-2xl" />
               {donateTitle && (
                 <h3 className="relative text-xl font-extrabold leading-tight">{donateTitle}</h3>
               )}

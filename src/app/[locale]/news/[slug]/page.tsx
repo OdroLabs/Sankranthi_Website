@@ -56,9 +56,9 @@ export default async function NewsDetailPage({
             <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/70 to-navy-950/30" />
           </>
         )}
-        <div className="absolute inset-0 bg-gradient-to-br from-navy-950 via-brand-900/70 to-navy-800/60" />
-        <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-pride-pink/15 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-32 left-1/4 h-72 w-72 rounded-full bg-pride-sky/10 blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#202B33] via-[#2A353C]/75 to-[#202B33]/90" />
+        <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[#FF6F91]/[0.10] blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-32 left-1/4 h-72 w-72 rounded-full bg-[#83D8B6]/[0.10] blur-3xl" />
 
         <div className="container relative">
           <nav className="mb-8 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm backdrop-blur">
@@ -92,7 +92,7 @@ export default async function NewsDetailPage({
           {/* Key points box */}
           {highlights.length > 0 && (
             <div className="mb-10 rounded-3xl border border-brand-500/20 bg-brand-500/[0.04] p-7">
-              <h3 className="mb-4 bg-spectrum bg-clip-text text-sm font-extrabold uppercase tracking-wider text-transparent">
+              <h3 className="mb-4 text-sm font-extrabold uppercase tracking-wider text-[#C94F72]">
                 {dict.common.keyPoints}
               </h3>
               <ul className="grid gap-3 sm:grid-cols-2">
@@ -113,14 +113,14 @@ export default async function NewsDetailPage({
           {/* Optional pull quote, kept as its own field so it can be styled
               differently from a quote typed inside the editor. */}
           {quoteText && (
-            <blockquote className="relative my-10 overflow-hidden rounded-3xl bg-gradient-to-br from-navy-950 via-brand-900 to-navy-900 p-8 text-white shadow-glow md:p-10">
+            <blockquote className="relative my-10 overflow-hidden rounded-3xl bg-[#202B33] p-8 text-[#F8F5F2] shadow-card md:p-10">
               <Quote className="absolute right-6 top-6 h-9 w-9 text-white/15" />
               <p className="max-w-2xl text-xl font-semibold leading-relaxed md:text-2xl">
                 “{quoteText}”
               </p>
               {quoteAuthor && (
                 <footer className="mt-5 flex items-center gap-3 text-sm text-white/70">
-                  <span className="block h-0.5 w-8 bg-spectrum" /> {quoteAuthor}
+                  <span className="block h-0.5 w-8 rounded-full bg-[#FF6F91]" /> {quoteAuthor}
                 </footer>
               )}
             </blockquote>

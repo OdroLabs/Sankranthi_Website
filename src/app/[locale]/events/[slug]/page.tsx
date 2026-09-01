@@ -76,8 +76,8 @@ export default async function EventDetailPage({
             <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/70 to-navy-950/30" />
           </>
         )}
-        <div className="absolute inset-0 bg-gradient-to-br from-navy-950 via-brand-900/70 to-navy-900" />
-        <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-pride-pink/20 blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#202B33] via-[#2A353C]/80 to-[#202B33]" />
+        <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[#FF6F91]/[0.12] blur-3xl" />
         <div className="pointer-events-none absolute -bottom-32 left-1/4 h-72 w-72 rounded-full bg-brand-500/20 blur-3xl" />
 
         <div className="relative mx-auto w-full max-w-[1400px] px-4 md:px-6">
@@ -91,7 +91,7 @@ export default async function EventDetailPage({
             </Link>
           </nav>
           <div className="mb-5 flex flex-wrap items-center gap-3">
-            <span className="inline-flex items-center rounded-full bg-spectrum px-3.5 py-1 text-xs font-bold uppercase tracking-wide text-white">
+            <span className="inline-flex items-center rounded-full bg-gradient-to-r from-[#FF617F] to-[#FF846F] px-3.5 py-1 text-xs font-bold uppercase tracking-wide text-white">
               {isPast ? dict.common.past : dict.common.upcoming}
             </span>
             <span className="flex items-center gap-1.5 text-sm text-white/70">
@@ -106,7 +106,7 @@ export default async function EventDetailPage({
           <h1 className="max-w-3xl font-serif text-4xl font-medium leading-[1.05] tracking-tight md:text-6xl">
             {title}
           </h1>
-          <span className="mt-7 block h-[3px] w-20 rounded-full bg-pride-flag" />
+          <span className="mt-7 block living-spectrum-line" />
         </div>
       </section>
 
@@ -184,7 +184,7 @@ export default async function EventDetailPage({
         <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
           {/* Event facts */}
           <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-card p-6 shadow-card">
-            <span className="absolute inset-x-0 top-0 h-[3px] bg-spectrum" />
+            <span className="absolute inset-x-0 top-0 h-[2px] bg-living-spectrum opacity-70" />
             <h3 className="mb-4 font-serif text-lg font-medium">{dict.nav.events}</h3>
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3">

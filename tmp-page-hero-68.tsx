@@ -23,6 +23,7 @@ export function PageHero({
   if (!title && !intro && !eyebrow) return null;
 
   const isNelume = theme === "nelume";
+  const blendColor = isNelume ? "#EFEAE6" : "#FFF9F5";
 
   return (
     <section
@@ -82,7 +83,7 @@ export function PageHero({
         </>
       )}
 
-      <div className="relative mx-auto w-full max-w-[1400px] px-4 pb-20 pt-16 md:px-6 md:pb-28 md:pt-20">
+      <div className="relative mx-auto w-full max-w-[1400px] px-4 pb-10 pt-14 md:px-6 md:pb-12 md:pt-16">
         {eyebrow && (
           <p
             data-hero
@@ -117,7 +118,28 @@ export function PageHero({
         />
       </div>
 
-      <Curve className={`absolute inset-x-0 -bottom-px ${isNelume ? "text-[#EFEAE6]" : "text-[#FFFDF9]"}`} />
+      {/* Dissolve the header into the page so there is no bright empty band */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-16 md:h-20"
+        style={{
+          background: `linear-gradient(to bottom, transparent 0%, ${blendColor} 88%)`,
+        }}
+      />
+      <Curve
+        variant="arc"
+        className="absolute inset-x-0 -bottom-px h-5 text-[#FFF9F5] md:h-8"
+        style={undefined}
+      />
+      {/* Keep nelume curve matching its sand base */}
+      {isNelume ? (
+        <Curve
+          variant="arc"
+          className="absolute inset-x-0 -bottom-px h-5 text-[#EFEAE6] md:h-8"
+        />
+      ) : (
+        <Curve variant="arc" className="absolute inset-x-0 -bottom-px h-5 text-[#FFF9F5] md:h-8" />
+      )}
     </section>
   );
 }

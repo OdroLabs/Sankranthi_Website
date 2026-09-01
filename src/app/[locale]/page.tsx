@@ -16,7 +16,6 @@ import { formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { TestimonialsPanel } from "@/components/site/testimonials-panel";
-import { Curve } from "@/components/site/curve";
 import { HomeHero } from "@/components/site/home-hero";
 import { ServiceCard } from "@/components/site/service-card";
 import { TiltCard } from "@/components/site/tilt-card";
@@ -26,10 +25,10 @@ function SectionTag({ children, light }: { children: React.ReactNode; light?: bo
   return (
     <p
       className={`flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] ${
-        light ? "text-accent" : "text-primary"
+        light ? "text-[#C94F72]" : "text-[#C94F72]"
       }`}
     >
-      <span className={`block h-0.5 w-8 rounded-full ${light ? "bg-accent" : "bg-primary"}`} />
+      <span className={`block h-0.5 w-8 rounded-full ${light ? "bg-[#FF6F91]" : "bg-[#FF6F91]"}`} />
       {children}
     </p>
   );
@@ -211,7 +210,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Who we are                                                          */}
       {/* ------------------------------------------------------------------ */}
       {showAbout && (
-        <section id="sec-about" className="mx-auto w-full max-w-[1400px] px-4 md:px-6 py-14 md:py-20">
+        <section id="sec-about" className="surface-ivory relative py-14 md:py-20">
+          <div className="pointer-events-none absolute inset-x-0 -top-16 h-24 bg-gradient-to-b from-[#FFF9F5] to-transparent" />
+          <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6">
           <div
             className={`grid items-center gap-12 lg:gap-20 ${
               aboutImage ? "lg:grid-cols-[0.92fr_1.08fr]" : ""
@@ -240,7 +241,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                   className="group mt-4 px-0 font-bold"
                 >
                   <Link href={`/${locale}/about`}>
-                    <span className="border-b-2 border-transparent transition-colors group-hover:border-primary">
+                    <span className="border-b-2 border-transparent transition-colors group-hover:border-[#FF6F91]">
                       {aboutLinkLabel}
                     </span>
                     <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -251,7 +252,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
 
             {aboutImage && (
               <div className="relative">
-                <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-brand-100 via-transparent to-accent/10" />
+                <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-[#FFF0F4] via-transparent to-[#EFF9F4]/80" />
                 {/* Plain CSS/GSAP reveal, not the Framer ImageReveal/Parallax
                     pair — that combination is unreliable for two-column CMS
                     photos like this one (see the same note on the About
@@ -272,7 +273,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                       delay={0.5}
                       className="glass-light absolute bottom-4 left-4 right-4 flex items-center gap-3 rounded-2xl px-5 py-4"
                     >
-                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-brand-600 to-accent text-white">
+                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-white">
                         <Sparkles className="h-5 w-5" />
                       </span>
                       <p className="text-sm font-bold text-charcoal-900">{aboutCaption}</p>
@@ -282,6 +283,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
               </div>
             )}
           </div>
+          </div>
         </section>
       )}
 
@@ -289,9 +291,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Impact stats — rainbow band with curves                             */}
       {/* ------------------------------------------------------------------ */}
       {showStats && (
-        <section id="sec-stats">
-          <Curve variant="arc" className="-mb-px text-lavender-200" />
-          <div className="cta-gradient-shift relative overflow-hidden bg-gradient-to-br from-blush-300 via-lavender-200 to-sky-200 py-16 text-charcoal-900 md:py-24">
+        <section id="sec-stats" className="relative">
+          <div className="pointer-events-none absolute inset-x-0 -top-10 h-16 bg-gradient-to-b from-[#FFFDF9] to-transparent" />
+          <div className="surface-mint relative overflow-hidden py-16 text-charcoal-900 md:py-24">
             {statsImage && (
               <div className="absolute inset-0 overflow-hidden">
                 <div
@@ -300,40 +302,37 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 />
               </div>
             )}
-            <div className="pointer-events-none absolute right-0 top-0 h-72 w-72 rounded-full bg-peach-200/60 blur-3xl" />
-            <div className="pointer-events-none absolute -left-10 bottom-0 h-64 w-64 rounded-full bg-mint-300/60 blur-3xl" />
-            <div className="pointer-events-none absolute left-1/3 top-1/4 h-56 w-56 rounded-full bg-blush-300/40 blur-3xl" />
-            <div className="pointer-events-none absolute right-1/4 bottom-1/4 h-52 w-52 rounded-full bg-lavender-300/40 blur-3xl" />
+            <div className="pointer-events-none absolute right-0 top-0 h-72 w-72 rounded-full bg-[#83D8B6]/[0.14] blur-3xl" />
+            <div className="pointer-events-none absolute -left-10 bottom-0 h-64 w-64 rounded-full bg-[#FFD66B]/[0.10] blur-3xl" />
 
             <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative">
               {(statsTitle || s(settings, "home_stats_eyebrow", locale)) && (
                 <Reveal className="mx-auto mb-12 max-w-2xl space-y-3 text-center">
                   {s(settings, "home_stats_eyebrow", locale) && (
-                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#C94F72]">
                       {s(settings, "home_stats_eyebrow", locale)}
                     </p>
                   )}
                   {statsTitle && (
                     <h2 className="text-display-xl font-serif font-medium tracking-tight text-charcoal-900">{statsTitle}</h2>
                   )}
-                  <span className="mx-auto block h-1 w-16 rounded-full bg-gradient-to-r from-accent to-primary" />
+                  <span className="living-spectrum-line mx-auto" />
                 </Reveal>
               )}
               <StaggerContainer className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
                 {stats.map((stat) => (
                   <StaggerItem key={stat.id}>
-                    <div className="card-glow glass-pastel group h-full rounded-3xl p-7 text-center shadow-card transition-all duration-300 hover:-translate-y-1.5">
+                    <div className="card-glow group h-full rounded-[28px] border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] p-7 text-center shadow-card transition-all duration-300 hover:-translate-y-[5px]">
                       <p className="font-number text-3xl font-extrabold text-gradient md:text-4xl">
                         <CountUp value={stat.value} />
                       </p>
-                      <p className="mt-2.5 text-sm text-charcoal-700/80">{loc(stat, "label", locale)}</p>
+                      <p className="mt-2.5 text-sm text-[#667078]">{loc(stat, "label", locale)}</p>
                     </div>
                   </StaggerItem>
                 ))}
               </StaggerContainer>
             </div>
           </div>
-          <Curve variant="arc" flip className="-mt-px text-lavender-200" />
         </section>
       )}
 
@@ -341,9 +340,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Services                                                            */}
       {/* ------------------------------------------------------------------ */}
       {showServices && (
-        <section id="sec-services" className="relative overflow-hidden py-16 md:py-24">
-          <div className="pointer-events-none absolute -right-40 top-24 h-80 w-80 rounded-full bg-brand-100/50 blur-3xl" />
-          <div className="pointer-events-none absolute -left-32 bottom-10 h-64 w-64 rounded-full bg-pride-yellow/10 blur-3xl" />
+        <section id="sec-services" className="surface-peach relative overflow-hidden py-16 md:py-24">
+          <div className="pointer-events-none absolute inset-x-0 -top-10 h-16 bg-gradient-to-b from-[#EFF9F4] to-transparent" />
+          <div className="pointer-events-none absolute -right-40 top-24 h-80 w-80 rounded-full bg-[#FF9B69]/[0.10] blur-3xl" />
+          <div className="pointer-events-none absolute -left-32 bottom-10 h-64 w-64 rounded-full bg-[#FFD66B]/[0.10] blur-3xl" />
           <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative">
             {(servicesTitle || servicesText || s(settings, "home_services_eyebrow", locale)) && (
               <Reveal className="mb-14 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -393,8 +393,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Featured projects                                                   */}
       {/* ------------------------------------------------------------------ */}
       {showProjects && (
-        <section id="sec-projects" className="relative overflow-hidden bg-muted/60 py-16 md:py-24">
-          <div className="pointer-events-none absolute -left-32 top-0 h-72 w-72 rounded-full bg-brand-100/60 blur-3xl" />
+        <section id="sec-projects" className="surface-ivory relative overflow-hidden py-16 md:py-24">
+          <div className="pointer-events-none absolute inset-x-0 -top-10 h-16 bg-gradient-to-b from-[#FFF3ED] to-transparent" />
+          <div className="pointer-events-none absolute -left-32 top-0 h-72 w-72 rounded-full bg-[#A995E8]/[0.08] blur-3xl" />
           <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative">
             {(projectsTitle || projectsText || s(settings, "home_projects_eyebrow", locale)) && (
               <Reveal className="mb-12 max-w-3xl space-y-3">
@@ -418,7 +419,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 <Link
                   key={project.id}
                   href={`/${locale}/projects/${project.slug ?? project.id}`}
-                  className={`group flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover ${
+                  className={`group flex h-full flex-col overflow-hidden rounded-[28px] border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] shadow-card transition-all duration-300 hover:-translate-y-[5px] hover:border-[rgba(255,111,145,0.25)] hover:shadow-card-hover ${
                     big ? "lg:flex-row" : ""
                   }`}
                 >
@@ -432,7 +433,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                         className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110"
                         style={{ backgroundImage: `url(${project.image})` }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-brand-950/60 via-brand-950/10 to-transparent transition-opacity duration-300 group-hover:opacity-80" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#202B33]/55 via-[#202B33]/10 to-transparent transition-opacity duration-300 group-hover:opacity-80" />
                       <Badge className="glass-light absolute left-4 top-4 rounded-full border-0 font-semibold capitalize text-charcoal-900 shadow-sm hover:bg-white/80">
                         {(dict.common as any)[project.status] ?? project.status}
                       </Badge>
@@ -442,7 +443,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     className={`flex flex-1 flex-col gap-2 p-6 ${big ? "lg:justify-center lg:p-10" : ""}`}
                   >
                     <h3
-                      className={`font-bold leading-snug text-charcoal-900 transition-colors group-hover:text-primary ${
+                      className={`font-bold leading-snug text-charcoal-900 transition-colors group-hover:text-[#C94F72] ${
                         big ? "text-xl md:text-2xl" : ""
                       }`}
                     >
@@ -455,7 +456,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     >
                       {loc(project, "description", locale)}
                     </p>
-                    <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-bold text-primary">
+                    <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-bold text-[#C94F72]">
                       {dict.common.readMore}
                       <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
                     </span>
@@ -501,10 +502,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Get in touch — warm supportive band                                 */}
       {/* ------------------------------------------------------------------ */}
       {showContact && (
-        <section id="sec-contact">
-          <Curve variant="tilt" className={`-mb-px text-peach-100 ${showProjects ? "bg-muted/60" : ""}`} />
-          <div className="cta-gradient-shift relative overflow-hidden bg-gradient-to-br from-peach-100 via-blush-200 to-lavender-100 py-16 text-charcoal-900 md:py-24">
-            {contactImage && (
+        <section id="sec-contact" className="surface-blush relative overflow-hidden py-16 text-charcoal-900 md:py-24">
+          <div className="pointer-events-none absolute inset-x-0 -top-10 h-16 bg-gradient-to-b from-[#FFFDF9] to-transparent" />
+          {contactImage && (
               <div className="absolute inset-0 overflow-hidden">
                 <div
                   className="absolute -inset-y-[14%] inset-x-0 scale-110 bg-cover bg-center opacity-[0.08]"
@@ -512,13 +512,15 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 />
               </div>
             )}
+            <div className="pointer-events-none absolute -right-16 top-8 h-64 w-64 rounded-full bg-[#FF6F91]/[0.08] blur-3xl" />
+            <div className="pointer-events-none absolute -left-10 bottom-0 h-56 w-56 rounded-full bg-[#FF9B69]/[0.10] blur-3xl" />
 
             <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr]">
               <Reveal direction="scale">
-                <TiltCard className="relative mx-auto w-full max-w-sm overflow-hidden rounded-3xl bg-gradient-to-br from-blush-300 to-peach-200 p-10 text-center text-charcoal-900 shadow-pastel ring-1 ring-white/60">
-                  <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-white/30 blur-2xl" />
-                  <span className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-full bg-white/50 ring-2 ring-white/70">
-                    <PhoneCall className="h-6 w-6" />
+                <TiltCard className="relative mx-auto w-full max-w-sm overflow-hidden rounded-[28px] border border-[rgba(32,43,51,0.07)] bg-[#FFF3ED] p-10 text-center text-charcoal-900 shadow-card">
+                  <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#FF6F91]/[0.10] blur-2xl" />
+                  <span className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-full bg-white/70 ring-1 ring-[rgba(32,43,51,0.07)]">
+                    <PhoneCall className="h-6 w-6 text-[#C94F72]" />
                   </span>
                   {contactCardTitle && (
                     <h3 className="text-2xl font-extrabold">{contactCardTitle}</h3>
@@ -545,7 +547,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
               </Reveal>
               <Reveal delay={0.15}>
                 {s(settings, "home_contact_eyebrow", locale) && (
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#C94F72]">
                     {s(settings, "home_contact_eyebrow", locale)}
                   </p>
                 )}
@@ -555,8 +557,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                   </h2>
                 )}
                 <span className="mt-4 flex gap-1.5">
-                  <span className="block h-1 w-8 rounded-full bg-accent" />
-                  <span className="block h-1 w-4 rounded-full bg-accent/50" />
+                  <span className="block h-1 w-8 rounded-full bg-[#FF6F91]" />
+                  <span className="block h-1 w-4 rounded-full bg-[#FF6F91]/40" />
                 </span>
                 {contactText && (
                   <p className="mt-6 max-w-xl whitespace-pre-line leading-relaxed text-charcoal-700">
@@ -567,7 +569,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                   <Button
                     asChild
                     size="lg"
-                    className="mt-8 rounded-full bg-charcoal-900 px-8 font-bold text-white shadow-lg shadow-charcoal-900/20 transition-transform duration-300 hover:-translate-y-0.5 hover:bg-charcoal-800"
+                    className="mt-8 rounded-full bg-[#202B33] px-8 font-bold text-white shadow-[0_10px_28px_rgba(32,43,51,0.18)] transition-transform duration-300 hover:-translate-y-0.5 hover:bg-[#2A353C]"
                   >
                     <Link href={`/${locale}/contact`}>
                       {contactButton} <ArrowRight className="h-4 w-4" />
@@ -576,8 +578,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 )}
               </Reveal>
             </div>
-          </div>
-          <Curve variant="tilt" flip className="-mt-px text-peach-100" />
         </section>
       )}
 
@@ -585,7 +585,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Testimonials                                                        */}
       {/* ------------------------------------------------------------------ */}
       {showTestimonials && (
-        <section id="sec-testimonials" className="mx-auto w-full max-w-[1400px] px-4 md:px-6 py-16 md:py-24">
+        <section id="sec-testimonials" className="surface-lavender relative py-16 md:py-24">
+          <div className="pointer-events-none absolute inset-x-0 -top-10 h-16 bg-gradient-to-b from-[#FFF0F4] to-transparent" />
+          <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6">
           <Reveal>
             <TestimonialsPanel
               eyebrow={s(settings, "home_testimonials_eyebrow", locale) || undefined}
@@ -596,6 +598,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
               }))}
             />
           </Reveal>
+          </div>
         </section>
       )}
 
@@ -603,7 +606,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* News — migrated 1:1 from the legacy static site's news-section      */}
       {/* ------------------------------------------------------------------ */}
       {showNews && (
-        <section id="sec-news" className="mx-auto w-full max-w-[1400px] px-4 md:px-6 pb-16 md:pb-24">
+        <section id="sec-news" className="surface-ivory relative pb-16 pt-4 md:pb-24">
+          <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6">
           {(newsTitle || s(settings, "home_news_eyebrow", locale)) && (
             <Reveal className="mb-12 max-w-2xl space-y-3">
               {s(settings, "home_news_eyebrow", locale) && (
@@ -623,7 +627,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
               <Link
                 key={item.id}
                 href={`/${locale}/news/${item.slug ?? item.id}`}
-                className={`group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-white shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover ${
+                className={`group flex h-full flex-col overflow-hidden rounded-[28px] border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] shadow-card transition-all duration-300 hover:-translate-y-[5px] hover:border-[rgba(255,111,145,0.25)] hover:shadow-card-hover ${
                   big ? "lg:flex-row" : ""
                 }`}
               >
@@ -639,24 +643,24 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                       alt={loc(item, "title", locale)}
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-brand-950/50 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#202B33]/50 via-transparent to-transparent" />
                   </div>
                 )}
                 <div className={`flex flex-1 flex-col gap-2.5 p-6 ${big ? "lg:justify-center lg:p-10" : ""}`}>
                   <time
                     dateTime={new Date(item.publishedAt).toISOString()}
-                    className="text-xs font-bold uppercase tracking-[0.14em] text-accent"
+                    className="text-xs font-bold uppercase tracking-[0.14em] text-[#C94F72]"
                   >
                     {formatDate(item.publishedAt, locale)}
                   </time>
                   <h3
-                    className={`font-bold leading-snug text-charcoal-900 transition-colors group-hover:text-primary ${
+                    className={`font-bold leading-snug text-charcoal-900 transition-colors group-hover:text-[#C94F72] ${
                       big ? "text-xl md:text-2xl" : "text-base"
                     }`}
                   >
                     {loc(item, "title", locale)}
                   </h3>
-                  <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-bold text-primary">
+                  <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-bold text-[#C94F72]">
                     Read more
                     <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
                   </span>
@@ -691,6 +695,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
               </Button>
             </Reveal>
           )}
+          </div>
         </section>
       )}
 
@@ -698,8 +703,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Events                                                              */}
       {/* ------------------------------------------------------------------ */}
       {showEvents && (
-        <section className="mx-auto w-full max-w-[1400px] px-4 md:px-6 pb-16 md:pb-24">
-          <div id="sec-events" className="mx-auto max-w-2xl">
+        <section className="surface-sun relative pb-16 md:pb-24">
+          <div id="sec-events" className="mx-auto max-w-2xl px-4 md:px-6">
             <Reveal className="mb-8 space-y-3 text-center">
               {s(settings, "home_events_eyebrow", locale) && (
                 <SectionTag>{s(settings, "home_events_eyebrow", locale)}</SectionTag>
@@ -708,14 +713,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 <h2 className="text-display-lg font-serif font-medium tracking-tight text-charcoal-900">{eventsTitle}</h2>
               )}
             </Reveal>
-            <StaggerContainer className="divide-y divide-border overflow-hidden rounded-3xl border border-border bg-white shadow-card">
+            <StaggerContainer className="divide-y divide-[rgba(32,43,51,0.07)] overflow-hidden rounded-[28px] border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] shadow-card">
               {events.map((event) => (
                 <StaggerItem key={event.id}>
                   <Link
                     href={`/${locale}/events/${event.slug ?? event.id}`}
-                    className="group relative flex items-center gap-4 px-6 py-5 transition-colors duration-300 hover:bg-brand-50/60"
+                    className="group relative flex items-center gap-4 px-6 py-5 transition-colors duration-300 hover:bg-[#FFF0F4]"
                   >
-                    <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-brand-700 to-accent text-white shadow-md shadow-brand-600/20 transition-transform duration-300 group-hover:scale-105">
+                    <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-white shadow-[0_10px_24px_rgba(255,97,127,0.22)] transition-transform duration-300 group-hover:scale-105">
                       <span className="font-number text-xl font-bold leading-none">
                         {new Date(event.startDate).getDate()}
                       </span>
@@ -724,16 +729,16 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                       </span>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-bold leading-snug text-charcoal-900 transition-colors group-hover:text-primary">
+                      <h3 className="font-bold leading-snug text-charcoal-900 transition-colors group-hover:text-[#C94F72]">
                         {loc(event, "title", locale)}
                       </h3>
                       {event.location && (
                         <p className="mt-1.5 flex items-center gap-1 text-xs text-muted-foreground">
-                          <MapPin className="h-3 w-3 text-primary" /> {event.location}
+                          <MapPin className="h-3 w-3 text-[#C94F72]" /> {event.location}
                         </p>
                       )}
                     </div>
-                    <ArrowRight className="h-4 w-4 shrink-0 text-primary opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100" />
+                    <ArrowRight className="h-4 w-4 shrink-0 text-[#C94F72] opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100" />
                   </Link>
                 </StaggerItem>
               ))}
@@ -755,11 +760,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Partners                                                            */}
       {/* ------------------------------------------------------------------ */}
       {showPartners && (
-        <section id="sec-partners" className="mx-auto w-full max-w-[1400px] px-4 md:px-6 pb-16 md:pb-24">
+        <section id="sec-partners" className="surface-ivory relative pb-16 md:pb-24">
+          <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6">
           {(partnersTitle || s(settings, "home_partners_eyebrow", locale)) && (
             <div data-animate className="mx-auto mb-10 max-w-2xl text-center">
               {s(settings, "home_partners_eyebrow", locale) && (
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#C94F72]">
                   {s(settings, "home_partners_eyebrow", locale)}
                 </p>
               )}
@@ -768,14 +774,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                   {partnersTitle}
                 </h2>
               )}
-              <span className="mx-auto mt-3 block h-1 w-12 rounded-full bg-gradient-to-r from-primary to-accent" />
+              <span className="living-spectrum-line mx-auto mt-3" />
             </div>
           )}
           <div data-stagger className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
             {partners.map((partner) => (
               <div
                 key={partner.id}
-                className="flex items-center justify-center rounded-2xl border border-border bg-white px-4 py-6 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-card-hover"
+                className="flex items-center justify-center rounded-[24px] border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] px-4 py-6 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(255,111,145,0.25)] hover:shadow-card-hover"
               >
                 {partner.logo ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -785,10 +791,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     className="h-10 w-auto object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
                   />
                 ) : (
-                  <span className="text-sm font-semibold text-brand-800">{partner.name}</span>
+                  <span className="text-sm font-semibold text-[#6D4A7D]">{partner.name}</span>
                 )}
               </div>
             ))}
+          </div>
           </div>
         </section>
       )}
@@ -797,15 +804,17 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Donate CTA                                                          */}
       {/* ------------------------------------------------------------------ */}
       {showDonate && (
-        <section id="sec-donate" className="mx-auto w-full max-w-[1400px] px-4 md:px-6 pb-20 md:pb-28">
+        <section id="sec-donate" className="surface-cream relative pb-20 md:pb-28">
+          <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6">
           <Reveal direction="scale">
-            <div className="cta-gradient-shift relative grid items-center gap-8 overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#ff6b81] via-[#f2749e] to-[#8f7bff] p-10 text-white shadow-glow md:grid-cols-[1.2fr_auto] md:p-14">
-              <span className="hero2__orb hero2__orb--1 pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/20 blur-3xl" />
-              <span className="hero2__orb hero2__orb--2 pointer-events-none absolute -bottom-20 left-1/3 h-56 w-56 rounded-full bg-peach-200/25 blur-3xl" />
+            <div className="donate-spectrum-wash relative grid items-center gap-8 overflow-hidden rounded-[2rem] border border-[rgba(32,43,51,0.07)] p-10 text-[#202B33] shadow-card md:grid-cols-[1.2fr_auto] md:p-14">
+              <span className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-[#FF6F91]/[0.12] blur-3xl" />
+              <span className="pointer-events-none absolute -bottom-20 left-1/3 h-56 w-56 rounded-full bg-[#83D8B6]/[0.12] blur-3xl" />
+              <span className="pointer-events-none absolute right-1/4 top-1/2 h-40 w-40 rounded-full bg-[#FFD66B]/[0.10] blur-3xl" />
               <div className="relative">
                 {s(settings, "home_donate_eyebrow", locale) && (
-                  <p className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] text-white/90">
-                    <span className="block h-0.5 w-8 rounded-full bg-white/80" />
+                  <p className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] text-[#C94F72]">
+                    <span className="block h-0.5 w-8 rounded-full bg-[#FF6F91]" />
                     {s(settings, "home_donate_eyebrow", locale)}
                   </p>
                 )}
@@ -813,7 +822,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                   <h2 className="text-display-xl mt-4 max-w-2xl font-serif font-medium">{donateTitle}</h2>
                 )}
                 {donateText && (
-                  <p className="mt-3 max-w-xl whitespace-pre-line leading-relaxed text-white/85">
+                  <p className="mt-3 max-w-xl whitespace-pre-line leading-relaxed text-[#667078]">
                     {donateText}
                   </p>
                 )}
@@ -824,10 +833,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     <Button
                       asChild
                       size="lg"
-                      className="rounded-full bg-white px-8 font-bold text-[#ff6b81] shadow-xl shadow-charcoal-900/15 transition-transform duration-300 hover:-translate-y-0.5 hover:bg-white/90"
+                      className="rounded-full bg-gradient-to-r from-[#FF6178] to-[#FF826F] px-8 font-bold text-white shadow-[0_10px_28px_rgba(255,97,127,0.22)] transition-transform duration-300 hover:-translate-y-0.5 hover:from-[#ff7388] hover:to-[#ff967f]"
                     >
                       <Link href={`/${locale}/donate`}>
-                        <Heart className="h-4 w-4 fill-[#ff6b81] text-[#ff6b81]" /> {donateButton}
+                        <Heart className="h-4 w-4 fill-white text-white" /> {donateButton}
                       </Link>
                     </Button>
                   )}
@@ -836,7 +845,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                       asChild
                       size="lg"
                       variant="outline"
-                      className="rounded-full border-white/50 bg-transparent px-8 font-semibold text-white transition-transform duration-300 hover:-translate-y-0.5 hover:border-white hover:bg-white/15 hover:text-white"
+                      className="rounded-full px-8 font-semibold"
                     >
                       <Link href={`/${locale}/contact`}>{donateButton2}</Link>
                     </Button>
@@ -845,6 +854,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
               )}
             </div>
           </Reveal>
+          </div>
         </section>
       )}
     </>

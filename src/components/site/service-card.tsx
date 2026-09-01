@@ -4,14 +4,13 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
-/** A rotating set of two-stop pastel accents so cards read as one family without repeating the same gradient. */
+/** One or two spectrum accents per card, with a contextual warm tint — never a rainbow wash. */
 const ACCENTS = [
-  { from: "#ff6b81", to: "#f6a55c", tint: "from-blush-100/70" },
-  { from: "#8f7bff", to: "#5bcefa", tint: "from-lavender-100/70" },
-  { from: "#4fbfa8", to: "#aeb7ff", tint: "from-mint-100/70" },
-  { from: "#f6a55c", to: "#f2749e", tint: "from-peach-100/70" },
-  { from: "#5bcefa", to: "#8f7bff", tint: "from-sky-100/70" },
-  { from: "#f2749e", to: "#ff6b81", tint: "from-blush-200/60" },
+  { from: "#FF6F91", to: "#FF716D", tint: "#FFF0F4", hoverBorder: "rgba(255,111,145,0.25)" },
+  { from: "#83D8B6", to: "#83CDED", tint: "#EFF9F4", hoverBorder: "rgba(131,216,182,0.35)" },
+  { from: "#FF9B69", to: "#FFD66B", tint: "#FFF8DD", hoverBorder: "rgba(255,155,105,0.28)" },
+  { from: "#A995E8", to: "#83CDED", tint: "#F5F1FF", hoverBorder: "rgba(169,149,232,0.28)" },
+  { from: "#FF716D", to: "#FF9B69", tint: "#FFF3ED", hoverBorder: "rgba(255,113,109,0.25)" },
 ];
 
 export function ServiceCard({
@@ -36,39 +35,46 @@ export function ServiceCard({
     <motion.div whileHover="hover" initial="rest" className="group relative h-full">
       <Link
         href={href}
-        className="relative flex h-full flex-col overflow-hidden rounded-[22px] border border-border bg-white p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover"
+        className="relative flex h-full flex-col overflow-hidden rounded-[28px] p-7 transition-all duration-300 hover:-translate-y-[5px]"
+        style={{
+          backgroundColor: accent.tint,
+          border: "1px solid rgba(32,43,51,0.07)",
+          boxShadow: "0 15px 45px rgba(31,41,51,0.06)",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.borderColor = accent.hoverBorder;
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.borderColor = "rgba(32,43,51,0.07)";
+        }}
       >
         <motion.span
           variants={{ rest: { y: 0 }, hover: { y: -8 } }}
           transition={{ type: "spring", stiffness: 300, damping: 22 }}
           className="flex h-full flex-col"
         >
-          {/* Top accent, unique per card, that grows on hover */}
           <span
-            className="absolute inset-x-0 top-0 h-1 origin-left scale-x-50 transition-transform duration-300 group-hover:scale-x-100"
+            className="absolute inset-x-0 top-0 h-[2px] origin-left scale-x-50 opacity-70 transition-transform duration-300 group-hover:scale-x-100 group-hover:opacity-100"
             style={{ background: `linear-gradient(90deg, ${accent.from}, ${accent.to})` }}
-          />
-          {/* Soft gradient wash that fades in behind the content */}
-          <span
-            className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${accent.tint} via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100`}
           />
           <div className="relative">
             {icon && (
               <motion.span
                 variants={{ rest: { scale: 1, rotate: 0 }, hover: { scale: 1.08, rotate: -6 } }}
                 transition={{ type: "spring", stiffness: 300, damping: 18 }}
-                className="mb-5 grid h-[52px] w-[52px] place-items-center rounded-2xl text-2xl ring-1 ring-black/5"
+                className="mb-5 grid h-[52px] w-[52px] place-items-center rounded-2xl text-2xl ring-1 ring-[rgba(32,43,51,0.06)]"
                 style={{
-                  background: `linear-gradient(135deg, ${accent.from}1a, ${accent.to}22)`,
+                  background: `linear-gradient(135deg, ${accent.from}22, ${accent.to}18)`,
+                  color: accent.from,
                 }}
               >
                 {icon}
               </motion.span>
             )}
-            <h3 className="mb-2 text-lg font-bold text-charcoal-900 transition-colors group-hover:text-primary">
+            <h3 className="mb-2 text-lg font-bold text-[#202B33] transition-colors group-hover:text-[#C94F72]">
               {title}
             </h3>
-            <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
+            <p className="text-sm leading-relaxed text-[#667078]">{description}</p>
             <span
               className="mt-5 inline-flex items-center gap-1.5 text-sm font-bold"
               style={{ color: accent.from }}

@@ -13,6 +13,7 @@ import { LenisProvider } from "@/components/site/lenis-provider";
 import { ScrollProgress } from "@/components/site/scroll-progress";
 import { FloatingDonate } from "@/components/site/floating-donate";
 import { PrideStripe } from "@/components/pride-stripe";
+import { LivingSpectrum } from "@/components/site/living-spectrum";
 
 export const dynamic = "force-dynamic";
 
@@ -92,9 +93,10 @@ export default async function LocaleLayout({
   const donateLabel = s(settings, "header_donate_label", locale);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="relative flex min-h-screen flex-col bg-[#FFF9F5]">
       <LenisProvider />
       <ScrollFX />
+      <LivingSpectrum />
       <ScrollProgress />
       <PrideStripe />
       <SiteHeader
@@ -114,7 +116,7 @@ export default async function LocaleLayout({
         showLangs={sBool(settings, "show_header_langs", true)}
         showDonate={sBool(settings, "show_header_donate", true)}
       />
-      <main className="flex-1">{children}</main>
+      <main className="relative z-[1] flex-1">{children}</main>
       <SiteFooter locale={locale} dict={dict} settings={settings} />
       {/* Fixed CTA — kept outside <main> and any transformed/animated parent */}
       {sBool(settings, "show_floating_donate", true) && (

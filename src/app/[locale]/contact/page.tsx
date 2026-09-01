@@ -54,8 +54,8 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
 
       {(showDetails || showForm) && (
         <div className="relative overflow-hidden">
-          <div className="pointer-events-none absolute -left-40 -top-40 h-96 w-96 rounded-full bg-brand-200/30 blur-[100px]" />
-          <div className="pointer-events-none absolute -right-32 bottom-0 h-[26rem] w-[26rem] rounded-full bg-accent/15 blur-[110px]" />
+          <div className="pointer-events-none absolute -left-40 -top-40 h-96 w-96 rounded-full bg-[#FF6F91]/[0.08] blur-[100px]" />
+          <div className="pointer-events-none absolute -right-32 bottom-0 h-[26rem] w-[26rem] rounded-full bg-[#83D8B6]/[0.10] blur-[110px]" />
 
           <div
             className={`relative mx-auto w-full max-w-[1400px] px-4 py-20 md:px-6 md:py-28 ${

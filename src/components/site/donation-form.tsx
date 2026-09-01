@@ -54,7 +54,7 @@ export function DonationForm({
             className={cn(
               "flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-all duration-200",
               frequency === key
-                ? "bg-white text-brand-700 shadow-md shadow-navy-950/[0.08]"
+                ? "bg-white text-[#C94F72] shadow-md shadow-[rgba(32,43,51,0.08)]"
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
@@ -65,7 +65,7 @@ export function DonationForm({
 
       {/* Amount */}
       <div className="space-y-2.5">
-        <Label className="text-sm font-bold text-navy-900">{d.chooseAmount} *</Label>
+        <Label className="text-sm font-bold text-[#202B33]">{d.chooseAmount} *</Label>
         <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
           {PRESETS.map((p) => (
             <button
@@ -76,8 +76,8 @@ export function DonationForm({
               className={cn(
                 "rounded-2xl border-2 px-2 py-3 text-center text-sm font-bold transition-all duration-200 motion-safe:active:scale-95",
                 amount === String(p)
-                  ? "border-transparent bg-spectrum text-white shadow-md shadow-brand-600/30"
-                  : "border-border bg-white text-navy-900 hover:border-brand-400/60 hover:text-brand-600"
+                  ? "border-transparent bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-white shadow-[0_10px_24px_rgba(255,97,127,0.22)]"
+                  : "border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] text-[#202B33] hover:border-[rgba(255,111,145,0.25)] hover:text-[#C94F72]"
               )}
             >
               {p.toLocaleString()}
@@ -108,7 +108,7 @@ export function DonationForm({
 
       {/* Purpose */}
       <div className="space-y-1.5">
-        <Label htmlFor="d-purpose" className="text-sm font-bold text-navy-900">
+        <Label htmlFor="d-purpose" className="text-sm font-bold text-[#202B33]">
           {d.purpose}
         </Label>
         <select
@@ -127,7 +127,7 @@ export function DonationForm({
 
       {/* Donor details */}
       <div className="space-y-4">
-        <p className="text-sm font-bold text-navy-900">{d.yourDetails}</p>
+        <p className="text-sm font-bold text-[#202B33]">{d.yourDetails}</p>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-1.5">
             <Label htmlFor="d-name">{dict.common.name} *</Label>
@@ -157,7 +157,7 @@ export function DonationForm({
       <Button
         type="submit"
         size="lg"
-        className="h-13 w-full rounded-full bg-spectrum py-6 text-base font-bold text-white shadow-lg shadow-brand-600/30 transition-transform duration-300 hover:-translate-y-0.5"
+        className="h-13 w-full rounded-full bg-gradient-to-br from-[#FF6178] to-[#FF826F] py-6 text-base font-bold text-white shadow-[0_10px_28px_rgba(255,97,127,0.22)] transition-transform duration-300 hover:-translate-y-0.5 hover:from-[#ff7388] hover:to-[#ff967f]"
       >
         <Heart className="h-5 w-5 fill-current" />
         {d.donateNow}

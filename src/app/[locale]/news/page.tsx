@@ -34,8 +34,8 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: L
       />
 
       <div className="relative overflow-hidden py-12 md:py-20">
-        <div className="pointer-events-none absolute -left-32 top-24 h-72 w-72 rounded-full bg-brand-100/60 blur-3xl" />
-        <div className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-pride-sky/10 blur-3xl" />
+        <div className="pointer-events-none absolute -left-32 top-24 h-72 w-72 rounded-full bg-[#FF6F91]/[0.08] blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-[#83CDED]/[0.10] blur-3xl" />
 
         <div className="container relative space-y-14">
           {featured && (
@@ -66,7 +66,7 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: L
                   <p className="line-clamp-3 text-base leading-relaxed text-muted-foreground">
                     {excerptOf(featured)}
                   </p>
-                  <span className="mt-2 inline-flex items-center gap-1.5 bg-spectrum bg-clip-text text-sm font-bold text-transparent">
+                  <span className="mt-2 inline-flex items-center gap-1.5 text-sm font-bold text-[#C94F72]">
                     {dict.common.readMore}
                     <ArrowRight className="h-4 w-4 text-primary transition-transform group-hover:translate-x-1.5" />
                   </span>

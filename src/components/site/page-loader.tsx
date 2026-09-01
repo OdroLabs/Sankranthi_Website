@@ -50,7 +50,7 @@ export function PageLoader() {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.35, ease: "easeOut" }}
-          className="fixed inset-0 z-[999] grid place-items-center bg-navy-950"
+          className="fixed inset-0 z-[999] grid place-items-center bg-[#FFF9F5]"
         >
           <div className="flex flex-col items-center gap-4">
             <motion.img
@@ -62,9 +62,9 @@ export function PageLoader() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.35, ease: "easeOut" }}
             />
-            <span className="h-0.5 w-24 overflow-hidden rounded-full bg-white/15">
+            <span className="h-0.5 w-24 overflow-hidden rounded-full bg-[rgba(32,43,51,0.08)]">
               <motion.span
-                className="block h-full bg-gradient-to-r from-brand-400 via-accent to-brand-400"
+                className="block h-full bg-living-spectrum"
                 initial={{ width: "0%" }}
                 animate={{ width: "100%" }}
                 transition={{ duration: 0.55, ease: "easeInOut" }}

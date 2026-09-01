@@ -11,25 +11,48 @@
    * warm arc, on cool indigo-tinted neutrals.
    */
   :root {
-    /* Warm cream base with a dark-charcoal ink — soft, editorial, NGO-warm. */
-    --background: 24 100% 98%;
-    --foreground: 205 24% 16%;
-    --card: 0 0% 100%;
-    --card-foreground: 205 24% 16%;
-    --primary: 263 70% 50%;
+    /* Warm cream foundation — LGBTQIA+ spectrum lives in accents, not fills. */
+    --background: 24 100% 98%; /* #FFF9F5 */
+    --foreground: 205 23% 16%; /* #202B33 */
+    --card: 40 100% 99%; /* #FFFDF9 */
+    --card-foreground: 205 23% 16%;
+    --primary: 349 100% 69%; /* #FF617F coral CTA */
     --primary-foreground: 0 0% 100%;
-    --secondary: 293 69% 49%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 340 100% 97%;
-    --muted-foreground: 210 12% 40%;
-    --accent: 346 74% 55%;
+    --secondary: 344 100% 97%; /* #FFF0F4 blush */
+    --secondary-foreground: 205 23% 16%;
+    --muted: 20 100% 97%; /* #FFF3ED peach cream */
+    --muted-foreground: 207 8% 44%; /* #667078 */
+    --accent: 346 100% 72%; /* #FF6F91 */
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 72% 51%;
+    --destructive: 351 72% 58%;
     --destructive-foreground: 0 0% 98%;
-    --border: 262 45% 92%;
-    --input: 262 30% 88%;
-    --ring: 263 70% 50%;
-    --radius: 1rem;
+    --border: 24 22% 90%;
+    --input: 24 18% 86%;
+    --ring: 349 100% 69%;
+    --radius: 1.15rem;
+    --ink: #202B33;
+    --ink-soft: #667078;
+    --ink-muted: #8A9297;
+    --cream: #fff9f5;
+    --ivory: #fffdf9;
+    --peach-cream: #fff3ed;
+    --blush: #fff0f4;
+    --mint-soft: #eff9f4;
+    --sun: #fff8dd;
+    --lavender-soft: #f5f1ff;
+    --coral: #ff716d;
+    --pink: #ff6f91;
+    --warm-orange: #ff9b69;
+    --sun-accent: #ffd66b;
+    --mint: #83d8b6;
+    --sky: #83cded;
+    --lavender: #a995e8;
+    --plum: #6d4a7d;
+    --cta-from: #ff617f;
+    --cta-to: #ff846f;
+    --donate-from: #ff6178;
+    --donate-to: #ff826f;
+    --nav-active: #c94f72;
   }
 }
 
@@ -48,7 +71,8 @@
   body {
     @apply text-foreground antialiased;
     font-family: "Manrope", "Inter", ui-sans-serif, system-ui, sans-serif;
-    background: hsl(var(--background));
+    background: var(--cream);
+    color: var(--ink);
   }
   h1,
   h2,
@@ -316,12 +340,90 @@
   background: transparent;
 }
 
-/* Pastel gradient text — coral to peach to lavender, tuned for light and dark sections alike */
+/* Warm coral-to-sunlight number/heading accent — two stops, never a rainbow fill */
 .text-gradient {
-  background: linear-gradient(100deg, #ff6b81 0%, #f6a55c 50%, #8f7bff 100%);
+  background: linear-gradient(100deg, #ff617f 0%, #ff846f 58%, #ff9b69 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* Refined living-spectrum rule — identity as a brand accent, not a flag paste */
+.living-spectrum-line {
+  display: block;
+  height: 2px;
+  width: 90px;
+  border-radius: 999px;
+  opacity: 0.72;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 113, 109, 0.92),
+    rgba(255, 214, 107, 0.88),
+    rgba(131, 216, 182, 0.88),
+    rgba(131, 205, 237, 0.86),
+    rgba(169, 149, 232, 0.9)
+  );
+}
+
+.living-spectrum-line--coral {
+  width: 52px;
+  opacity: 0.9;
+  background: linear-gradient(90deg, #ff716d 0%, #ff716d 72%, #ffd66b 86%, #83d8b6 100%);
+}
+
+/* Page / inner-page heroes: cream base with almost-invisible organic lighting */
+.hero-organic-light {
+  background-color: var(--cream);
+  background-image:
+    radial-gradient(circle at 15% 30%, rgba(255, 111, 145, 0.1), transparent 32%),
+    radial-gradient(circle at 55% 40%, rgba(255, 214, 107, 0.1), transparent 30%),
+    radial-gradient(circle at 90% 20%, rgba(131, 216, 182, 0.1), transparent 34%),
+    radial-gradient(circle at 82% 88%, rgba(131, 205, 237, 0.08), transparent 36%);
+}
+
+.donate-spectrum-wash {
+  background-color: var(--blush);
+  background-image:
+    radial-gradient(circle at 12% 20%, rgba(255, 113, 109, 0.14), transparent 34%),
+    radial-gradient(circle at 52% 0%, rgba(255, 214, 107, 0.12), transparent 32%),
+    radial-gradient(circle at 92% 70%, rgba(131, 216, 182, 0.12), transparent 36%),
+    radial-gradient(circle at 70% 100%, rgba(169, 149, 232, 0.1), transparent 38%);
+}
+
+.surface-cream { background-color: var(--cream); }
+.surface-ivory { background-color: var(--ivory); }
+.surface-peach { background-color: var(--peach-cream); }
+.surface-blush { background-color: var(--blush); }
+.surface-mint { background-color: var(--mint-soft); }
+.surface-sun { background-color: var(--sun); }
+.surface-lavender { background-color: var(--lavender-soft); }
+
+.card-soft {
+  border: 1px solid rgba(32, 43, 51, 0.07);
+  border-radius: 1.75rem;
+  box-shadow: 0 15px 45px rgba(31, 41, 51, 0.06);
+}
+
+/* Scroll-driven living spectrum light — color set from LivingSpectrum */
+.living-spectrum-orb {
+  position: fixed;
+  top: 18%;
+  left: 8%;
+  z-index: 0;
+  width: min(46vw, 420px);
+  height: min(46vw, 420px);
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0.11;
+  filter: blur(140px);
+  background: #ff716d;
+  mix-blend-mode: multiply;
+  will-change: transform, background-color;
+}
+@media (prefers-reduced-motion: reduce) {
+  .living-spectrum-orb {
+    display: none;
+  }
 }
 
 /* ---------------------------------------------------------------------------
@@ -1014,11 +1116,12 @@ html.lenis-active {
 }
 
 .card-glow {
-  transition: box-shadow 0.35s ease, border-color 0.35s ease, transform 0.35s ease;
+  transition: box-shadow 0.35s ease, border-color 0.35s ease, transform 0.35s ease, background-color 0.35s ease;
 }
 .card-glow:hover {
-  border-color: rgba(246, 133, 160, 0.4);
-  box-shadow: 0 0 0 1px rgba(246, 133, 160, 0.18), 0 26px 50px -20px rgba(174, 130, 255, 0.32);
+  transform: translateY(-5px);
+  border-color: rgba(255, 111, 145, 0.25);
+  box-shadow: 0 18px 48px rgba(31, 41, 51, 0.08);
 }
 
 /* Frosted panel for cards sitting on pastel gradient bands (lighter than .glass-dark) */

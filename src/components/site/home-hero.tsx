@@ -197,8 +197,8 @@ export function HomeHero({
     usePlateauOpacity(progress, 0.72, 0.8, 0.94, 1.01),
   ];
 
-  const washA = useTransform(progress, [0, 0.35, 0.65, 1], ["#E5F5EF", "#FFF1E4", "#F3E9FF", "#F7FBFA"]);
-  const washB = useTransform(progress, [0, 0.35, 0.65, 1], ["#EAF6FF", "#FFE8F0", "#E7F6F0", "#FFF9F5"]);
+  const washA = useTransform(progress, [0, 0.35, 0.65, 1], ["#FFF9F5", "#FFF3ED", "#FFFDF9", "#EFF9F4"]);
+  const washB = useTransform(progress, [0, 0.35, 0.65, 1], ["#FFF9F5", "#FFF0F4", "#FFF8DD", "#FFF9F5"]);
   const stageBackground = useMotionTemplate`linear-gradient(158deg, ${washA} 0%, ${washB} 100%)`;
   const cueOpacity = useTransform(progress, [0, 0.1, 0.18], [1, 0.85, 0]);
   const threadScale = useTransform(progress, [0, 1], [0.2, 1]);

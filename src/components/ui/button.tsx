@@ -9,14 +9,15 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow hover:bg-primary/90 hover:shadow-lg hover:shadow-accent/25",
-        secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/85",
+          "bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-white shadow-[0_10px_28px_rgba(255,97,127,0.22)] hover:from-[#ff738e] hover:to-[#ff967f] hover:shadow-[0_12px_32px_rgba(255,97,127,0.28)]",
+        secondary:
+          "bg-[rgba(255,255,255,0.65)] text-[#202B33] shadow-sm ring-1 ring-[rgba(32,43,51,0.12)] hover:bg-[#FFF0F4]",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 hover:shadow-lg hover:shadow-destructive/25",
+          "bg-gradient-to-br from-[#FF6178] to-[#FF826F] text-white shadow-[0_10px_28px_rgba(255,97,127,0.22)] hover:from-[#ff7388] hover:to-[#ff967f]",
         outline:
-          "border border-input bg-background shadow-sm hover:border-accent/50 hover:bg-blush-100 hover:text-accent",
-        ghost: "hover:bg-muted hover:text-primary",
-        link: "text-primary underline-offset-4 hover:underline",
+          "border border-[rgba(32,43,51,0.12)] bg-[rgba(255,255,255,0.65)] text-[#202B33] shadow-sm hover:border-[rgba(255,111,145,0.25)] hover:bg-[#FFF0F4]",
+        ghost: "hover:bg-[#FFF0F4] hover:text-[#C94F72]",
+        link: "text-[#C94F72] underline-offset-4 hover:underline",
       },
       size: {
         default: "h-9 px-4 py-2",

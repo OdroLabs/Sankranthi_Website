@@ -143,9 +143,9 @@ export default async function EventsPage({ params }: { params: Promise<{ locale:
       )}
 
       {showGallery && (
-        <section className="relative overflow-hidden bg-navy-950 text-white">
-          <div className="pointer-events-none absolute -left-24 top-0 h-72 w-72 rounded-full bg-brand-500/20 blur-3xl" />
-          <div className="pointer-events-none absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-pride-pink/15 blur-3xl" />
+        <section className="relative overflow-hidden bg-[#202B33] text-[#F8F5F2]">
+          <div className="pointer-events-none absolute -left-24 top-0 h-72 w-72 rounded-full bg-[#FF6F91]/[0.10] blur-3xl" />
+          <div className="pointer-events-none absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-[#83D8B6]/[0.10] blur-3xl" />
           <Section
             title={galleryTitle}
             className="relative [&_h2]:text-white [&_h2]:font-serif [&_h2]:font-medium"

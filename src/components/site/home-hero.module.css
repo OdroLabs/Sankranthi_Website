@@ -1,18 +1,18 @@
 .experience {
-  --ink: #19252f;
+  --ink: #202b33;
   --pink: #ff6f91;
-  --coral: #ff8a72;
-  --yellow: #ffd76a;
-  --mint: #9be3c5;
-  --sky: #8fd5f4;
-  --lavender: #b8a4f8;
+  --coral: #ff716d;
+  --yellow: #ffd66b;
+  --mint: #83d8b6;
+  --sky: #83cded;
+  --lavender: #a995e8;
   --nav: var(--site-nav-h, 5.25rem);
   position: relative;
   margin-top: calc(-1 * var(--nav));
   /* clip keeps sticky pin working; hidden forces overflow-y and breaks sticky */
   overflow-x: clip;
   color: var(--ink);
-  background: #e8f6f0;
+  background: #fff9f5;
 }
 
 .experiencePin {
@@ -31,7 +31,11 @@
   justify-content: center;
   overflow: hidden;
   padding: calc(var(--nav) + 1rem) 0 3.25rem;
-  background: linear-gradient(158deg, #e5f5ef 0%, #eef7ff 48%, #fff6f1 100%);
+  background-color: #fff9f5;
+  background-image:
+    radial-gradient(circle at 15% 30%, rgba(255, 111, 145, 0.1), transparent 32%),
+    radial-gradient(circle at 55% 40%, rgba(255, 214, 107, 0.1), transparent 30%),
+    radial-gradient(circle at 90% 20%, rgba(131, 216, 182, 0.1), transparent 34%);
 }
 
 .stageSticky {
@@ -53,8 +57,8 @@
 .blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.2;
+  filter: blur(140px);
+  opacity: 0.1;
 }
 
 .blobPink {
@@ -79,7 +83,7 @@
   width: min(36vw, 380px);
   height: min(36vw, 380px);
   background: var(--lavender);
-  opacity: 0.16;
+  opacity: 0.08;
 }
 
 .blobYellow {
@@ -88,7 +92,7 @@
   width: min(32vw, 320px);
   height: min(32vw, 320px);
   background: var(--yellow);
-  opacity: 0.14;
+  opacity: 0.09;
 }
 
 .progress {
@@ -137,7 +141,7 @@
 
 .progressActive i {
   width: 2.2rem;
-  background: linear-gradient(90deg, var(--pink), var(--yellow), var(--mint));
+  background: linear-gradient(90deg, var(--coral), var(--yellow));
 }
 
 .sceneStack {
@@ -207,7 +211,7 @@
   align-items: center;
   gap: 0.8rem;
   margin: 0 0 1rem;
-  color: #4d5c66;
+  color: #667078;
   font-family: Manrope, ui-sans-serif, system-ui, sans-serif;
   font-size: 0.68rem;
   font-weight: 800;
@@ -219,7 +223,7 @@
   width: 2.25rem;
   height: 2px;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--mint), var(--sky), var(--lavender));
+  background: linear-gradient(90deg, var(--coral), var(--yellow));
 }
 
 .headline {
@@ -239,7 +243,7 @@
 .lede {
   max-width: 34rem;
   margin: 1.25rem 0 0;
-  color: #4a5862;
+  color: #667078;
   font-family: Manrope, ui-sans-serif, system-ui, sans-serif;
   font-size: clamp(1rem, 1.1vw, 1.125rem);
   font-weight: 500;
@@ -283,12 +287,13 @@
 
 .ctaPrimary {
   color: #fff;
-  background: linear-gradient(100deg, #ff6687, #ff8b75);
-  box-shadow: 0 12px 28px rgba(255, 102, 135, 0.28);
+  background: linear-gradient(135deg, #ff617f, #ff846f);
+  box-shadow: 0 10px 28px rgba(255, 97, 127, 0.22);
 }
 
 .ctaPrimary:hover {
   transform: scale(1.025);
+  background: linear-gradient(135deg, #ff738e, #ff967f);
 }
 
 .ctaPrimary:hover svg {
@@ -297,14 +302,14 @@
 
 .ctaSecondary {
   color: var(--ink);
-  background: rgba(255, 249, 245, 0.65);
-  border: 1px solid rgba(25, 37, 47, 0.14);
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(32, 43, 51, 0.12);
   backdrop-filter: blur(14px);
 }
 
 .ctaSecondary:hover {
-  background: rgba(238, 231, 255, 0.72);
-  border-color: rgba(184, 164, 248, 0.45);
+  background: #fff0f4;
+  border-color: rgba(255, 111, 145, 0.25);
 }
 
 .ctaPrimary:focus-visible,
@@ -324,7 +329,7 @@
 .chapterFigure {
   overflow: hidden;
   margin: 0;
-  background: #dceae4;
+  background: #fff3ed;
   border: 1px solid rgba(255, 255, 255, 0.65);
   box-shadow: 0 28px 70px rgba(30, 60, 60, 0.12);
 }
@@ -393,11 +398,11 @@
   left: 0;
   width: 3px;
   border-radius: 999px;
-  background: linear-gradient(180deg, var(--pink), var(--yellow), var(--mint), var(--lavender));
+  background: linear-gradient(180deg, var(--coral), var(--yellow));
 }
 
 .peopleCard span {
-  color: #c45b73;
+  color: #c94f72;
   font-family: Manrope, ui-sans-serif, system-ui, sans-serif;
   font-size: 0.6rem;
   font-weight: 800;
@@ -421,7 +426,7 @@
   align-items: center;
   gap: 0.55rem;
   margin: 0 0 0.95rem;
-  color: #6a4e5c;
+  color: #667078;
   font-family: Manrope, ui-sans-serif, system-ui, sans-serif;
   font-size: 0.72rem;
   font-weight: 800;
@@ -436,7 +441,7 @@
   height: 2rem;
   border-radius: 999px;
   color: #fff;
-  background: linear-gradient(135deg, #ff6687, #b8a4f8);
+  background: linear-gradient(135deg, #ff617f, #ff846f);
   font-size: 0.68rem;
 }
 
@@ -452,7 +457,7 @@
 
 .chapterBody {
   margin: 1.05rem 0 0;
-  color: #4a5862;
+  color: #667078;
   font-family: Manrope, ui-sans-serif, system-ui, sans-serif;
   font-size: clamp(1rem, 1.08vw, 1.125rem);
   font-weight: 500;
@@ -470,7 +475,7 @@
 .chapterPoints li {
   position: relative;
   padding-left: 1.05rem;
-  color: #39464f;
+  color: #202b33;
   font-family: Manrope, ui-sans-serif, system-ui, sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
@@ -485,7 +490,7 @@
   width: 0.42rem;
   height: 0.42rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--pink), var(--lavender));
+  background: var(--coral);
 }
 
 .scrollCue {
@@ -496,7 +501,7 @@
   gap: 0.7rem;
   width: min(100% - 3rem, 1280px);
   margin: 1.35rem auto 0;
-  color: #3f4d56;
+  color: #667078;
   font-family: Manrope, ui-sans-serif, system-ui, sans-serif;
   font-size: 0.64rem;
   font-weight: 800;
@@ -539,12 +544,11 @@
   border-radius: 999px;
   background: linear-gradient(
     90deg,
-    #ff6f91,
-    #ff8a72,
-    #ffd76a,
-    #9be3c5,
-    #8fd5f4,
-    #b8a4f8
+    rgba(255, 113, 109, 0.78),
+    rgba(255, 214, 107, 0.72),
+    rgba(131, 216, 182, 0.72),
+    rgba(131, 205, 237, 0.7),
+    rgba(169, 149, 232, 0.78)
   );
 }
 
@@ -648,7 +652,7 @@
   left: 0.55rem;
   height: 1.5px;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--pink), var(--yellow), var(--mint), var(--lavender));
+  background: linear-gradient(90deg, var(--coral), var(--yellow), var(--mint));
 }
 
 .flowStack {

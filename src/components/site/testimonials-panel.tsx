@@ -11,11 +11,11 @@ export interface TestimonialItem {
 }
 
 const AVATAR_PALETTE = [
-  "from-[#ff6b81] to-[#f6a55c]",
-  "from-[#8f7bff] to-[#5bcefa]",
-  "from-[#4fbfa8] to-[#aeb7ff]",
-  "from-[#f2749e] to-[#8f7bff]",
-  "from-[#f6a55c] to-[#4fbfa8]",
+  "from-[#FF617F] to-[#FF846F]",
+  "from-[#83D8B6] to-[#83CDED]",
+  "from-[#FF9B69] to-[#FFD66B]",
+  "from-[#A995E8] to-[#83CDED]",
+  "from-[#FF716D] to-[#FF9B69]",
 ];
 
 function initials(name: string) {
@@ -53,13 +53,13 @@ export function TestimonialsPanel({
   };
 
   return (
-    <div className="relative overflow-hidden rounded-[2rem] border border-lavender-200 bg-gradient-to-br from-lavender-100 via-white to-blush-100 p-8 shadow-card md:p-12">
-      <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-lavender-300/40 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-blush-300/40 blur-3xl" />
+    <div className="relative overflow-hidden rounded-[2rem] border border-[rgba(32,43,51,0.07)] bg-[#F5F1FF] p-8 shadow-card md:p-12">
+      <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#A995E8]/[0.12] blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-[#FF6F91]/[0.10] blur-3xl" />
 
       <div className="relative mb-10 flex flex-wrap items-end justify-between gap-6">
         <div>
-          {eyebrow && <p className="mb-2 font-mono text-sm text-primary/70">{eyebrow}</p>}
+          {eyebrow && <p className="mb-2 font-mono text-sm text-[#C94F72]">{eyebrow}</p>}
           {title && (
             <h2 className="text-display-xl font-serif font-medium tracking-tight text-charcoal-900">{title}</h2>
           )}
@@ -69,14 +69,14 @@ export function TestimonialsPanel({
             <button
               onClick={() => go(-1)}
               aria-label="Previous testimonials"
-              className="grid h-11 w-11 place-items-center rounded-full border border-lavender-200 bg-white text-charcoal-700 transition-colors hover:border-primary/40 hover:text-primary"
+              className="grid h-11 w-11 place-items-center rounded-full border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] text-[#202B33] transition-colors hover:border-[rgba(255,111,145,0.25)] hover:text-[#C94F72]"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
             <button
               onClick={() => go(1)}
               aria-label="Next testimonials"
-              className="grid h-11 w-11 place-items-center rounded-full border border-lavender-200 bg-white text-charcoal-700 transition-colors hover:border-primary/40 hover:text-primary"
+              className="grid h-11 w-11 place-items-center rounded-full border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] text-[#202B33] transition-colors hover:border-[rgba(255,111,145,0.25)] hover:text-[#C94F72]"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -98,10 +98,10 @@ export function TestimonialsPanel({
             {current.map((item, i) => (
               <div
                 key={`${page}-${i}`}
-                className="card-glow flex min-h-[15rem] flex-col justify-between rounded-2xl border border-lavender-200 bg-white p-6 shadow-card"
+                className="card-glow flex min-h-[15rem] flex-col justify-between rounded-[24px] border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] p-6 shadow-card"
               >
-                <Quote className="mb-3 h-5 w-5 text-primary/60" aria-hidden />
-                <p className="flex-1 text-base leading-relaxed text-charcoal-800">{item.quote}</p>
+                <Quote className="mb-3 h-5 w-5 text-[#A995E8]" aria-hidden />
+                <p className="flex-1 text-base leading-relaxed text-[#667078]">{item.quote}</p>
                 <div className="mt-6 flex items-center gap-3">
                   <span
                     className={cn(
