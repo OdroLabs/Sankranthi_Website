@@ -54,7 +54,7 @@ export function DonationForm({
             className={cn(
               "flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-all duration-200",
               frequency === key
-                ? "bg-white text-primary shadow-md shadow-navy-950/[0.08]"
+                ? "bg-white text-brand-700 shadow-md shadow-navy-950/[0.08]"
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
@@ -74,10 +74,10 @@ export function DonationForm({
               onClick={() => setAmount(String(p))}
               aria-pressed={amount === String(p)}
               className={cn(
-                "rounded-xl border-2 px-2 py-3 text-center text-sm font-bold transition-all duration-200 motion-safe:active:scale-95",
+                "rounded-2xl border-2 px-2 py-3 text-center text-sm font-bold transition-all duration-200 motion-safe:active:scale-95",
                 amount === String(p)
-                  ? "border-primary bg-primary text-white shadow-md shadow-primary/25"
-                  : "border-border bg-white text-navy-900 hover:border-primary/50 hover:text-primary"
+                  ? "border-transparent bg-spectrum text-white shadow-md shadow-brand-600/30"
+                  : "border-border bg-white text-navy-900 hover:border-brand-400/60 hover:text-brand-600"
               )}
             >
               {p.toLocaleString()}
@@ -157,7 +157,7 @@ export function DonationForm({
       <Button
         type="submit"
         size="lg"
-        className="h-13 w-full rounded-full bg-destructive py-6 text-base font-bold shadow-lg shadow-destructive/25 hover:bg-destructive/90"
+        className="h-13 w-full rounded-full bg-spectrum py-6 text-base font-bold text-white shadow-lg shadow-brand-600/30 transition-transform duration-300 hover:-translate-y-0.5"
       >
         <Heart className="h-5 w-5 fill-current" />
         {d.donateNow}

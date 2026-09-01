@@ -133,12 +133,24 @@ async function main() {
     events_hero_intro: "See upcoming volunteer opportunities and moments from our work together.",
     show_gallery: "true",
     gallery_title: "Volunteer Gallery",
-    business_hero_title: "Community Nail Spa",
-    business_hero_intro: "Book professional nail care while supporting skills, confidence and livelihoods for women in our community.",
+    business_hero_title: "NELUME – Beauty and Wellness Center",
+    business_hero_intro: "A social enterprise by Sankranthi Foundation, bringing together beauty, wellness, inclusion and economic empowerment.",
     business_hero_image: SPA_IMAGE,
+    business_about_title: "About NELUME",
+    business_about_body:
+      "NELUME is a social enterprise established by Sankranthi Foundation that brings together beauty, wellness, inclusion and economic empowerment.\n\nWe provide professional nail care and wellness services in a calm, welcoming and inclusive environment, while creating dignified employment and skills development opportunities for people from marginalized backgrounds who have traditionally been excluded from formal employment.\n\nNELUME was created in response to the barriers many transgender women and sex workers in particular continue to face in accessing stable employment, professional opportunities and economic independence. Rather than relying solely on external funding to create change, Sankranthi Foundation is building a sustainable business that can generate both livelihood opportunities and long-term income to support its wider community work.",
+    business_impact_body:
+      "NELUME is more than a nail care and wellness center.\n\nIt is a \u201cBusiness for Social Impact\u201d model, where commercial success contributes directly to community development. Revenue generated through the business will support operations, staff development and business growth, while generating unrestricted income to sustain services we provide for marginalized communities.",
+    business_mission_body:
+      "Our aim is simple: building an inclusive and sustainable business that creates meaningful economic opportunities for people excluded from the formal economy, while generating lasting resources to advance Sankranthi Foundation\u2019s mission and strengthen our work with the communities we serve.\n\nEvery rupee spent at NELUME contributes to this vision.",
+    business_objectives_title: "Our Objectives",
+    business_objectives:
+      "Create Inclusive Employment Opportunities :: To create dignified, safe and sustainable employment and skills-development opportunities for people who have traditionally been excluded from the formal economy, particularly transgender women, enabling greater economic independence and livelihood security.\nGenerate Sustainable Income for Social Impact :: To develop a financially sustainable social enterprise that generates income to support Sankranthi Foundation\u2019s mission, programmes and community activities, while reducing reliance on external donor funding and strengthening the organisation\u2019s long-term sustainability.",
     business_empty_text: "Nail services will be listed soon. Please contact us for bookings.",
     suggestions_hero_title: "Your Suggestions",
     suggestions_hero_intro: "Good community services begin with listening. Share an idea, concern or improvement with us.",
+    privacy_title: "Privacy Policy",
+    terms_title: "Terms & Conditions",
     contact_hero_title: "Contact With Us",
     contact_hero_intro: "Reach our team for services, partnerships, volunteering or confidential support with a special case.",
     donate_hero_title: "Make a Donation",

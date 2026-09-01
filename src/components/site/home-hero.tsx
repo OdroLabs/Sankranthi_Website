@@ -29,7 +29,7 @@ const defaultStory = [
     label: "Rights & wellbeing",
     title: "Dignity begins with being heard and cared for.",
     text: "We listen without judgement, stand beside people, and connect communities with respectful advocacy, health and wellbeing support.",
-    accent: "#e86f61",
+    accent: "#e0392f",
     themes: [
       { name: "Rights", line: "Everyone deserves to live with dignity." },
       { name: "Health & wellbeing", line: "Care that sees the whole person." },
@@ -40,7 +40,7 @@ const defaultStory = [
     label: "Opportunity & community",
     title: "Access to opportunity helps communities grow stronger.",
     text: "Skills, livelihoods and inclusive opportunities help people build independent futures—and turn individual progress into lasting community change.",
-    accent: "#2f8b72",
+    accent: "#0d9488",
     themes: [
       { name: "Economic opportunity", line: "Opportunity creates independence." },
       { name: "Community & dignity", line: "Stronger people. Stronger communities." },
@@ -140,11 +140,11 @@ export function HomeHero({
     const points = buildThreadPoints(width, height);
     const visible = Math.max(2, Math.floor(points.length * Math.min(Math.max(progress, 0), 1)));
     const gradient = context.createLinearGradient(width * 0.1, 0, width * 0.92, 0);
-    gradient.addColorStop(0, "#e86f61");
-    gradient.addColorStop(0.28, "#ee9c45");
-    gradient.addColorStop(0.52, "#c94f83");
-    gradient.addColorStop(0.76, "#2f8b72");
-    gradient.addColorStop(1, "#e4b33f");
+    gradient.addColorStop(0, "#e0392f");
+    gradient.addColorStop(0.28, "#f5722b");
+    gradient.addColorStop(0.52, "#e6338c");
+    gradient.addColorStop(0.76, "#0d9488");
+    gradient.addColorStop(1, "#f5c518");
 
     context.beginPath();
     context.moveTo(points[0].x, points[0].y);

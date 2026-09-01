@@ -87,7 +87,7 @@ export function ContactForm({
         <Button
           type="submit"
           size="lg"
-          className="rounded-full bg-primary px-8 font-bold shadow-lg shadow-primary/25 transition-transform duration-300 hover:-translate-y-0.5"
+          className="rounded-full bg-spectrum px-8 font-bold text-white shadow-lg shadow-brand-600/25 transition-transform duration-300 hover:-translate-y-0.5"
         >
           {dict.common.send}
         </Button>

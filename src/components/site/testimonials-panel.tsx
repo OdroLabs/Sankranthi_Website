@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface TestimonialItem {
@@ -63,7 +63,7 @@ export function TestimonialsPanel({
             <p className="mb-2 font-mono text-sm text-white/50">{eyebrow}</p>
           )}
           {title && (
-            <h2 className="text-display-xl font-extrabold tracking-tight text-white">{title}</h2>
+            <h2 className="text-display-xl font-serif font-medium tracking-tight text-white">{title}</h2>
           )}
         </div>
         {pageCount > 1 && (
@@ -100,9 +100,10 @@ export function TestimonialsPanel({
             {current.map((item, i) => (
               <div
                 key={`${page}-${i}`}
-                className="flex min-h-[15rem] flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.04] p-6"
+                className="card-glow flex min-h-[15rem] flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.04] p-6"
               >
-                <p className="text-base leading-relaxed text-white/85">{item.quote}</p>
+                <Quote className="mb-3 h-5 w-5 text-brand-400/70" aria-hidden />
+                <p className="flex-1 text-base leading-relaxed text-white/85">{item.quote}</p>
                 <div className="mt-6 flex items-center gap-3">
                   <span
                     className={cn(

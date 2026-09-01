@@ -384,7 +384,7 @@ export const entities: EntityDef[] = [
     model: "booking",
     title: "Nail Spa Bookings",
     titleSingular: "Booking",
-    description: "Appointment requests submitted through the community business page.",
+    description: "Appointment requests submitted through the Social Enterprise page.",
     readOnly: true,
     inbox: {
       statuses: [

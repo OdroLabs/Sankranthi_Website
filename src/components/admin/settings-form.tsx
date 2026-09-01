@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { FileUploadField } from "./image-upload";
 import { ToggleField } from "./toggle-field";
 import { LineListField, PairListField } from "./repeater-field";
+import { RichTextField } from "./rich-text-field";
 import { SectionPreview, type PreviewSection } from "./section-preview";
 
 const langs = [
@@ -83,6 +84,30 @@ function SettingField({ item, settings }: { item: SettingDef; settings: Settings
             inputType={item.key === "donate_amounts" ? "number" : "text"}
           />
         )}
+      </div>
+    );
+  }
+
+  if (item.type === "richtext") {
+    return (
+      <div>
+        <Label className="mb-1.5 block text-sm font-semibold">{item.label}</Label>
+        {item.help && <p className="mb-2 text-xs text-muted-foreground">{item.help}</p>}
+        {/* Stacked, not side-by-side — a block editor is too cramped in a
+            3-column grid, unlike the plain text/textarea fields above. */}
+        <div className="space-y-5">
+          {langs.map((lang) => (
+            <div key={lang.code} className="space-y-1">
+              <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                {lang.label}
+              </p>
+              <RichTextField
+                name={`${item.key}__${lang.code}`}
+                defaultValue={valueFor(settings, item.key, lang.suffix)}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }

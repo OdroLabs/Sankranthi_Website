@@ -240,13 +240,22 @@ function formString(formData: FormData, name: string): string {
  * Build (but don't run) an upsert for one Setting row.
  * `translated` decides whether the Sinhala and Tamil columns are written.
  */
-function settingUpsert(key: string, formData: FormData, translated: boolean) {
-  const valueEn = formString(formData, `${key}__en`);
+function settingUpsert(
+  key: string,
+  formData: FormData,
+  translated: boolean,
+  richtext = false
+) {
+  const read = (name: string) => {
+    const raw = formString(formData, name);
+    return richtext ? sanitizeRichText(raw) : raw;
+  };
+  const valueEn = read(`${key}__en`);
   const values = translated
     ? {
         valueEn,
-        valueSi: formString(formData, `${key}__si`),
-        valueTa: formString(formData, `${key}__ta`),
+        valueSi: read(`${key}__si`),
+        valueTa: read(`${key}__ta`),
       }
     : { valueEn };
 
@@ -276,7 +285,7 @@ export async function saveSettingsPage(
       items.map((item) => {
         // Images and uploads have a single value, never a per-language one.
         const translated = Boolean(item.i18n) && item.type !== "image" && item.type !== "file";
-        return settingUpsert(item.key, formData, translated);
+        return settingUpsert(item.key, formData, translated, item.type === "richtext");
       })
     );
 

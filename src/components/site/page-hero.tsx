@@ -5,65 +5,112 @@ export function PageHero({
   intro,
   eyebrow,
   image,
+  theme = "default",
 }: {
   title: string;
   intro?: string;
   eyebrow?: string;
   /** Optional background photo set in Site Settings. */
   image?: string;
+  /**
+   * "default" is the foundation's navy/brand look used on every page.
+   * "nelume" is the soft blue/pink/sand palette used only on the
+   * NELUME social-enterprise page — see NELUME_PALETTE in business/page.tsx.
+   */
+  theme?: "default" | "nelume";
 }) {
   // Nothing set in the admin for this page header — render nothing at all.
   if (!title && !intro && !eyebrow) return null;
 
+  const isNelume = theme === "nelume";
+
   return (
-    <section id="sec-page-header" className="relative overflow-hidden bg-navy-950 text-white">
+    <section
+      id="sec-page-header"
+      className={`bg-grain relative overflow-hidden ${isNelume ? "bg-[#EFEAE6] text-[#2C2A28]" : "bg-navy-950 text-white"}`}
+    >
       {/* Optional photo, sitting under the gradient */}
       {image && (
         <div
           data-parallax="6"
-          className="absolute -inset-y-[10%] inset-x-0 scale-110 bg-cover bg-center opacity-40"
+          className={`absolute -inset-y-[10%] inset-x-0 scale-110 bg-cover bg-center ${
+            isNelume ? "opacity-25" : "opacity-35"
+          }`}
           style={{ backgroundImage: `url(${image})` }}
         />
       )}
-      {/* Deep navy → brand gradient */}
+      {/* Background gradient — deep navy through violet with a hint of the
+          full pride spectrum for NELUME's soft mist-blue → sandy-beige */}
       <div
-        className={`absolute inset-0 bg-gradient-to-br from-navy-950 via-navy-900 to-brand-800 ${
-          image ? "opacity-80" : ""
+        className={
+          isNelume
+            ? `absolute inset-0 bg-gradient-to-br from-[#A4B3CA]/35 via-[#EFEAE6] to-[#D7ADAF]/30 ${image ? "opacity-90" : ""}`
+            : `absolute inset-0 bg-gradient-to-br from-navy-950 via-brand-900 to-navy-800 ${image ? "opacity-85" : ""}`
+        }
+      />
+      {/* Rainbow glow accents — three soft blooms instead of one, so the full
+          identity (violet/magenta, blue, gold) reads without going flat or
+          cartoonish */}
+      <div
+        className={`pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full blur-3xl ${
+          isNelume ? "bg-[#98A1C0]/25" : "bg-pride-pink/20"
         }`}
       />
-      {/* Subtle grid pattern */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.06]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
-          backgroundSize: "48px 48px",
-        }}
+        className={`pointer-events-none absolute -bottom-32 left-1/4 h-72 w-72 rounded-full blur-3xl ${
+          isNelume ? "bg-[#D7ADAF]/25" : "bg-brand-500/20"
+        }`}
       />
-      {/* Cyan glow accents */}
-      <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-accent/15 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-32 left-1/4 h-72 w-72 rounded-full bg-brand-500/15 blur-3xl" />
+      {!isNelume && (
+        <div className="pointer-events-none absolute bottom-0 right-1/4 h-64 w-64 rounded-full bg-pride-yellow/10 blur-3xl" />
+      )}
+      {/* Thin abstract rule, top-right — a quiet decorative flourish rather
+          than a repeated block shape */}
+      {!isNelume && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute right-6 top-8 hidden h-24 w-24 rounded-full border border-white/10 md:block lg:right-16"
+        />
+      )}
 
       <div className="relative mx-auto w-full max-w-[1400px] px-4 pb-20 pt-16 md:px-6 md:pb-28 md:pt-20">
         {eyebrow && (
-          <p data-hero className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+          <p
+            data-hero
+            className={`mb-3 text-xs font-bold uppercase tracking-[0.22em] ${
+              isNelume ? "text-[#95632E]" : "bg-spectrum bg-clip-text text-transparent"
+            }`}
+          >
             {eyebrow}
           </p>
         )}
         {title && (
-          <h1 data-hero className="text-display-xl max-w-2xl font-extrabold tracking-tight">
+          <h1
+            data-hero
+            className="text-display-xl max-w-2xl font-serif font-medium tracking-tight"
+          >
             {title}
           </h1>
         )}
         {intro && (
-          <p data-hero className="mt-4 max-w-2xl whitespace-pre-line leading-relaxed text-white/75 md:text-lg">
+          <p
+            data-hero
+            className={`mt-4 max-w-2xl whitespace-pre-line leading-relaxed md:text-lg ${
+              isNelume ? "text-[#2C2A28]/70" : "text-white/70"
+            }`}
+          >
             {intro}
           </p>
         )}
-        <span data-hero className="mt-6 block h-1 w-16 rounded-full bg-gradient-to-r from-accent to-brand-400" />
+        <span
+          data-hero
+          className={`mt-7 block h-[3px] w-20 rounded-full ${
+            isNelume ? "bg-gradient-to-r from-[#98A1C0] to-[#D7ADAF]" : "bg-pride-flag"
+          }`}
+        />
       </div>
 
-      <Curve className="absolute inset-x-0 -bottom-px text-background" />
+      <Curve className={`absolute inset-x-0 -bottom-px ${isNelume ? "text-[#EFEAE6]" : "text-background"}`} />
     </section>
   );
 }

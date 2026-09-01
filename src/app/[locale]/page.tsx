@@ -20,7 +20,7 @@ import { Curve } from "@/components/site/curve";
 import { HomeHero } from "@/components/site/home-hero";
 import { ServiceCard } from "@/components/site/service-card";
 import { TiltCard } from "@/components/site/tilt-card";
-import { Reveal, StaggerContainer, StaggerItem, Parallax, ImageReveal, CountUp } from "@/components/animations";
+import { Reveal, StaggerContainer, StaggerItem, CountUp } from "@/components/animations";
 
 function SectionTag({ children, light }: { children: React.ReactNode; light?: boolean }) {
   return (
@@ -228,13 +228,20 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
             {aboutImage && (
               <div className="relative">
                 <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-brand-100 via-transparent to-accent/10" />
-                <ImageReveal delay={0.1} className="relative rounded-3xl shadow-card-hover">
-                  <Parallax strength={14} className="aspect-[4/3] overflow-hidden">
-                    <div
-                      className="h-full w-full scale-110 bg-cover bg-center"
-                      style={{ backgroundImage: `url(${aboutImage})` }}
-                    />
-                  </Parallax>
+                {/* Plain CSS/GSAP reveal, not the Framer ImageReveal/Parallax
+                    pair — that combination is unreliable for two-column CMS
+                    photos like this one (see the same note on the About
+                    page's overview photo). */}
+                <div
+                  data-animate
+                  data-delay="0.1"
+                  className="relative overflow-hidden rounded-3xl shadow-card-hover"
+                >
+                  <div
+                    data-parallax="14"
+                    className="aspect-[4/3] scale-110 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${aboutImage})` }}
+                  />
                   {aboutCaption && (
                     <Reveal
                       direction="scale"
@@ -247,7 +254,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                       <p className="text-sm font-bold text-navy-900">{aboutCaption}</p>
                     </Reveal>
                   )}
-                </ImageReveal>
+                </div>
               </div>
             )}
           </div>
@@ -283,7 +290,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     </p>
                   )}
                   {statsTitle && (
-                    <h2 className="text-display-xl font-extrabold tracking-tight">{statsTitle}</h2>
+                    <h2 className="text-display-xl font-serif font-medium tracking-tight">{statsTitle}</h2>
                   )}
                   <span className="mx-auto block h-1 w-16 rounded-full bg-gradient-to-r from-accent to-brand-400" />
                 </Reveal>
@@ -311,28 +318,30 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* ------------------------------------------------------------------ */}
       {showServices && (
         <section id="sec-services" className="relative overflow-hidden py-16 md:py-24">
-          <div className="pointer-events-none absolute inset-0 bg-grid-fade opacity-[0.15]" />
+          <div className="pointer-events-none absolute -right-40 top-24 h-80 w-80 rounded-full bg-brand-100/50 blur-3xl" />
+          <div className="pointer-events-none absolute -left-32 bottom-10 h-64 w-64 rounded-full bg-pride-yellow/10 blur-3xl" />
           <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative">
             {(servicesTitle || servicesText || s(settings, "home_services_eyebrow", locale)) && (
-              <Reveal className="mx-auto mb-12 max-w-2xl space-y-3 text-center">
-                {s(settings, "home_services_eyebrow", locale) && (
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-                    {s(settings, "home_services_eyebrow", locale)}
+              <Reveal className="mb-14 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+                <div className="max-w-xl">
+                  {s(settings, "home_services_eyebrow", locale) && (
+                    <SectionTag>{s(settings, "home_services_eyebrow", locale)}</SectionTag>
+                  )}
+                  {servicesTitle && (
+                    <h2 className="text-display-xl mt-3 font-serif font-medium tracking-tight text-navy-900">
+                      {servicesTitle}
+                    </h2>
+                  )}
+                </div>
+                {servicesText && (
+                  <p className="max-w-sm leading-relaxed text-muted-foreground lg:text-right">
+                    {servicesText}
                   </p>
                 )}
-                {servicesTitle && (
-                  <h2 className="text-display-xl font-extrabold tracking-tight text-navy-900">
-                    {servicesTitle}
-                  </h2>
-                )}
-                {servicesText && (
-                  <p className="leading-relaxed text-muted-foreground">{servicesText}</p>
-                )}
-                <span className="mx-auto block h-1 w-16 rounded-full bg-gradient-to-r from-primary to-accent" />
               </Reveal>
             )}
             <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {services.map((service) => (
+              {services.map((service, index) => (
                 <StaggerItem key={service.id} className="h-full">
                   <ServiceCard
                     href={`/${locale}/services/${service.slug ?? service.id}`}
@@ -340,6 +349,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     title={loc(service, "title", locale)}
                     description={loc(service, "description", locale)}
                     readMoreLabel={dict.common.readMore}
+                    index={index}
                   />
                 </StaggerItem>
               ))}
@@ -368,7 +378,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                   <SectionTag>{s(settings, "home_projects_eyebrow", locale)}</SectionTag>
                 )}
                 {projectsTitle && (
-                  <h2 className="text-display-xl font-extrabold tracking-tight text-navy-900">
+                  <h2 className="text-display-xl font-serif font-medium tracking-tight text-navy-900">
                     {projectsTitle}
                   </h2>
                 )}
@@ -570,34 +580,93 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* News — migrated 1:1 from the legacy static site's news-section      */}
       {/* ------------------------------------------------------------------ */}
       {showNews && (
-        <section id="sec-news" data-animate className="news-ref mx-auto w-full max-w-[1400px] px-4 md:px-6 pb-16 md:pb-24">
-          <div className="news-ref__heading">
-            {s(settings, "home_news_eyebrow", locale) && <span>{s(settings, "home_news_eyebrow", locale)}</span>}
-            {newsTitle && <h2>{newsTitle}</h2>}
-          </div>
-          <div className="news-ref__grid">
-            {news.map((item) => (
-              <Link key={item.id} href={`/${locale}/news/${item.slug ?? item.id}`} className="news-ref__card">
+        <section id="sec-news" className="mx-auto w-full max-w-[1400px] px-4 md:px-6 pb-16 md:pb-24">
+          {(newsTitle || s(settings, "home_news_eyebrow", locale)) && (
+            <Reveal className="mb-12 max-w-2xl space-y-3">
+              {s(settings, "home_news_eyebrow", locale) && (
+                <SectionTag>{s(settings, "home_news_eyebrow", locale)}</SectionTag>
+              )}
+              {newsTitle && (
+                <h2 className="text-display-xl font-serif font-medium tracking-tight text-navy-900">
+                  {newsTitle}
+                </h2>
+              )}
+            </Reveal>
+          )}
+
+          {(() => {
+            const [featured, ...rest] = news;
+            const newsCard = (item: (typeof news)[number], big?: boolean) => (
+              <Link
+                key={item.id}
+                href={`/${locale}/news/${item.slug ?? item.id}`}
+                className={`group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-white shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover ${
+                  big ? "lg:flex-row" : ""
+                }`}
+              >
                 {item.image && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={item.image} alt={loc(item, "title", locale)} />
+                  <div
+                    className={`relative overflow-hidden ${
+                      big ? "aspect-[16/10] lg:aspect-auto lg:w-1/2" : "aspect-[16/10]"
+                    }`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={item.image}
+                      alt={loc(item, "title", locale)}
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-navy-950/50 via-transparent to-transparent" />
+                  </div>
                 )}
-                <div className="news-ref__body">
-                  <time dateTime={new Date(item.publishedAt).toISOString()}>
+                <div className={`flex flex-1 flex-col gap-2.5 p-6 ${big ? "lg:justify-center lg:p-10" : ""}`}>
+                  <time
+                    dateTime={new Date(item.publishedAt).toISOString()}
+                    className="text-xs font-bold uppercase tracking-[0.14em] text-accent"
+                  >
                     {formatDate(item.publishedAt, locale)}
                   </time>
-                  <h3>{loc(item, "title", locale)}</h3>
-                  <span>Read more →</span>
+                  <h3
+                    className={`font-bold leading-snug text-navy-900 transition-colors group-hover:text-primary ${
+                      big ? "text-xl md:text-2xl" : "text-base"
+                    }`}
+                  >
+                    {loc(item, "title", locale)}
+                  </h3>
+                  <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-bold text-primary">
+                    Read more
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
+                  </span>
                 </div>
               </Link>
-            ))}
-          </div>
+            );
+
+            return (
+              <div className="space-y-6">
+                {featured && (
+                  <StaggerContainer>
+                    <StaggerItem>{newsCard(featured, true)}</StaggerItem>
+                  </StaggerContainer>
+                )}
+                {rest.length > 0 && (
+                  <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {rest.map((item) => (
+                      <StaggerItem key={item.id}>{newsCard(item)}</StaggerItem>
+                    ))}
+                  </StaggerContainer>
+                )}
+              </div>
+            );
+          })()}
+
           {s(settings, "facebook") && (
-            <div className="news-ref__action">
-              <a href={s(settings, "facebook")} target="_blank" rel="noopener noreferrer">
-                Follow us on Facebook
-              </a>
-            </div>
+            <Reveal className="mt-12 text-center">
+              <Button asChild variant="outline" size="lg" className="rounded-full px-8 font-semibold">
+                <a href={s(settings, "facebook")} target="_blank" rel="noopener noreferrer">
+                  Follow us on Facebook
+                </a>
+              </Button>
+            </Reveal>
           )}
         </section>
       )}
@@ -613,7 +682,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 <SectionTag>{s(settings, "home_events_eyebrow", locale)}</SectionTag>
               )}
               {eventsTitle && (
-                <h2 className="text-display-lg font-extrabold tracking-tight text-navy-900">{eventsTitle}</h2>
+                <h2 className="text-display-lg font-serif font-medium tracking-tight text-navy-900">{eventsTitle}</h2>
               )}
             </Reveal>
             <StaggerContainer className="divide-y divide-border overflow-hidden rounded-3xl border border-border bg-white shadow-card">

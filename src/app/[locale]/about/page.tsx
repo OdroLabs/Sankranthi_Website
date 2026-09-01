@@ -6,6 +6,17 @@ import { PageHero } from "@/components/site/page-hero";
 import { TiltCard } from "@/components/site/tilt-card";
 import { Reveal, StaggerContainer, StaggerItem } from "@/components/animations";
 
+// Cycled across the values grid so the section reads as a quiet spectrum
+// (one thin accent per card) rather than a flat, single-colour repeat.
+const VALUE_ACCENTS = [
+  "from-brand-600 to-accent",
+  "from-teal-600 to-brand-500",
+  "from-pride-blue to-brand-600",
+  "from-pride-violet to-pride-pink",
+  "from-teal-500 to-pride-sky",
+  "from-brand-500 to-pride-orange",
+];
+
 export default async function AboutPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
   const settings = await getSettings();
@@ -42,7 +53,9 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   /**
    * Heading + prose block, rendered only when there is text. `reverse` swaps
    * which side the photo sits on so the page doesn't feel like the same
-   * two-column block repeated three times.
+   * two-column block repeated three times. When there's no photo the block
+   * still reads as an asymmetric composition — a narrow icon/rule column
+   * beside the prose — rather than a centered stack.
    *
    * The photo itself intentionally uses the site-wide GSAP `data-animate` /
    * `data-parallax` reveal (the same mechanism PageHero's own background
@@ -67,39 +80,68 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
     reverse?: boolean;
   }) => {
     if (!text) return null;
-    return (
-      <section
-        id={id}
-        className={`grid items-center gap-12 ${image ? "lg:grid-cols-[1fr_1fr]" : ""}`}
-      >
-        <Reveal
-          direction={image && reverse ? "right" : "left"}
-          className={image && reverse ? "lg:order-2" : undefined}
-        >
-          <div className={image ? "max-w-xl" : "mx-auto max-w-3xl text-center"}>
-            {title && (
-              <div className={`mb-4 flex items-center gap-3 ${image ? "" : "justify-center"}`}>
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-600 to-accent text-white shadow-glow">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <h2 className="text-display-lg font-extrabold tracking-tight text-navy-900">
+
+    if (image) {
+      return (
+        <section id={id} className="grid items-center gap-12 lg:grid-cols-[1fr_1fr]">
+          <Reveal
+            direction={reverse ? "right" : "left"}
+            className={reverse ? "lg:order-2" : undefined}
+          >
+            <div className="max-w-xl">
+              {title && (
+                <div className="mb-5 flex items-center gap-4">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-600 to-accent text-white shadow-glow">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <span className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
+                </div>
+              )}
+              {title && (
+                <h2 className="text-display-xl font-serif font-medium tracking-tight text-navy-900">
                   {title}
                 </h2>
-              </div>
-            )}
-            <p className="whitespace-pre-line leading-relaxed text-muted-foreground">{text}</p>
-          </div>
-        </Reveal>
-        {image && (
+              )}
+              <p className="mt-5 whitespace-pre-line leading-relaxed text-muted-foreground md:text-lg">
+                {text}
+              </p>
+            </div>
+          </Reveal>
           <div
             data-animate
             data-delay="0.12"
-            className={`overflow-hidden rounded-3xl shadow-card-hover ${reverse ? "lg:order-1" : ""}`}
+            className={`relative overflow-hidden rounded-3xl shadow-card-hover ${reverse ? "lg:order-1" : ""}`}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={image} alt={title} className="aspect-[4/3] w-full object-cover" />
+            <span className="pointer-events-none absolute inset-x-6 -bottom-3 h-[3px] rounded-full bg-spectrum opacity-90" />
           </div>
-        )}
+        </section>
+      );
+    }
+
+    return (
+      <section id={id} className="grid gap-8 lg:grid-cols-[minmax(0,220px)_1fr] lg:gap-16">
+        <Reveal direction="up">
+          <div className="flex items-center gap-4 lg:flex-col lg:items-start lg:gap-6">
+            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-600 to-accent text-white shadow-glow">
+              <Icon className="h-6 w-6" />
+            </span>
+            <span className="hidden h-28 w-px bg-gradient-to-b from-border to-transparent lg:block" />
+          </div>
+        </Reveal>
+        <Reveal direction="up" delay={0.08}>
+          <div className="max-w-2xl">
+            {title && (
+              <h2 className="text-display-xl font-serif font-medium tracking-tight text-navy-900">
+                {title}
+              </h2>
+            )}
+            <p className="mt-5 whitespace-pre-line leading-relaxed text-muted-foreground md:text-lg">
+              {text}
+            </p>
+          </div>
+        </Reveal>
       </section>
     );
   };
@@ -123,29 +165,51 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
 
         {blocks.length > 0 && (
           <div id="sec-visionmission">
-            <StaggerContainer className="grid gap-6 md:grid-cols-2">
-              {blocks.map((block) => (
-                <StaggerItem key={block.title || block.text}>
-                  <TiltCard className="h-full">
-                    <div className="card-glow group relative h-full overflow-hidden rounded-3xl border border-border bg-white p-8 shadow-card transition-shadow duration-300">
-                      <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-brand-50/70 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                      <div className="relative">
-                        <span
-                          className={`mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${block.gradient} text-white shadow-glow`}
-                        >
-                          <block.icon className="h-6 w-6" />
-                        </span>
-                        {block.title && (
-                          <h3 className="mb-2 text-lg font-bold text-navy-900">{block.title}</h3>
+            <StaggerContainer className="grid gap-6 lg:grid-cols-2">
+              {blocks.map((block, idx) => {
+                const dark = idx % 2 === 0;
+                return (
+                  <StaggerItem key={block.title || block.text}>
+                    <TiltCard className="h-full">
+                      <div
+                        className={`card-glow group relative h-full overflow-hidden rounded-3xl p-9 shadow-card transition-shadow duration-300 md:p-11 ${
+                          dark
+                            ? "bg-grain bg-gradient-to-br from-navy-950 via-brand-900 to-brand-700 text-white shadow-glow"
+                            : "border border-border bg-white text-navy-900"
+                        }`}
+                      >
+                        {dark ? (
+                          <>
+                            <div className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-pride-pink/20 blur-3xl" />
+                            <div className="pointer-events-none absolute -bottom-16 -left-6 h-52 w-52 rounded-full bg-teal-500/20 blur-3xl" />
+                          </>
+                        ) : (
+                          <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-brand-50/70 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                         )}
-                        <p className="whitespace-pre-line leading-relaxed text-muted-foreground">
-                          {block.text}
-                        </p>
+                        <div className="relative">
+                          <span
+                            className={`mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${block.gradient} text-white shadow-glow`}
+                          >
+                            <block.icon className="h-6 w-6" />
+                          </span>
+                          {block.title && (
+                            <h3
+                              className={`text-display-lg font-serif font-medium tracking-tight ${dark ? "text-white" : "text-navy-900"}`}
+                            >
+                              {block.title}
+                            </h3>
+                          )}
+                          <p
+                            className={`mt-4 whitespace-pre-line leading-relaxed ${dark ? "text-white/75" : "text-muted-foreground"}`}
+                          >
+                            {block.text}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </TiltCard>
-                </StaggerItem>
-              ))}
+                    </TiltCard>
+                  </StaggerItem>
+                );
+              })}
             </StaggerContainer>
           </div>
         )}
@@ -153,33 +217,44 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         {values.length > 0 && (
           <section id="sec-values">
             {valuesTitle && (
-              <Reveal className="mb-10 flex items-center justify-center gap-3 text-center">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-600 to-accent text-white shadow-glow">
-                  <Sparkles className="h-5 w-5" />
-                </span>
-                <h2 className="text-display-lg font-extrabold tracking-tight text-navy-900">
-                  {valuesTitle}
-                </h2>
+              <Reveal className="mb-12 flex flex-col items-center gap-4 text-center">
+                <div className="flex items-center gap-3">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-600 to-accent text-white shadow-glow">
+                    <Sparkles className="h-5 w-5" />
+                  </span>
+                  <h2 className="text-display-xl font-serif font-medium tracking-tight text-navy-900">
+                    {valuesTitle}
+                  </h2>
+                </div>
+                <span className="block h-[3px] w-20 rounded-full bg-pride-flag" />
               </Reveal>
             )}
             <StaggerContainer className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {values.map((value, i) => (
-                <StaggerItem key={i}>
-                  <TiltCard className="h-full">
-                    <div className="card-glow h-full rounded-3xl border border-border bg-white p-7 shadow-card transition-shadow duration-300">
-                      <span className="font-number text-sm font-bold text-primary/60">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <h3 className="mt-2 font-bold text-navy-900">{value.left}</h3>
-                      {value.right && (
-                        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                          {value.right}
-                        </p>
-                      )}
-                    </div>
-                  </TiltCard>
-                </StaggerItem>
-              ))}
+              {values.map((value, i) => {
+                const accent = VALUE_ACCENTS[i % VALUE_ACCENTS.length];
+                return (
+                  <StaggerItem key={i}>
+                    <TiltCard className="h-full">
+                      <div className="card-glow group relative h-full overflow-hidden rounded-3xl border border-border bg-white p-7 shadow-card transition-shadow duration-300">
+                        <span
+                          className={`absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r ${accent} opacity-70 transition-opacity duration-300 group-hover:opacity-100`}
+                        />
+                        <span
+                          className={`font-serif text-5xl font-medium tracking-tight bg-gradient-to-br ${accent} bg-clip-text text-transparent`}
+                        >
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <h3 className="mt-3 font-bold text-navy-900">{value.left}</h3>
+                        {value.right && (
+                          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                            {value.right}
+                          </p>
+                        )}
+                      </div>
+                    </TiltCard>
+                  </StaggerItem>
+                );
+              })}
             </StaggerContainer>
           </section>
         )}
@@ -201,13 +276,16 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
               id="sec-extra"
               className="cta-gradient-shift bg-grain relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-navy-900 via-brand-800 to-brand-600 p-10 text-white shadow-glow md:p-14"
             >
-              <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-accent/20 blur-3xl" />
+              <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-pride-pink/20 blur-3xl" />
               <div className="pointer-events-none absolute -bottom-20 -left-10 h-72 w-72 rounded-full bg-brand-400/20 blur-3xl" />
+              <div className="pointer-events-none absolute bottom-0 right-1/4 h-56 w-56 rounded-full bg-pride-yellow/10 blur-3xl" />
               <div className="relative">
                 {extraTitle && (
-                  <h2 className="text-display-lg font-extrabold tracking-tight">{extraTitle}</h2>
+                  <h2 className="text-display-xl font-serif font-medium tracking-tight">
+                    {extraTitle}
+                  </h2>
                 )}
-                <p className="mt-3 max-w-3xl whitespace-pre-line leading-relaxed text-white/80">
+                <p className="mt-4 max-w-3xl whitespace-pre-line leading-relaxed text-white/80 md:text-lg">
                   {extraText}
                 </p>
               </div>

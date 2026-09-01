@@ -18,6 +18,18 @@ const SOCIAL_ICONS: Record<string, typeof Facebook> = {
   tiktok: Music2,
 };
 
+// Each social icon hovers to a different flag colour instead of one flat
+// accent, so the row itself reads as a small rainbow the way the pride
+// stripe does — a detail rather than a loud effect.
+const SOCIAL_HOVER_BG = [
+  "hover:bg-pride-pink",
+  "hover:bg-pride-orange",
+  "hover:bg-pride-yellow",
+  "hover:bg-teal-500",
+  "hover:bg-pride-blue",
+  "hover:bg-pride-violet",
+];
+
 export function SiteFooter({
   locale,
   dict,
@@ -59,8 +71,12 @@ export function SiteFooter({
     <footer id="sec-footer" className="relative bg-navy-950 text-white/90">
       {/* Brand gradient rule */}
       <PrideStripe className="h-1.5" />
-      {/* Soft cyan glow */}
-      <div className="pointer-events-none absolute -top-24 left-1/4 h-64 w-64 rounded-full bg-accent/10 blur-3xl" />
+      {/* Rainbow glow blooms — echoes the hero/PageHero treatment, kept soft
+          so the footer stays calm and readable rather than a solid block. */}
+      <div className="pointer-events-none absolute -top-24 left-1/4 h-64 w-64 rounded-full bg-pride-violet/15 blur-3xl" />
+      <div className="pointer-events-none absolute -top-16 right-[8%] h-56 w-56 rounded-full bg-pride-pink/15 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 left-[6%] h-64 w-64 rounded-full bg-pride-yellow/10 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 right-1/4 h-56 w-56 rounded-full bg-teal-500/10 blur-3xl" />
 
       <div
         className={`mx-auto w-full max-w-[1400px] px-4 md:px-6 relative grid gap-10 py-16 md:grid-cols-2 ${
@@ -129,8 +145,9 @@ export function SiteFooter({
                 {dict.contact.followUs}
               </p>
               <div className="flex flex-wrap gap-2">
-                {socials.map((social) => {
+                {socials.map((social, index) => {
                   const Icon = SOCIAL_ICONS[social.key] ?? Heart;
+                  const hoverBg = SOCIAL_HOVER_BG[index % SOCIAL_HOVER_BG.length];
                   return (
                     <motion.a
                       key={social.key}
@@ -141,7 +158,7 @@ export function SiteFooter({
                       whileHover={{ y: -3, scale: 1.06 }}
                       whileTap={{ scale: 0.95 }}
                       transition={{ type: "spring", stiffness: 400, damping: 18 }}
-                      className="grid h-9 w-9 place-items-center rounded-full bg-white/10 text-white/80 transition-colors hover:bg-accent hover:text-navy-950"
+                      className={`grid h-9 w-9 place-items-center rounded-full bg-white/10 text-white/80 transition-colors hover:text-navy-950 ${hoverBg}`}
                     >
                       <Icon className="h-4 w-4" />
                     </motion.a>
@@ -164,7 +181,7 @@ export function SiteFooter({
                     className="inline-flex items-center gap-2 transition-colors hover:text-accent"
                     href={`/${locale}${l.href}`}
                   >
-                    <span className="h-px w-3 bg-accent/50" />
+                    <span className="h-px w-3 bg-spectrum" />
                     {l.label}
                   </Link>
                 </li>
@@ -185,7 +202,7 @@ export function SiteFooter({
                     className="inline-flex items-center gap-2 transition-colors hover:text-accent"
                     href={`/${locale}${l.href}`}
                   >
-                    <span className="h-px w-3 bg-accent/50" />
+                    <span className="h-px w-3 bg-spectrum" />
                     {l.label}
                   </Link>
                 </li>

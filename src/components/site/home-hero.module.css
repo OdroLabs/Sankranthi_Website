@@ -4,11 +4,11 @@
   --plum: #32162e;
   --ink: #2b2529;
   --muted: #70666b;
-  --coral: #e86f61;
-  --orange: #ed923d;
-  --pink: #c94f83;
-  --green: #2f8b72;
-  --gold: #e4b33f;
+  --coral: #e0392f;
+  --orange: #f5722b;
+  --pink: #e6338c;
+  --green: #0d9488;
+  --gold: #f5c518;
   position: relative;
   height: 310svh;
   background: var(--cream);
@@ -23,8 +23,12 @@
   isolation: isolate;
   color: var(--ink);
   background:
-    radial-gradient(circle at 77% 14%, rgba(232, 111, 97, 0.13), transparent 27%),
-    radial-gradient(circle at 8% 92%, rgba(47, 139, 114, 0.1), transparent 24%),
+    radial-gradient(circle at 88% 6%, rgba(245, 197, 24, 0.28), transparent 32%),
+    radial-gradient(circle at 68% 26%, rgba(230, 51, 140, 0.18), transparent 30%),
+    radial-gradient(circle at 96% 60%, rgba(245, 114, 43, 0.16), transparent 28%),
+    radial-gradient(circle at 4% 10%, rgba(123, 47, 247, 0.12), transparent 26%),
+    radial-gradient(circle at 10% 94%, rgba(13, 148, 136, 0.18), transparent 26%),
+    radial-gradient(circle at 92% 96%, rgba(224, 57, 47, 0.14), transparent 24%),
     var(--cream);
 }
 
@@ -204,7 +208,7 @@
   border-color: var(--coral);
   color: #fff;
   background: var(--coral);
-  box-shadow: 0 15px 30px rgba(232, 111, 97, 0.18);
+  box-shadow: 0 15px 30px rgba(224, 57, 47, 0.18);
   transform: translateY(-2px);
 }
 
@@ -229,7 +233,7 @@
   width: 52%;
   height: 2px;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent, #ffd477, #f3a56a, transparent);
+  background: linear-gradient(90deg, transparent, var(--gold), var(--orange), transparent);
   transform: translateY(-50%) rotate(-3deg);
 }
 
@@ -274,7 +278,7 @@
   width: 68%;
   height: 46%;
   border-radius: 65% 35% 54% 46% / 48% 58% 42% 52%;
-  background: rgba(228, 179, 63, 0.34);
+  background: rgba(245, 197, 24, 0.4);
   transform: rotate(8deg);
 }
 
@@ -287,7 +291,7 @@
   width: 54%;
   height: 35%;
   border-radius: 38% 62% 44% 56% / 55% 38% 62% 45%;
-  background: rgba(47, 139, 114, 0.22);
+  background: rgba(230, 51, 140, 0.26);
   transform: rotate(-7deg);
 }
 
@@ -623,8 +627,8 @@
 }
 
 @keyframes supportArrival {
-  0% { box-shadow: 0 0 0 0 rgba(232, 111, 97, 0); }
-  45% { box-shadow: 0 0 0 7px rgba(232, 111, 97, 0.12); }
+  0% { box-shadow: 0 0 0 0 rgba(224, 57, 47, 0); }
+  45% { box-shadow: 0 0 0 7px rgba(224, 57, 47, 0.12); }
   100% { box-shadow: 0 13px 30px rgba(50, 22, 46, 0.14); }
 }
 

@@ -103,7 +103,9 @@ export type SettingType =
   /** Repeatable rows of "heading + text", stored as `Left :: Right` lines. */
   | "pairs"
   /** Repeatable single-value rows, stored one per line. */
-  | "lines";
+  | "lines"
+  /** Rich HTML, edited with the same block editor as News/Events/Projects/Services content. */
+  | "richtext";
 
 export interface SettingDef {
   key: string;
@@ -163,6 +165,14 @@ const TA = (key: string, label: string, help?: string): SettingDef => ({
   key,
   label,
   type: "textarea",
+  i18n: true,
+  help,
+});
+/** Translated rich HTML, edited with the block editor. */
+const RT = (key: string, label: string, help?: string): SettingDef => ({
+  key,
+  label,
+  type: "richtext",
   i18n: true,
   help,
 });
@@ -323,7 +333,7 @@ export const settingPages: SettingPage[] = [
           SW("nav_show_publications", "Publications"),
           SW("nav_show_news", "News"),
           SW("nav_show_events", "Events & Gallery"),
-          SW("nav_show_business", "Community Business"),
+          SW("nav_show_business", "Social Enterprise"),
           SW("nav_show_suggestions", "Suggestions"),
           SW("nav_show_contact", "Contact Us"),
         ],
@@ -792,12 +802,30 @@ export const settingPages: SettingPage[] = [
         ],
       },
       {
-        section: "Community Business",
+        section: "Social Enterprise",
         preview: { path: "/business", anchor: "sec-page-header" },
         items: [
           T("business_hero_title", "Page title"),
           TA("business_hero_intro", "Intro text"),
-          IMG("business_hero_image", "Header background image"),
+          IMG("business_hero_image", "Hero photo", "Large cinematic photo behind the hero heading."),
+          T("business_about_title", "\"Our Story\" heading"),
+          TA("business_about_body", "\"Our Story\" body", "One or more paragraphs. Blank lines start a new paragraph."),
+          IMG("business_about_image", "\"Our Story\" photo", "Shown beside the story text."),
+          TA("business_impact_body", "\"Business for Social Impact\" body", "One or more paragraphs. Blank lines start a new paragraph."),
+          TA("business_mission_body", "Mission statement body", "One or more paragraphs. Blank lines start a new paragraph."),
+          T("business_objectives_title", "Objectives heading"),
+          PAIRS("business_objectives", "Objectives", {
+            leftLabel: "Objective",
+            rightLabel: "Description",
+            itemLabel: "Objective",
+            addLabel: "Add an objective",
+          }),
+          IMG("business_gallery_image_1", "Gallery photo 1", "Nail care."),
+          IMG("business_gallery_image_2", "Gallery photo 2", "Beauty treatments."),
+          IMG("business_gallery_image_3", "Gallery photo 3", "Wellness."),
+          IMG("business_gallery_image_4", "Gallery photo 4", "People and human connection."),
+          IMG("business_gallery_image_5", "Gallery photo 5", "Skills development."),
+          IMG("business_gallery_image_6", "Gallery photo 6", "Community impact."),
           T("business_empty_text", "Message when the list is empty"),
         ],
       },
@@ -809,6 +837,24 @@ export const settingPages: SettingPage[] = [
           TA("suggestions_hero_intro", "Intro text"),
           IMG("suggestions_hero_image", "Header background image"),
           T("suggestions_success_message", "Message shown after sending"),
+        ],
+      },
+      {
+        section: "Privacy Policy",
+        preview: { path: "/privacy", anchor: "sec-page-header" },
+        hideNote: AUTO_HIDE,
+        items: [
+          T("privacy_title", "Page title"),
+          RT("privacy_body", "Page content"),
+        ],
+      },
+      {
+        section: "Terms & Conditions",
+        preview: { path: "/terms", anchor: "sec-page-header" },
+        hideNote: AUTO_HIDE,
+        items: [
+          T("terms_title", "Page title"),
+          RT("terms_body", "Page content"),
         ],
       },
     ],

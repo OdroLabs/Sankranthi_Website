@@ -356,6 +356,21 @@ html.anim [data-stagger] > * {
   }
 }
 
+/* Slow, subtle image drift used only on the NELUME (Social Enterprise) hero
+   for a cinematic feel. Scoped to its own class so nothing else picks it up. */
+@keyframes nelume-kenburns {
+  0% { transform: scale(1.02); }
+  100% { transform: scale(1.1); }
+}
+.animate-nelume-kenburns {
+  animation: nelume-kenburns 22s ease-in-out infinite alternate;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-nelume-kenburns {
+    animation: none;
+  }
+}
+
 /* ---------------------------------------------------------------------------
    Homepage hero — premium technical interface
 --------------------------------------------------------------------------- */

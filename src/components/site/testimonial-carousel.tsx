@@ -47,7 +47,7 @@ export function TestimonialCarousel({
             exit={reduceMotion ? undefined : { opacity: 0, x: direction * -24 }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           >
-            <blockquote className="mb-4 text-lg leading-relaxed text-foreground/90 md:text-xl">
+            <blockquote className="mb-4 font-serif text-lg leading-relaxed text-foreground/90 md:text-xl">
               “{item.quote}”
             </blockquote>
             <p className="mb-6 text-sm font-bold text-primary">{item.author}</p>
