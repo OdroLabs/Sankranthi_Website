@@ -294,6 +294,11 @@ export const settingPages: SettingPage[] = [
           TA("seo_description", "Default meta description"),
           P("seo_keywords", "Meta keywords", "Comma separated. Optional."),
           IMG("og_image", "Social share image", "Shown when a page is shared on social media."),
+          SW(
+            "seo_allow_indexing",
+            "Allow search engines to index this site",
+            "Off adds a noindex tag to every page and blocks the site in robots.txt, so Google and other search engines drop it from results. On by default."
+          ),
         ],
       },
     ],
@@ -855,6 +860,31 @@ export const settingPages: SettingPage[] = [
         items: [
           T("terms_title", "Page title"),
           RT("terms_body", "Page content"),
+        ],
+      },
+    ],
+  },
+
+  /* ------------------------------------------------------------ Coming Soon */
+  {
+    slug: "coming-soon",
+    title: "Coming Soon Mode",
+    description:
+      "Show a single holding page to every visitor instead of the site. Turn this on before launch, or any time the site needs to come down for a while — you'll still be able to sign in here and manage everything as normal.",
+    sections: [
+      {
+        section: "Coming Soon mode",
+        preview: { path: "/coming-soon", anchor: "sec-coming-soon" },
+        items: [
+          SW(
+            "show_coming_soon",
+            "Enable Coming Soon mode",
+            "When on, every visitor sees the page below instead of the site. Signed-in admins still see the real site so you can keep working and preview changes."
+          ),
+          T("coming_soon_eyebrow", "Small label above the heading"),
+          T("coming_soon_title", "Heading", "Leave blank to use the organisation name."),
+          TA("coming_soon_text", "Message"),
+          IMG("coming_soon_image", "Background photo", "Optional. Shown faded behind the message."),
         ],
       },
     ],

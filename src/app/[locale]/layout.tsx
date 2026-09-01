@@ -4,8 +4,10 @@ import { isLocale } from "@/lib/i18n";
 import { getLabels } from "@/lib/labels";
 import { buildNav } from "@/lib/nav";
 import { getSettings, s, sBool } from "@/lib/settings";
+import { getAdmin } from "@/lib/session";
 import { SiteHeader } from "@/components/site/header";
 import { SiteFooter } from "@/components/site/footer";
+import { ComingSoon } from "@/components/site/coming-soon";
 import { ScrollFX } from "@/components/site/scroll-fx";
 import { LenisProvider } from "@/components/site/lenis-provider";
 import { ScrollProgress } from "@/components/site/scroll-progress";
@@ -32,11 +34,20 @@ export async function generateMetadata({
   const favicon = s(settings, "favicon");
   const ogImage = s(settings, "og_image");
 
+  // Coming Soon mode implies noindex regardless of the toggle below — no
+  // point letting search engines index a holding page — but the explicit
+  // "Allow search engines to index this site" switch always applies too.
+  const allowIndexing =
+    sBool(settings, "seo_allow_indexing", true) && !sBool(settings, "show_coming_soon", false);
+
   return {
     title: title || undefined,
     description: description || undefined,
     keywords: keywords ? keywords.split(",").map((k) => k.trim()).filter(Boolean) : undefined,
     icons: favicon ? { icon: favicon } : undefined,
+    robots: allowIndexing
+      ? undefined
+      : { index: false, follow: false, googleBot: { index: false, follow: false } },
     openGraph: {
       title: title || undefined,
       description: description || undefined,
@@ -57,6 +68,20 @@ export default async function LocaleLayout({
   if (!isLocale(rawLocale)) notFound();
   const locale = rawLocale;
   const settings = await getSettings();
+
+  /**
+   * Coming Soon mode (Settings → Coming Soon Mode) replaces the entire site
+   * with a single holding page for anyone who isn't a signed-in admin.
+   * Signed-in admins keep seeing the real site everywhere (including the
+   * admin's own section-preview iframe, which carries the same session
+   * cookie), so the toggle can always be reached and reversed from /admin.
+   * The /coming-soon route itself renders unconditionally, independent of
+   * this gate, so it's always previewable from Settings.
+   */
+  if (sBool(settings, "show_coming_soon", false) && !(await getAdmin())) {
+    return <ComingSoon locale={locale} settings={settings} />;
+  }
+
   const dict = getLabels(locale, settings);
   const nav = buildNav(settings, dict);
 
