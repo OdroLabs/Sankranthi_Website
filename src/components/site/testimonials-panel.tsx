@@ -11,11 +11,11 @@ export interface TestimonialItem {
 }
 
 const AVATAR_PALETTE = [
-  "from-brand-500 to-accent",
-  "from-accent to-destructive",
-  "from-teal-500 to-brand-500",
-  "from-destructive to-brand-700",
-  "from-brand-700 to-teal-500",
+  "from-[#ff6b81] to-[#f6a55c]",
+  "from-[#8f7bff] to-[#5bcefa]",
+  "from-[#4fbfa8] to-[#aeb7ff]",
+  "from-[#f2749e] to-[#8f7bff]",
+  "from-[#f6a55c] to-[#4fbfa8]",
 ];
 
 function initials(name: string) {
@@ -53,17 +53,15 @@ export function TestimonialsPanel({
   };
 
   return (
-    <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-navy-950 p-8 text-white shadow-glow md:p-12">
-      <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand-600/20 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-accent/10 blur-3xl" />
+    <div className="relative overflow-hidden rounded-[2rem] border border-lavender-200 bg-gradient-to-br from-lavender-100 via-white to-blush-100 p-8 shadow-card md:p-12">
+      <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-lavender-300/40 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-blush-300/40 blur-3xl" />
 
       <div className="relative mb-10 flex flex-wrap items-end justify-between gap-6">
         <div>
-          {eyebrow && (
-            <p className="mb-2 font-mono text-sm text-white/50">{eyebrow}</p>
-          )}
+          {eyebrow && <p className="mb-2 font-mono text-sm text-primary/70">{eyebrow}</p>}
           {title && (
-            <h2 className="text-display-xl font-serif font-medium tracking-tight text-white">{title}</h2>
+            <h2 className="text-display-xl font-serif font-medium tracking-tight text-charcoal-900">{title}</h2>
           )}
         </div>
         {pageCount > 1 && (
@@ -71,14 +69,14 @@ export function TestimonialsPanel({
             <button
               onClick={() => go(-1)}
               aria-label="Previous testimonials"
-              className="grid h-11 w-11 place-items-center rounded-full border border-white/20 text-white/80 transition-colors hover:border-white/50 hover:text-white"
+              className="grid h-11 w-11 place-items-center rounded-full border border-lavender-200 bg-white text-charcoal-700 transition-colors hover:border-primary/40 hover:text-primary"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
             <button
               onClick={() => go(1)}
               aria-label="Next testimonials"
-              className="grid h-11 w-11 place-items-center rounded-full border border-white/20 text-white/80 transition-colors hover:border-white/50 hover:text-white"
+              className="grid h-11 w-11 place-items-center rounded-full border border-lavender-200 bg-white text-charcoal-700 transition-colors hover:border-primary/40 hover:text-primary"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -100,10 +98,10 @@ export function TestimonialsPanel({
             {current.map((item, i) => (
               <div
                 key={`${page}-${i}`}
-                className="card-glow flex min-h-[15rem] flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.04] p-6"
+                className="card-glow flex min-h-[15rem] flex-col justify-between rounded-2xl border border-lavender-200 bg-white p-6 shadow-card"
               >
-                <Quote className="mb-3 h-5 w-5 text-brand-400/70" aria-hidden />
-                <p className="flex-1 text-base leading-relaxed text-white/85">{item.quote}</p>
+                <Quote className="mb-3 h-5 w-5 text-primary/60" aria-hidden />
+                <p className="flex-1 text-base leading-relaxed text-charcoal-800">{item.quote}</p>
                 <div className="mt-6 flex items-center gap-3">
                   <span
                     className={cn(
@@ -113,7 +111,7 @@ export function TestimonialsPanel({
                   >
                     {initials(item.author)}
                   </span>
-                  <p className="text-sm font-bold text-white">{item.author}</p>
+                  <p className="text-sm font-bold text-charcoal-900">{item.author}</p>
                 </div>
               </div>
             ))}

@@ -4,14 +4,14 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
-/** A rotating set of two-stop rainbow accents so cards read as one family without repeating the same gradient. */
+/** A rotating set of two-stop pastel accents so cards read as one family without repeating the same gradient. */
 const ACCENTS = [
-  { from: "#7b2ff7", to: "#e6338c", tint: "from-brand-50/70" },
-  { from: "#e6338c", to: "#ff8c00", tint: "from-[#fdf1f6]" },
-  { from: "#24408e", to: "#5bcefa", tint: "from-[#eef6fd]" },
-  { from: "#0d9488", to: "#7b2ff7", tint: "from-teal-50/70" },
-  { from: "#ff8c00", to: "#ffed00", tint: "from-[#fff8e6]" },
-  { from: "#732982", to: "#f5a9b8", tint: "from-[#f8f1fa]" },
+  { from: "#ff6b81", to: "#f6a55c", tint: "from-blush-100/70" },
+  { from: "#8f7bff", to: "#5bcefa", tint: "from-lavender-100/70" },
+  { from: "#4fbfa8", to: "#aeb7ff", tint: "from-mint-100/70" },
+  { from: "#f6a55c", to: "#f2749e", tint: "from-peach-100/70" },
+  { from: "#5bcefa", to: "#8f7bff", tint: "from-sky-100/70" },
+  { from: "#f2749e", to: "#ff6b81", tint: "from-blush-200/60" },
 ];
 
 export function ServiceCard({
@@ -65,7 +65,7 @@ export function ServiceCard({
                 {icon}
               </motion.span>
             )}
-            <h3 className="mb-2 text-lg font-bold text-navy-900 transition-colors group-hover:text-primary">
+            <h3 className="mb-2 text-lg font-bold text-charcoal-900 transition-colors group-hover:text-primary">
               {title}
             </h3>
             <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>

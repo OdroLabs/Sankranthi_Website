@@ -11,6 +11,10 @@ const config: Config = {
       screens: { "2xl": "1200px" },
     },
     extend: {
+      fontFamily: {
+        sans: ["Manrope", "ui-sans-serif", "system-ui", "sans-serif"],
+        serif: ['"DM Serif Display"', "ui-serif", "Georgia", "serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -41,6 +45,19 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        /*
+         * Soft inclusive pastel system — warm cream/blush/lavender/mint/sky
+         * tones used for section washes, card tints and gradient blends.
+         * Kept separate from `brand`/`pride` so the logo and flag identity
+         * colours are never approximated.
+         */
+        cream: { DEFAULT: "#FFF9F5", 50: "#FFFDFB", 100: "#FFF9F5", 200: "#FFF4F1" },
+        blush: { 50: "#FFF9FB", 100: "#FFF0F4", 200: "#FDE7EF", 300: "#FFD6E0" },
+        lavender: { 50: "#F8F6FF", 100: "#EDE7FF", 200: "#E1D9FF", 300: "#AEB7FF" },
+        mint: { 50: "#F3FCF8", 100: "#E8F7EF", 200: "#D8F1E5", 300: "#A7E7D0" },
+        sky: { 50: "#F5FBFF", 100: "#EAF6FF", 200: "#DAEEFF" },
+        peach: { 50: "#FFF7EE", 100: "#FFEEDC", 200: "#F6C98B" },
+        charcoal: { 50: "#F4F5F6", 700: "#39424C", 800: "#2A323B", 900: "#1F2933", 950: "#171D24" },
         /* Violet, anchored on the base of the logo's swirl (#7b2ff7 at 600). */
         brand: {
           50: "#f6f3ff",
@@ -101,6 +118,12 @@ const config: Config = {
           "linear-gradient(90deg, #e40303 0%, #ff8c00 20%, #ffed00 40%, #008026 60%, #24408e 80%, #732982 100%)",
         "pride-flag":
           "linear-gradient(90deg, #e40303 0 16.667%, #ff8c00 16.667% 33.333%, #ffed00 33.333% 50%, #008026 50% 66.667%, #24408e 66.667% 83.333%, #732982 83.333% 100%)",
+        /* Elegant pastel washes for hero/CTA panels and card highlights. */
+        "pastel-mesh":
+          "linear-gradient(120deg, #FFEAC2 0%, #FFDCEA 24%, #F0DEFF 46%, #DCEFFF 66%, #D8F5E6 84%, #FFEFD8 100%)",
+        "pastel-blush": "linear-gradient(120deg, #FFF4F1 0%, #FDE7EF 55%, #EDE7FF 100%)",
+        "pastel-mint": "linear-gradient(120deg, #E8F7EF 0%, #EAF6FF 100%)",
+        "pastel-peach": "linear-gradient(135deg, #FFD6E0 0%, #F6C98B 100%)",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -108,10 +131,10 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        card: "0 1px 2px rgba(23, 15, 51, 0.04), 0 8px 24px -8px rgba(23, 15, 51, 0.10)",
-        "card-hover":
-          "0 2px 4px rgba(23, 15, 51, 0.05), 0 20px 40px -12px rgba(123, 47, 247, 0.22)",
-        glow: "0 0 0 1px rgba(255,255,255,0.08), 0 24px 60px -20px rgba(0, 0, 0, 0.5)",
+        card: "0 1px 2px rgba(31, 41, 51, 0.04), 0 10px 28px -10px rgba(31, 41, 51, 0.10)",
+        "card-hover": "0 4px 10px rgba(31, 41, 51, 0.06), 0 24px 44px -14px rgba(174, 130, 255, 0.28)",
+        glow: "0 0 0 1px rgba(255,255,255,0.4), 0 30px 60px -20px rgba(246, 159, 141, 0.35)",
+        pastel: "0 18px 40px -18px rgba(246, 105, 141, 0.22)",
       },
       keyframes: {
         "accordion-down": {

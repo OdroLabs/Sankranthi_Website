@@ -97,6 +97,29 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   const heroCta2Label = s(settings, "hero_cta2_label", locale);
   const heroPoints = sList(settings, "hero_points", locale);
   const heroFootnote = s(settings, "hero_footnote", locale);
+  const heroChapters = [
+    {
+      label: s(settings, "hero_chapter1_label", locale),
+      title: s(settings, "hero_chapter1_title", locale),
+      text: s(settings, "hero_chapter1_text", locale),
+      image: heroRightsImage || projects[0]?.image || heroImage,
+      points: heroPoints.slice(0, 2),
+    },
+    {
+      label: s(settings, "hero_chapter2_label", locale),
+      title: s(settings, "hero_chapter2_title", locale),
+      text: s(settings, "hero_chapter2_text", locale),
+      image: heroOpportunityImage || services[0]?.image || heroImage,
+      points: heroPoints.slice(2, 4),
+    },
+    {
+      label: s(settings, "hero_chapter3_label", locale),
+      title: s(settings, "hero_chapter3_title", locale),
+      text: s(settings, "hero_chapter3_text", locale),
+      image: heroCommunityImage || projects[1]?.image || heroImage,
+      points: heroPoints.slice(4, 6),
+    },
+  ].filter((chapter) => chapter.label || chapter.title || chapter.text);
 
   const aboutTitle = s(settings, "home_about_title", locale);
   const aboutText = s(settings, "home_about_text", locale);
@@ -172,14 +195,15 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 }
               : undefined
           }
-          points={heroPoints}
           footnote={heroFootnote || undefined}
-          storyImages={[
-            heroRightsImage || projects[0]?.image || heroImage,
-            heroOpportunityImage || services[0]?.image || heroImage,
-            heroCommunityImage || projects[1]?.image || heroImage,
-            heroDignityImage || contactImage || aboutImage || heroImage,
-          ]}
+          supportImage={heroDignityImage || aboutImage || heroImage || undefined}
+          chapters={heroChapters.map((chapter) => ({
+            label: chapter.label || undefined,
+            title: chapter.title || undefined,
+            text: chapter.text || undefined,
+            image: chapter.image || undefined,
+            points: chapter.points,
+          }))}
         />
       )}
 
@@ -187,7 +211,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Who we are                                                          */}
       {/* ------------------------------------------------------------------ */}
       {showAbout && (
-        <section id="sec-about" className="mx-auto w-full max-w-[1400px] px-4 md:px-6 py-20 md:py-28">
+        <section id="sec-about" className="mx-auto w-full max-w-[1400px] px-4 md:px-6 py-14 md:py-20">
           <div
             className={`grid items-center gap-12 lg:gap-20 ${
               aboutImage ? "lg:grid-cols-[0.92fr_1.08fr]" : ""
@@ -199,7 +223,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                   <SectionTag>{s(settings, "home_about_eyebrow", locale)}</SectionTag>
                 )}
                 {aboutTitle && (
-                  <h2 className="text-display-xl font-extrabold tracking-tight text-brand-900">
+                  <h2 className="text-display-xl font-serif font-medium tracking-tight text-charcoal-900">
                     {aboutTitle}
                   </h2>
                 )}
@@ -251,7 +275,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                       <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-brand-600 to-accent text-white">
                         <Sparkles className="h-5 w-5" />
                       </span>
-                      <p className="text-sm font-bold text-brand-900">{aboutCaption}</p>
+                      <p className="text-sm font-bold text-charcoal-900">{aboutCaption}</p>
                     </Reveal>
                   )}
                 </div>
@@ -266,22 +290,20 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* ------------------------------------------------------------------ */}
       {showStats && (
         <section id="sec-stats">
-          <Curve variant="arc" className="-mb-px text-brand-950" />
-          <div className="bg-grain cta-gradient-shift relative overflow-hidden bg-gradient-to-br from-brand-950 via-pride-violet to-pride-pink py-16 text-white md:py-24">
+          <Curve variant="arc" className="-mb-px text-lavender-200" />
+          <div className="cta-gradient-shift relative overflow-hidden bg-gradient-to-br from-blush-300 via-lavender-200 to-sky-200 py-16 text-charcoal-900 md:py-24">
             {statsImage && (
               <div className="absolute inset-0 overflow-hidden">
                 <div
-                  className="absolute -inset-y-[14%] inset-x-0 scale-110 bg-cover bg-center opacity-15"
+                  className="absolute -inset-y-[14%] inset-x-0 scale-110 bg-cover bg-center opacity-10"
                   style={{ backgroundImage: `url(${statsImage})` }}
                 />
               </div>
             )}
-            <div className="absolute inset-0 bg-gradient-to-b from-brand-950/70 via-transparent to-brand-950/70" />
-            <div className="pointer-events-none absolute inset-0 bg-grid-fade opacity-40" />
-            <div className="pointer-events-none absolute right-0 top-0 h-72 w-72 rounded-full bg-pride-orange/15 blur-3xl" />
-            <div className="pointer-events-none absolute -left-10 bottom-0 h-64 w-64 rounded-full bg-teal-500/15 blur-3xl" />
-            <div className="pointer-events-none absolute left-1/3 top-1/4 h-56 w-56 rounded-full bg-pride-yellow/10 blur-3xl" />
-            <div className="pointer-events-none absolute right-1/4 bottom-1/4 h-52 w-52 rounded-full bg-pride-blue/10 blur-3xl" />
+            <div className="pointer-events-none absolute right-0 top-0 h-72 w-72 rounded-full bg-peach-200/60 blur-3xl" />
+            <div className="pointer-events-none absolute -left-10 bottom-0 h-64 w-64 rounded-full bg-mint-300/60 blur-3xl" />
+            <div className="pointer-events-none absolute left-1/3 top-1/4 h-56 w-56 rounded-full bg-blush-300/40 blur-3xl" />
+            <div className="pointer-events-none absolute right-1/4 bottom-1/4 h-52 w-52 rounded-full bg-lavender-300/40 blur-3xl" />
 
             <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative">
               {(statsTitle || s(settings, "home_stats_eyebrow", locale)) && (
@@ -292,26 +314,26 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     </p>
                   )}
                   {statsTitle && (
-                    <h2 className="text-display-xl font-serif font-medium tracking-tight">{statsTitle}</h2>
+                    <h2 className="text-display-xl font-serif font-medium tracking-tight text-charcoal-900">{statsTitle}</h2>
                   )}
-                  <span className="mx-auto block h-1 w-16 rounded-full bg-gradient-to-r from-accent to-brand-400" />
+                  <span className="mx-auto block h-1 w-16 rounded-full bg-gradient-to-r from-accent to-primary" />
                 </Reveal>
               )}
               <StaggerContainer className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
                 {stats.map((stat) => (
                   <StaggerItem key={stat.id}>
-                    <div className="card-glow glass-dark group h-full rounded-3xl border border-white/10 p-7 text-center transition-all duration-300 hover:-translate-y-1.5 hover:bg-white/10">
+                    <div className="card-glow glass-pastel group h-full rounded-3xl p-7 text-center shadow-card transition-all duration-300 hover:-translate-y-1.5">
                       <p className="font-number text-3xl font-extrabold text-gradient md:text-4xl">
                         <CountUp value={stat.value} />
                       </p>
-                      <p className="mt-2.5 text-sm text-white/70">{loc(stat, "label", locale)}</p>
+                      <p className="mt-2.5 text-sm text-charcoal-700/80">{loc(stat, "label", locale)}</p>
                     </div>
                   </StaggerItem>
                 ))}
               </StaggerContainer>
             </div>
           </div>
-          <Curve variant="arc" flip className="-mt-px text-brand-950" />
+          <Curve variant="arc" flip className="-mt-px text-lavender-200" />
         </section>
       )}
 
@@ -330,7 +352,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     <SectionTag>{s(settings, "home_services_eyebrow", locale)}</SectionTag>
                   )}
                   {servicesTitle && (
-                    <h2 className="text-display-xl mt-3 font-serif font-medium tracking-tight text-brand-900">
+                    <h2 className="text-display-xl mt-3 font-serif font-medium tracking-tight text-charcoal-900">
                       {servicesTitle}
                     </h2>
                   )}
@@ -380,7 +402,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                   <SectionTag>{s(settings, "home_projects_eyebrow", locale)}</SectionTag>
                 )}
                 {projectsTitle && (
-                  <h2 className="text-display-xl font-serif font-medium tracking-tight text-brand-900">
+                  <h2 className="text-display-xl font-serif font-medium tracking-tight text-charcoal-900">
                     {projectsTitle}
                   </h2>
                 )}
@@ -411,7 +433,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                         style={{ backgroundImage: `url(${project.image})` }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-brand-950/60 via-brand-950/10 to-transparent transition-opacity duration-300 group-hover:opacity-80" />
-                      <Badge className="glass-light absolute left-4 top-4 rounded-full border-0 font-semibold capitalize text-brand-900 shadow-sm hover:bg-white/80">
+                      <Badge className="glass-light absolute left-4 top-4 rounded-full border-0 font-semibold capitalize text-charcoal-900 shadow-sm hover:bg-white/80">
                         {(dict.common as any)[project.status] ?? project.status}
                       </Badge>
                     </div>
@@ -420,7 +442,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     className={`flex flex-1 flex-col gap-2 p-6 ${big ? "lg:justify-center lg:p-10" : ""}`}
                   >
                     <h3
-                      className={`font-bold leading-snug text-brand-900 transition-colors group-hover:text-primary ${
+                      className={`font-bold leading-snug text-charcoal-900 transition-colors group-hover:text-primary ${
                         big ? "text-xl md:text-2xl" : ""
                       }`}
                     >
@@ -476,38 +498,37 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       )}
 
       {/* ------------------------------------------------------------------ */}
-      {/* Get in touch — rainbow band                                         */}
+      {/* Get in touch — warm supportive band                                 */}
       {/* ------------------------------------------------------------------ */}
       {showContact && (
         <section id="sec-contact">
-          <Curve variant="tilt" className={`-mb-px text-brand-950 ${showProjects ? "bg-muted/60" : ""}`} />
-          <div className="cta-gradient-shift relative overflow-hidden bg-gradient-to-br from-brand-950 via-pride-violet to-pride-orange py-16 text-white md:py-24">
+          <Curve variant="tilt" className={`-mb-px text-peach-100 ${showProjects ? "bg-muted/60" : ""}`} />
+          <div className="cta-gradient-shift relative overflow-hidden bg-gradient-to-br from-peach-100 via-blush-200 to-lavender-100 py-16 text-charcoal-900 md:py-24">
             {contactImage && (
               <div className="absolute inset-0 overflow-hidden">
                 <div
-                  className="absolute -inset-y-[14%] inset-x-0 scale-110 bg-cover bg-center opacity-15"
+                  className="absolute -inset-y-[14%] inset-x-0 scale-110 bg-cover bg-center opacity-[0.08]"
                   style={{ backgroundImage: `url(${contactImage})` }}
                 />
               </div>
             )}
-            <div className="absolute inset-0 bg-gradient-to-b from-brand-950/70 via-transparent to-brand-950/70" />
 
             <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr]">
               <Reveal direction="scale">
-                <TiltCard className="relative mx-auto w-full max-w-sm overflow-hidden rounded-3xl bg-gradient-to-br from-destructive to-red-700 p-10 text-center shadow-glow ring-1 ring-white/15">
-                  <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
-                  <span className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-full bg-white/15 ring-2 ring-white/30">
+                <TiltCard className="relative mx-auto w-full max-w-sm overflow-hidden rounded-3xl bg-gradient-to-br from-blush-300 to-peach-200 p-10 text-center text-charcoal-900 shadow-pastel ring-1 ring-white/60">
+                  <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-white/30 blur-2xl" />
+                  <span className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-full bg-white/50 ring-2 ring-white/70">
                     <PhoneCall className="h-6 w-6" />
                   </span>
                   {contactCardTitle && (
                     <h3 className="text-2xl font-extrabold">{contactCardTitle}</h3>
                   )}
-                  <span className="mx-auto my-4 block h-0.5 w-8 rounded-full bg-white/50" />
-                  {address && <p className="whitespace-pre-line text-sm text-white/90">{address}</p>}
+                  <span className="mx-auto my-4 block h-0.5 w-8 rounded-full bg-charcoal-900/25" />
+                  {address && <p className="whitespace-pre-line text-sm text-charcoal-800/85">{address}</p>}
                   {phone && (
                     <a
                       href={`tel:${phone.replace(/\s/g, "")}`}
-                      className="mt-4 block font-number text-xl font-bold hover:underline"
+                      className="mt-4 block font-number text-xl font-bold text-charcoal-900 hover:underline"
                     >
                       {phone}
                     </a>
@@ -515,7 +536,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                   {email && (
                     <a
                       href={`mailto:${email}`}
-                      className="mt-2 inline-flex items-center gap-1.5 text-sm text-white/90 hover:underline"
+                      className="mt-2 inline-flex items-center gap-1.5 text-sm text-charcoal-800/85 hover:underline"
                     >
                       <Mail className="h-3.5 w-3.5" /> {email}
                     </a>
@@ -524,21 +545,21 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
               </Reveal>
               <Reveal delay={0.15}>
                 {s(settings, "home_contact_eyebrow", locale) && (
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-red-400">
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
                     {s(settings, "home_contact_eyebrow", locale)}
                   </p>
                 )}
                 {contactTitle && (
-                  <h2 className="text-display-xl mt-3 font-extrabold tracking-tight">
+                  <h2 className="text-display-xl mt-3 font-serif font-medium tracking-tight text-charcoal-900">
                     {contactTitle}
                   </h2>
                 )}
                 <span className="mt-4 flex gap-1.5">
-                  <span className="block h-1 w-8 rounded-full bg-destructive" />
-                  <span className="block h-1 w-4 rounded-full bg-destructive/60" />
+                  <span className="block h-1 w-8 rounded-full bg-accent" />
+                  <span className="block h-1 w-4 rounded-full bg-accent/50" />
                 </span>
                 {contactText && (
-                  <p className="mt-6 max-w-xl whitespace-pre-line leading-relaxed text-white/75">
+                  <p className="mt-6 max-w-xl whitespace-pre-line leading-relaxed text-charcoal-700">
                     {contactText}
                   </p>
                 )}
@@ -546,7 +567,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                   <Button
                     asChild
                     size="lg"
-                    className="mt-8 rounded-full bg-destructive px-8 font-bold shadow-lg shadow-destructive/30 transition-transform duration-300 hover:-translate-y-0.5 hover:bg-destructive/90"
+                    className="mt-8 rounded-full bg-charcoal-900 px-8 font-bold text-white shadow-lg shadow-charcoal-900/20 transition-transform duration-300 hover:-translate-y-0.5 hover:bg-charcoal-800"
                   >
                     <Link href={`/${locale}/contact`}>
                       {contactButton} <ArrowRight className="h-4 w-4" />
@@ -556,7 +577,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
               </Reveal>
             </div>
           </div>
-          <Curve variant="tilt" flip className="-mt-px text-brand-950" />
+          <Curve variant="tilt" flip className="-mt-px text-peach-100" />
         </section>
       )}
 
@@ -589,7 +610,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 <SectionTag>{s(settings, "home_news_eyebrow", locale)}</SectionTag>
               )}
               {newsTitle && (
-                <h2 className="text-display-xl font-serif font-medium tracking-tight text-brand-900">
+                <h2 className="text-display-xl font-serif font-medium tracking-tight text-charcoal-900">
                   {newsTitle}
                 </h2>
               )}
@@ -629,7 +650,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     {formatDate(item.publishedAt, locale)}
                   </time>
                   <h3
-                    className={`font-bold leading-snug text-brand-900 transition-colors group-hover:text-primary ${
+                    className={`font-bold leading-snug text-charcoal-900 transition-colors group-hover:text-primary ${
                       big ? "text-xl md:text-2xl" : "text-base"
                     }`}
                   >
@@ -684,7 +705,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 <SectionTag>{s(settings, "home_events_eyebrow", locale)}</SectionTag>
               )}
               {eventsTitle && (
-                <h2 className="text-display-lg font-serif font-medium tracking-tight text-brand-900">{eventsTitle}</h2>
+                <h2 className="text-display-lg font-serif font-medium tracking-tight text-charcoal-900">{eventsTitle}</h2>
               )}
             </Reveal>
             <StaggerContainer className="divide-y divide-border overflow-hidden rounded-3xl border border-border bg-white shadow-card">
@@ -703,7 +724,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                       </span>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-bold leading-snug text-brand-900 transition-colors group-hover:text-primary">
+                      <h3 className="font-bold leading-snug text-charcoal-900 transition-colors group-hover:text-primary">
                         {loc(event, "title", locale)}
                       </h3>
                       {event.location && (
@@ -743,7 +764,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 </p>
               )}
               {partnersTitle && (
-                <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-brand-900 md:text-3xl">
+                <h2 className="mt-2 text-2xl font-serif font-medium tracking-tight text-charcoal-900 md:text-3xl">
                   {partnersTitle}
                 </h2>
               )}
@@ -778,21 +799,21 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {showDonate && (
         <section id="sec-donate" className="mx-auto w-full max-w-[1400px] px-4 md:px-6 pb-20 md:pb-28">
           <Reveal direction="scale">
-            <div className="bg-grain cta-gradient-shift relative grid items-center gap-8 overflow-hidden rounded-[2rem] bg-gradient-to-br from-pride-violet via-brand-700 to-pride-orange p-10 text-white shadow-glow md:grid-cols-[1.2fr_auto] md:p-14">
-              <span className="hero2__orb hero2__orb--1 pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-accent/20 blur-3xl" />
-              <span className="hero2__orb hero2__orb--2 pointer-events-none absolute -bottom-20 left-1/3 h-56 w-56 rounded-full bg-destructive/15 blur-3xl" />
+            <div className="cta-gradient-shift relative grid items-center gap-8 overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#ff6b81] via-[#f2749e] to-[#8f7bff] p-10 text-white shadow-glow md:grid-cols-[1.2fr_auto] md:p-14">
+              <span className="hero2__orb hero2__orb--1 pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/20 blur-3xl" />
+              <span className="hero2__orb hero2__orb--2 pointer-events-none absolute -bottom-20 left-1/3 h-56 w-56 rounded-full bg-peach-200/25 blur-3xl" />
               <div className="relative">
                 {s(settings, "home_donate_eyebrow", locale) && (
-                  <p className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] text-accent">
-                    <span className="block h-0.5 w-8 rounded-full bg-accent" />
+                  <p className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] text-white/90">
+                    <span className="block h-0.5 w-8 rounded-full bg-white/80" />
                     {s(settings, "home_donate_eyebrow", locale)}
                   </p>
                 )}
                 {donateTitle && (
-                  <h2 className="text-display-xl mt-4 max-w-2xl font-extrabold">{donateTitle}</h2>
+                  <h2 className="text-display-xl mt-4 max-w-2xl font-serif font-medium">{donateTitle}</h2>
                 )}
                 {donateText && (
-                  <p className="mt-3 max-w-xl whitespace-pre-line leading-relaxed text-white/80">
+                  <p className="mt-3 max-w-xl whitespace-pre-line leading-relaxed text-white/85">
                     {donateText}
                   </p>
                 )}
@@ -803,10 +824,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     <Button
                       asChild
                       size="lg"
-                      className="rounded-full bg-white px-8 font-bold text-brand-700 shadow-xl shadow-brand-950/20 transition-transform duration-300 hover:-translate-y-0.5 hover:bg-white/90"
+                      className="rounded-full bg-white px-8 font-bold text-[#ff6b81] shadow-xl shadow-charcoal-900/15 transition-transform duration-300 hover:-translate-y-0.5 hover:bg-white/90"
                     >
                       <Link href={`/${locale}/donate`}>
-                        <Heart className="h-4 w-4 fill-destructive text-destructive" /> {donateButton}
+                        <Heart className="h-4 w-4 fill-[#ff6b81] text-[#ff6b81]" /> {donateButton}
                       </Link>
                     </Button>
                   )}

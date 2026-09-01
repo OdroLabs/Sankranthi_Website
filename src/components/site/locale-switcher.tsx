@@ -17,27 +17,30 @@ export function LocaleSwitcher({ current, dark }: { current: string; dark?: bool
   }
 
   return (
-    <div className="flex items-center gap-1 text-xs">
-      {locales.map((l, i) => (
-        <span key={l} className="flex items-center gap-1">
-          {i > 0 && (
-            <span className={dark ? "text-white/30" : "text-muted-foreground/50"}>|</span>
+    <div
+      className={cn(
+        "flex items-center gap-0.5 rounded-full p-0.5 text-xs",
+        dark ? "bg-white/10" : "bg-muted"
+      )}
+    >
+      {locales.map((l) => (
+        <button
+          key={l}
+          onClick={() => switchTo(l)}
+          aria-current={current === l ? "true" : undefined}
+          className={cn(
+            "rounded-full px-2.5 py-1 font-semibold transition-colors",
+            current === l
+              ? dark
+                ? "bg-white text-charcoal-900 shadow-sm"
+                : "bg-white text-primary shadow-sm"
+              : dark
+                ? "text-white/70 hover:text-white"
+                : "text-muted-foreground hover:text-primary"
           )}
-          <button
-            onClick={() => switchTo(l)}
-            className={cn(
-              "rounded px-1.5 py-0.5 transition-colors",
-              dark
-                ? cn("hover:text-white", current === l ? "font-bold text-accent" : "text-white/70")
-                : cn(
-                    "hover:text-primary",
-                    current === l ? "font-bold text-primary" : "text-muted-foreground"
-                  )
-            )}
-          >
-            {labels[l]}
-          </button>
-        </span>
+        >
+          {labels[l]}
+        </button>
       ))}
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -75,6 +75,8 @@ export function SiteHeader({
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const headerRef = useRef<HTMLElement>(null);
+  const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -82,6 +84,21 @@ export function SiteHeader({
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const sync = () => {
+      document.documentElement.style.setProperty("--site-nav-h", `${el.offsetHeight}px`);
+    };
+    sync();
+    const observer = new ResizeObserver(sync);
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty("--site-nav-h");
+    };
+  }, [scrolled, open]);
 
   // Close the menu on route change and lock body scroll while open
   useEffect(() => setOpen(false), [pathname]);
@@ -123,7 +140,7 @@ export function SiteHeader({
     <>
       {/* Utility strip — hidden when switched off, or when there is nothing to show */}
       {showTopbar && (hasContactStrip || showLangs) && (
-        <div id="sec-topbar" className="hidden bg-navy-950 text-white md:block">
+        <div id="sec-topbar" className="hidden bg-charcoal-950 text-white md:block">
           <div className="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-2 text-xs md:px-8">
             <div className="flex items-center gap-6 text-white/75">
               {phones.map((phone) => (
@@ -152,12 +169,15 @@ export function SiteHeader({
 
       {/* Sticky glass nav */}
       <header
+        ref={headerRef}
         id="sec-header"
         className={cn(
           "sticky top-0 z-40 border-b transition-all duration-300",
           scrolled
-            ? "border-border/80 bg-white/85 shadow-lg shadow-navy-950/[0.06] backdrop-blur-xl supports-[backdrop-filter]:bg-white/75"
-            : "border-transparent bg-white"
+            ? "border-black/[0.06] bg-white/80 shadow-[0_10px_30px_rgba(25,37,47,0.06)] backdrop-blur-xl supports-[backdrop-filter]:bg-white/72"
+            : isHome
+              ? "border-transparent bg-[rgba(255,249,245,0.28)] backdrop-blur-[10px] supports-[backdrop-filter]:bg-[rgba(255,249,245,0.18)]"
+              : "border-transparent bg-background"
         )}
       >
         <div
@@ -273,7 +293,7 @@ export function SiteHeader({
               <Button
                 asChild
                 size="sm"
-                className="hidden rounded-full bg-destructive px-5 font-bold transition-transform duration-200 hover:-translate-y-0.5 hover:bg-destructive/90 md:inline-flex"
+                className="hidden rounded-full bg-gradient-to-r from-[#FF6687] to-[#FF8B75] px-5 font-bold text-white shadow-[0_8px_20px_rgba(255,102,135,0.32)] transition-transform duration-200 hover:-translate-y-0.5 hover:from-[#ff7a96] hover:to-[#ffa089] md:inline-flex"
               >
                 <Link href={`/${locale}/donate`}>
                   <Heart className="h-4 w-4 fill-current" /> {donateLabel}
@@ -288,17 +308,17 @@ export function SiteHeader({
             >
               <span className="relative block h-4 w-5">
                 <motion.span
-                  className="absolute left-0 top-0 block h-0.5 w-5 rounded-full bg-navy-900"
+                  className="absolute left-0 top-0 block h-0.5 w-5 rounded-full bg-charcoal-900"
                   animate={open ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
                   transition={{ duration: 0.25, ease: "easeOut" }}
                 />
                 <motion.span
-                  className="absolute left-0 top-1/2 block h-0.5 w-5 -translate-y-1/2 rounded-full bg-navy-900"
+                  className="absolute left-0 top-1/2 block h-0.5 w-5 -translate-y-1/2 rounded-full bg-charcoal-900"
                   animate={open ? { opacity: 0 } : { opacity: 1 }}
                   transition={{ duration: 0.15 }}
                 />
                 <motion.span
-                  className="absolute bottom-0 left-0 block h-0.5 w-5 rounded-full bg-navy-900"
+                  className="absolute bottom-0 left-0 block h-0.5 w-5 rounded-full bg-charcoal-900"
                   animate={open ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
                   transition={{ duration: 0.25, ease: "easeOut" }}
                 />
@@ -317,7 +337,7 @@ export function SiteHeader({
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="fixed inset-0 z-50 overflow-y-auto bg-navy-950 text-white lg:hidden"
+              className="fixed inset-0 z-50 overflow-y-auto bg-charcoal-950 text-white lg:hidden"
             >
               <div className="mx-auto flex min-h-full max-w-[560px] flex-col px-6 pb-10 pt-24">
                 <motion.div variants={menuList} initial="hidden" animate="visible" exit="exit" className="flex-1">

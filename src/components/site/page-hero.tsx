@@ -27,7 +27,7 @@ export function PageHero({
   return (
     <section
       id="sec-page-header"
-      className={`bg-grain relative overflow-hidden ${isNelume ? "bg-[#EFEAE6] text-[#2C2A28]" : "bg-navy-950 text-white"}`}
+      className={`bg-grain relative overflow-hidden ${isNelume ? "bg-[#EFEAE6] text-[#2C2A28]" : "bg-lavender-50 text-charcoal-900"}`}
     >
       {/* Optional photo, sitting under the gradient */}
       {image && (
@@ -45,7 +45,7 @@ export function PageHero({
         className={
           isNelume
             ? `absolute inset-0 bg-gradient-to-br from-[#A4B3CA]/35 via-[#EFEAE6] to-[#D7ADAF]/30 ${image ? "opacity-90" : ""}`
-            : `absolute inset-0 bg-gradient-to-br from-navy-950 via-brand-900 to-navy-800 ${image ? "opacity-85" : ""}`
+            : `absolute inset-0 bg-gradient-to-br from-blush-100 via-lavender-50 to-sky-100 ${image ? "opacity-90" : ""}`
         }
       />
       {/* Rainbow glow accents — three soft blooms instead of one, so the full
@@ -53,23 +53,23 @@ export function PageHero({
           cartoonish */}
       <div
         className={`pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full blur-3xl ${
-          isNelume ? "bg-[#98A1C0]/25" : "bg-pride-pink/20"
+          isNelume ? "bg-[#98A1C0]/25" : "bg-blush-300/35"
         }`}
       />
       <div
         className={`pointer-events-none absolute -bottom-32 left-1/4 h-72 w-72 rounded-full blur-3xl ${
-          isNelume ? "bg-[#D7ADAF]/25" : "bg-brand-500/20"
+          isNelume ? "bg-[#D7ADAF]/25" : "bg-lavender-300/35"
         }`}
       />
       {!isNelume && (
-        <div className="pointer-events-none absolute bottom-0 right-1/4 h-64 w-64 rounded-full bg-pride-yellow/10 blur-3xl" />
+        <div className="pointer-events-none absolute bottom-0 right-1/4 h-64 w-64 rounded-full bg-peach-200/35 blur-3xl" />
       )}
       {/* Thin abstract rule, top-right — a quiet decorative flourish rather
           than a repeated block shape */}
       {!isNelume && (
         <div
           aria-hidden
-          className="pointer-events-none absolute right-6 top-8 hidden h-24 w-24 rounded-full border border-white/10 md:block lg:right-16"
+          className="pointer-events-none absolute right-6 top-8 hidden h-24 w-24 rounded-full border border-charcoal-900/10 md:block lg:right-16"
         />
       )}
 
@@ -96,7 +96,7 @@ export function PageHero({
           <p
             data-hero
             className={`mt-4 max-w-2xl whitespace-pre-line leading-relaxed md:text-lg ${
-              isNelume ? "text-[#2C2A28]/70" : "text-white/70"
+              isNelume ? "text-[#2C2A28]/70" : "text-charcoal-700/80"
             }`}
           >
             {intro}

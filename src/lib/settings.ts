@@ -422,23 +422,32 @@ export const settingPages: SettingPage[] = [
           ),
           IMG(
             "hero_rights_image",
-            "Rights & wellbeing photograph",
-            "Shown in the first scroll chapter."
+            "Chapter 1 photograph",
+            "Shown beside Chapter 1 text while scrolling (image on the right)."
           ),
+          T("hero_chapter1_label", "Chapter 1 label", "Short label above the chapter title. Leave blank to hide this chapter."),
+          T("hero_chapter1_title", "Chapter 1 title"),
+          TA("hero_chapter1_text", "Chapter 1 body"),
           IMG(
             "hero_opportunity_image",
-            "Opportunity photograph",
-            "Main photograph in the second scroll chapter mosaic."
+            "Chapter 2 photograph",
+            "Shown beside Chapter 2 text while scrolling (image on the left)."
           ),
+          T("hero_chapter2_label", "Chapter 2 label", "Leave blank to hide this chapter."),
+          T("hero_chapter2_title", "Chapter 2 title"),
+          TA("hero_chapter2_text", "Chapter 2 body"),
           IMG(
             "hero_community_image",
-            "Community photograph",
-            "Second photograph in the closing mosaic."
+            "Chapter 3 photograph",
+            "Shown beside Chapter 3 text while scrolling (image on the right)."
           ),
+          T("hero_chapter3_label", "Chapter 3 label", "Leave blank to hide this chapter."),
+          T("hero_chapter3_title", "Chapter 3 title"),
+          TA("hero_chapter3_text", "Chapter 3 body"),
           IMG(
             "hero_dignity_image",
-            "Dignity photograph",
-            "Third photograph in the closing mosaic."
+            "Supporting collage photograph",
+            "Optional second photograph in the opening hero collage."
           ),
           T("hero_cta1_label", "Primary button text", "Leave blank to hide the button."),
           P("hero_cta1_link", "Primary button link", "Relative path such as /contact, or a full URL."),
@@ -447,7 +456,7 @@ export const settingPages: SettingPage[] = [
           LINES("hero_points", "Story highlight items", {
             itemLabel: "Highlight",
             addLabel: "Add highlight",
-            help: "Up to four items appear across the two living-thread story chapters.",
+            help: "Optional short lines shown under chapter body text (first two on chapter 1, next on chapter 2, and so on).",
           }),
           T("hero_footnote", "Photograph caption"),
         ],

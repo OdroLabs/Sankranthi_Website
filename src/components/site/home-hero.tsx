@@ -1,15 +1,28 @@
 "use client";
 
-import { useCallback, useLayoutEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowDown, ArrowRight, HandHeart } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import {
+  AnimatePresence,
+  motion,
+  useMotionTemplate,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
+import { ArrowDown, ArrowRight } from "lucide-react";
 import styles from "./home-hero.module.css";
 
-gsap.registerPlugin(ScrollTrigger);
-
-type Point = { x: number; y: number };
+export type HeroChapter = {
+  label?: string;
+  title?: string;
+  text?: string;
+  image?: string;
+  points?: string[];
+};
 
 type HomeHeroProps = {
   image?: string;
@@ -18,85 +31,124 @@ type HomeHeroProps = {
   subtitle?: string;
   primaryAction?: { label: string; href: string };
   secondaryAction?: { label: string; href: string };
-  points?: string[];
   footnote?: string;
-  storyImages?: Array<string | undefined>;
+  supportImage?: string;
+  chapters?: HeroChapter[];
 };
 
-const defaultStory = [
-  {
-    number: "01",
-    label: "Rights & wellbeing",
-    title: "Dignity begins with being heard and cared for.",
-    text: "We listen without judgement, stand beside people, and connect communities with respectful advocacy, health and wellbeing support.",
-    accent: "#e0392f",
-    themes: [
-      { name: "Rights", line: "Everyone deserves to live with dignity." },
-      { name: "Health & wellbeing", line: "Care that sees the whole person." },
-    ],
-  },
-  {
-    number: "02",
-    label: "Opportunity & community",
-    title: "Access to opportunity helps communities grow stronger.",
-    text: "Skills, livelihoods and inclusive opportunities help people build independent futures—and turn individual progress into lasting community change.",
-    accent: "#0d9488",
-    themes: [
-      { name: "Economic opportunity", line: "Opportunity creates independence." },
-      { name: "Community & dignity", line: "Stronger people. Stronger communities." },
-    ],
-  },
-];
-
-function cubicPoint(p0: Point, p1: Point, p2: Point, p3: Point, t: number): Point {
-  const mt = 1 - t;
-  return {
-    x:
-      mt * mt * mt * p0.x +
-      3 * mt * mt * t * p1.x +
-      3 * mt * t * t * p2.x +
-      t * t * t * p3.x,
-    y:
-      mt * mt * mt * p0.y +
-      3 * mt * mt * t * p1.y +
-      3 * mt * t * t * p2.y +
-      t * t * t * p3.y,
-  };
+/** Plateau opacity curve: fade in → hold to read → fade out. */
+function usePlateauOpacity(
+  progress: MotionValue<number>,
+  fadeInStart: number,
+  holdStart: number,
+  holdEnd: number,
+  fadeOutEnd: number
+) {
+  return useTransform(progress, (value) => {
+    if (value <= fadeInStart) return 0;
+    if (value < holdStart) {
+      return (value - fadeInStart) / Math.max(holdStart - fadeInStart, 0.0001);
+    }
+    if (value <= holdEnd) return 1;
+    if (value < fadeOutEnd) {
+      return 1 - (value - holdEnd) / Math.max(fadeOutEnd - holdEnd, 0.0001);
+    }
+    return 0;
+  });
 }
 
-function buildThreadPoints(width: number, height: number): Point[] {
-  const curves: [Point, Point, Point, Point][] = [
-    [
-      { x: width * 0.13, y: height * 0.78 },
-      { x: width * 0.28, y: height * 0.69 },
-      { x: width * 0.42, y: height * 0.8 },
-      { x: width * 0.54, y: height * 0.68 },
-    ],
-    [
-      { x: width * 0.54, y: height * 0.68 },
-      { x: width * 0.65, y: height * 0.5 },
-      { x: width * 0.82, y: height * 0.39 },
-      { x: width * 0.89, y: height * 0.54 },
-    ],
-    [
-      { x: width * 0.89, y: height * 0.49 },
-      { x: width * 0.94, y: height * 0.67 },
-      { x: width * 0.75, y: height * 0.76 },
-      { x: width * 0.62, y: height * 0.67 },
-    ],
-    [
-      { x: width * 0.62, y: height * 0.67 },
-      { x: width * 0.46, y: height * 0.56 },
-      { x: width * 0.34, y: height * 0.29 },
-      { x: width * 0.18, y: height * 0.36 },
-    ],
-  ];
+function splitHeadline(title: string) {
+  return title
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
 
-  return curves.flatMap((curve, curveIndex) =>
-    Array.from({ length: 72 }, (_, index) => {
-      if (curveIndex > 0 && index === 0) return null;
-      return cubicPoint(curve[0], curve[1], curve[2], curve[3], index / 71);
-    }).filter((point): point is Point => point !== null)
+function pad(index: number) {
+  return String(index + 1).padStart(2, "0");
+}
+
+function cleanLabel(label?: string, fallback = "") {
+  if (!label) return fallback;
+  return label.replace(/^\d+\s*[·.\-]\s*/u, "").trim() || fallback;
+}
+
+function ChapterCopy({
+  index,
+  chapter,
+}: {
+  index: number;
+  chapter: HeroChapter;
+}) {
+  return (
+    <div className={styles.copyBlock}>
+      <p className={styles.chapterLabel}>
+        <span>{pad(index)}</span>
+        {cleanLabel(chapter.label, `Chapter ${index + 1}`)}
+      </p>
+      {chapter.title && <h2 className={styles.chapterTitle}>{chapter.title}</h2>}
+      {chapter.text && <p className={styles.chapterBody}>{chapter.text}</p>}
+      {chapter.points && chapter.points.length > 0 && (
+        <ul className={styles.chapterPoints}>
+          {chapter.points.map((point) => (
+            <li key={point}>{point}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+const CHAPTER_HOLDS = [0.3, 0.58, 0.84];
+
+function ChapterBar({
+  chapters,
+  activeIndex,
+  visible,
+  onSelect,
+}: {
+  chapters: HeroChapter[];
+  activeIndex: number;
+  visible: boolean;
+  onSelect: (index: number) => void;
+}) {
+  if (chapters.length === 0) return null;
+
+  return (
+    <AnimatePresence>
+      {visible && (
+        <motion.nav
+          className={styles.chapterBar}
+          aria-label="Connection, Support, Empowerment"
+          initial={{ opacity: 0, y: 12, x: "-50%" }}
+          animate={{ opacity: 1, y: 0, x: "-50%" }}
+          exit={{ opacity: 0, y: 8, x: "-50%" }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {chapters.map((chapter, index) => {
+            const active = activeIndex === index;
+            return (
+              <button
+                key={`bar-${chapter.title || chapter.label || index}`}
+                type="button"
+                className={active ? styles.chapterBarActive : undefined}
+                aria-current={active ? "true" : undefined}
+                onClick={() => onSelect(index)}
+              >
+                {active && (
+                  <motion.span
+                    layoutId="hero-chapter-bar-pill"
+                    className={styles.chapterBarPill}
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                  />
+                )}
+                <span>{cleanLabel(chapter.label, `Chapter ${index + 1}`)}</span>
+              </button>
+            );
+          })}
+        </motion.nav>
+      )}
+    </AnimatePresence>
   );
 }
 
@@ -107,422 +159,349 @@ export function HomeHero({
   subtitle,
   primaryAction,
   secondaryAction,
-  points = [],
   footnote,
-  storyImages = [],
+  supportImage,
+  chapters = [],
 }: HomeHeroProps) {
-  const experienceRef = useRef<HTMLElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const threadProgress = useRef(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion();
+  const [adminPreview, setAdminPreview] = useState(false);
+  const [canPin, setCanPin] = useState(false);
+  const [activeScene, setActiveScene] = useState(0);
 
-  const drawThread = useCallback((progress: number) => {
-    const canvas = canvasRef.current;
-    const stage = experienceRef.current?.querySelector<HTMLElement>("[data-stage]");
-    if (!canvas || !stage) return;
+  const quiet = Boolean(reduceMotion) || adminPreview;
+  const pin = canPin && !quiet && chapters.length > 0;
+  const titleLines = title ? splitHeadline(title) : [];
+  const collageSecondary = supportImage && supportImage !== image ? supportImage : undefined;
+  const altBase = title || badge || "Sankranthi Foundation";
 
-    const bounds = stage.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const width = Math.max(bounds.width, 1);
-    const height = Math.max(bounds.height, 1);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 70,
+    damping: 26,
+    restDelta: 0.001,
+  });
 
-    if (canvas.width !== Math.round(width * dpr) || canvas.height !== Math.round(height * dpr)) {
-      canvas.width = Math.round(width * dpr);
-      canvas.height = Math.round(height * dpr);
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-    }
+  /**
+   * Video-style timeline (3 chapters):
+   * Intro hold → Ch1 hold → Ch2 hold → Ch3 hold → soft exit.
+   * Long plateaus so people can actually read.
+   */
+  const introOpacity = usePlateauOpacity(progress, -0.01, 0, 0.14, 0.24);
+  const chapterOps = [
+    usePlateauOpacity(progress, 0.16, 0.24, 0.42, 0.52),
+    usePlateauOpacity(progress, 0.44, 0.52, 0.7, 0.8),
+    usePlateauOpacity(progress, 0.72, 0.8, 0.94, 1.01),
+  ];
 
-    const context = canvas.getContext("2d");
-    if (!context) return;
-    context.setTransform(dpr, 0, 0, dpr, 0, 0);
-    context.clearRect(0, 0, width, height);
+  const washA = useTransform(progress, [0, 0.35, 0.65, 1], ["#E5F5EF", "#FFF1E4", "#F3E9FF", "#F7FBFA"]);
+  const washB = useTransform(progress, [0, 0.35, 0.65, 1], ["#EAF6FF", "#FFE8F0", "#E7F6F0", "#FFF9F5"]);
+  const stageBackground = useMotionTemplate`linear-gradient(158deg, ${washA} 0%, ${washB} 100%)`;
+  const cueOpacity = useTransform(progress, [0, 0.1, 0.18], [1, 0.85, 0]);
+  const threadScale = useTransform(progress, [0, 1], [0.2, 1]);
+  const sceneLift = useTransform(progress, [0.92, 1], [0, -24]);
 
-    const points = buildThreadPoints(width, height);
-    const visible = Math.max(2, Math.floor(points.length * Math.min(Math.max(progress, 0), 1)));
-    const gradient = context.createLinearGradient(width * 0.1, 0, width * 0.92, 0);
-    gradient.addColorStop(0, "#e0392f");
-    gradient.addColorStop(0.28, "#f5722b");
-    gradient.addColorStop(0.52, "#e6338c");
-    gradient.addColorStop(0.76, "#0d9488");
-    gradient.addColorStop(1, "#f5c518");
+  useMotionValueEvent(progress, "change", (value) => {
+    if (!pin) return;
+    if (value < 0.2) setActiveScene(0);
+    else if (value < 0.48) setActiveScene(1);
+    else if (value < 0.76) setActiveScene(2);
+    else setActiveScene(3);
+  });
 
-    context.beginPath();
-    context.moveTo(points[0].x, points[0].y);
-    for (let index = 1; index < visible; index += 1) {
-      context.lineTo(points[index].x, points[index].y);
-    }
-    context.strokeStyle = gradient;
-    context.lineWidth = 2.2;
-    context.lineCap = "round";
-    context.lineJoin = "round";
-    context.globalAlpha = 0.92;
-    context.stroke();
-
-    const end = points[visible - 1];
-    context.beginPath();
-    context.arc(end.x, end.y, 3.5, 0, Math.PI * 2);
-    context.fillStyle = gradient;
-    context.globalAlpha = 1;
-    context.fill();
+  useEffect(() => {
+    setAdminPreview(new URLSearchParams(window.location.search).has("adminPreview"));
+    const desktop = window.matchMedia("(min-width: 900px)");
+    const sync = () => setCanPin(desktop.matches);
+    sync();
+    desktop.addEventListener("change", sync);
+    return () => desktop.removeEventListener("change", sync);
   }, []);
 
-  useLayoutEffect(() => {
-    const root = experienceRef.current;
-    if (!root || new URLSearchParams(window.location.search).has("adminPreview")) return;
+  const scrubTo = useCallback(
+    (ratio: number) => {
+      const root = sectionRef.current;
+      if (!root) return;
+      const start = root.offsetTop;
+      const travel = Math.max(root.offsetHeight - window.innerHeight, 0);
+      window.scrollTo({
+        top: start + travel * ratio,
+        behavior: quiet ? "auto" : "smooth",
+      });
+    },
+    [quiet]
+  );
 
-    const media = gsap.matchMedia();
-    const onResize = () => drawThread(threadProgress.current);
-    window.addEventListener("resize", onResize, { passive: true });
-
-    media.add(
-      {
-        desktop: "(min-width: 900px) and (prefers-reduced-motion: no-preference)",
-        mobile: "(max-width: 899px) and (prefers-reduced-motion: no-preference)",
-      },
-      (context) => {
-        const { desktop, mobile } = context.conditions as {
-          desktop: boolean;
-          mobile: boolean;
-        };
-
-        const heroImage = root.querySelector<HTMLElement>("[data-hero-image]");
-        const label = root.querySelector<HTMLElement>("[data-hero-label]");
-        const headlineLines = root.querySelectorAll<HTMLElement>("[data-headline-line]");
-        const copy = root.querySelector<HTMLElement>("[data-hero-copy]");
-        const actions = root.querySelector<HTMLElement>("[data-hero-actions]");
-        const scrollCue = root.querySelector<HTMLElement>("[data-scroll-cue]");
-        const progress = { value: 0 };
-
-        const entrance = gsap.timeline({ defaults: { ease: "power4.out" } });
-        if (heroImage) {
-          entrance.fromTo(
-            heroImage,
-            { clipPath: "inset(0 0 100% 0 round 2.5rem)", scale: 1.04 },
-            { clipPath: "inset(0 0 0% 0 round 2.5rem)", scale: 1, duration: 1.35 },
-            0.08
-          );
-        }
-        if (label) {
-          entrance.fromTo(
-            label,
-            { autoAlpha: 0, y: 14 },
-            { autoAlpha: 1, y: 0, duration: 0.65 },
-            0.18
-          );
-        }
-        if (headlineLines.length > 0) {
-          entrance.fromTo(
-            headlineLines,
-            { yPercent: 112 },
-            { yPercent: 0, duration: 0.92, stagger: 0.12 },
-            0.24
-          );
-        }
-        if (copy) {
-          entrance.fromTo(
-            copy,
-            { autoAlpha: 0, y: 18 },
-            { autoAlpha: 1, y: 0, duration: 0.72 },
-            0.6
-          );
-        }
-        if (actions) {
-          entrance.fromTo(
-            actions,
-            { autoAlpha: 0, y: 16 },
-            { autoAlpha: 1, y: 0, duration: 0.72 },
-            0.74
-          );
-        }
-        if (scrollCue) {
-          entrance.fromTo(
-            scrollCue,
-            { autoAlpha: 0 },
-            { autoAlpha: 1, duration: 0.7 },
-            1.02
-          );
-        }
-        entrance.to(
-          progress,
-          {
-            value: 0.23,
-            duration: 1.5,
-            ease: "power2.inOut",
-            onUpdate: () => {
-              threadProgress.current = progress.value;
-              drawThread(progress.value);
-            },
-          },
-          0.65
-        );
-
-        if (desktop) {
-          const hero = root.querySelector<HTMLElement>("[data-hero-scene]");
-          const storyIntro = root.querySelector<HTMLElement>("[data-story-intro]");
-          const chapters = Array.from(root.querySelectorAll<HTMLElement>("[data-story-chapter]"));
-          const accents = Array.from(root.querySelectorAll<HTMLElement>("[data-chapter-accent]"));
-          const threadState = { value: 0.23 };
-
-          gsap.set(chapters, { autoAlpha: 0 });
-          gsap.set(storyIntro, { autoAlpha: 0, y: 12 });
-          gsap.set(accents, { autoAlpha: 0, scale: 0.8 });
-
-          const timeline = gsap.timeline({
-            defaults: { ease: "power4.out" },
-            scrollTrigger: {
-              trigger: root,
-              start: "top top",
-              end: "bottom bottom",
-              scrub: 0.72,
-              invalidateOnRefresh: true,
-            },
-          });
-
-          timeline
-            .to(hero, { autoAlpha: 0, y: -28, duration: 0.62 }, 0.18)
-            .to(storyIntro, { autoAlpha: 1, y: 0, duration: 0.42 }, 0.42)
-            .to(
-              threadState,
-              {
-                value: 1,
-                duration: 2.7,
-                ease: "none",
-                onUpdate: () => {
-                  threadProgress.current = Math.max(threadProgress.current, threadState.value);
-                  drawThread(threadState.value);
-                },
-              },
-              0.24
-            );
-
-          chapters.forEach((chapter, index) => {
-            const at = 0.56 + index * 1.08;
-            const chapterImage = chapter.querySelector<HTMLElement>("[data-chapter-image]");
-            const chapterText = chapter.querySelector<HTMLElement>("[data-chapter-text]");
-
-            timeline
-              .to(chapter, { autoAlpha: 1, duration: 0.38 }, at)
-              .fromTo(
-                chapterText,
-                { autoAlpha: 0, y: 34 },
-                { autoAlpha: 1, y: 0, duration: 0.58 },
-                at + 0.03
-              )
-              .fromTo(
-                chapterImage,
-                {
-                  clipPath:
-                    index % 2 === 0
-                      ? "inset(0 100% 0 0 round 2.25rem)"
-                      : "inset(0 0 0 100% round 2.25rem)",
-                  scale: 1,
-                },
-                {
-                  clipPath: "inset(0 0% 0 0 round 2.25rem)",
-                  scale: 1.04,
-                  duration: 0.92,
-                },
-                at + 0.02
-              )
-              .to(accents[index], { autoAlpha: 0.72, scale: 1, duration: 0.55 }, at)
-              .to(accents[index], { autoAlpha: 0, scale: 1.14, duration: 0.45 }, at + 0.84);
-
-            if (index < chapters.length - 1) {
-              timeline.to(chapter, { autoAlpha: 0, y: -22, duration: 0.42 }, at + 0.88);
-            }
-          });
-        }
-
-        if (mobile) {
-          gsap.utils.toArray<HTMLElement>(root.querySelectorAll("[data-story-chapter]")).forEach(
-            (chapter) => {
-              const imageElement = chapter.querySelector<HTMLElement>("[data-chapter-image]");
-              const textElement = chapter.querySelector<HTMLElement>("[data-chapter-text]");
-              gsap.fromTo(
-                textElement,
-                { autoAlpha: 0, y: 26 },
-                {
-                  autoAlpha: 1,
-                  y: 0,
-                  duration: 0.8,
-                  ease: "power4.out",
-                  scrollTrigger: { trigger: chapter, start: "top 82%", once: true },
-                }
-              );
-              gsap.fromTo(
-                imageElement,
-                { clipPath: "inset(0 0 100% 0 round 1.75rem)", scale: 1 },
-                {
-                  clipPath: "inset(0 0 0% 0 round 1.75rem)",
-                  scale: 1.04,
-                  duration: 1,
-                  ease: "power4.out",
-                  scrollTrigger: { trigger: chapter, start: "top 78%", once: true },
-                }
-              );
-            }
-          );
-        }
+  const onCueClick = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
+      event.preventDefault();
+      if (pin) {
+        scrubTo(CHAPTER_HOLDS[0]);
+        return;
       }
-    );
+      document.getElementById("hero-chapter-1")?.scrollIntoView({
+        behavior: quiet ? "auto" : "smooth",
+        block: "start",
+      });
+    },
+    [pin, quiet, scrubTo]
+  );
 
-    return () => {
-      window.removeEventListener("resize", onResize);
-      media.revert();
-    };
-  }, [drawThread]);
+  const onChapterSelect = useCallback(
+    (index: number) => {
+      if (pin) {
+        scrubTo(CHAPTER_HOLDS[index] ?? CHAPTER_HOLDS[0]);
+        return;
+      }
+      document.getElementById(`hero-chapter-${index + 1}`)?.scrollIntoView({
+        behavior: quiet ? "auto" : "smooth",
+        block: "start",
+      });
+    },
+    [pin, quiet, scrubTo]
+  );
 
-  const story = defaultStory.map((chapter, chapterIndex) => {
-    const chapterPoints = points.slice(chapterIndex * 2, chapterIndex * 2 + 2);
-    return {
-      ...chapter,
-      themes:
-        chapterPoints.length > 0
-          ? chapterPoints.map((point) => ({ name: point, line: "" }))
-          : chapter.themes,
-    };
-  });
-  const images = story.map((_, index) => storyImages[index] || image).filter(Boolean) as string[];
-  const titleLines = title
-    ?.split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean);
+  const sceneCount = chapters.length;
+  const pinHeight = useMemo(() => {
+    if (!pin) return undefined;
+    // ~1 viewport per beat (intro + chapters) for a cinematic scrub.
+    return `${Math.max(2.6, 1.15 + sceneCount * 0.95) * 100}vh`;
+  }, [pin, sceneCount]);
 
   return (
-    <section ref={experienceRef} id="sec-hero" className={styles.experience}>
-      <div className={styles.stage} data-stage>
-        <div className={styles.paperTexture} aria-hidden />
-        <div className={styles.accentField} aria-hidden>
-          {story.map((item) => (
-            <span key={item.number} data-chapter-accent style={{ background: item.accent }} />
-          ))}
+    <section
+      ref={sectionRef}
+      id="sec-hero"
+      className={`${styles.experience} ${pin ? styles.experiencePin : styles.experienceFlow}`}
+      style={pinHeight ? { height: pinHeight } : undefined}
+    >
+      <motion.div
+        className={`${styles.stage} ${pin ? styles.stageSticky : ""}`}
+        style={pin ? { background: stageBackground } : undefined}
+      >
+        <div className={styles.blobs} aria-hidden>
+          <span className={`${styles.blob} ${styles.blobPink}`} />
+          <span className={`${styles.blob} ${styles.blobMint}`} />
+          <span className={`${styles.blob} ${styles.blobLavender}`} />
+          <span className={`${styles.blob} ${styles.blobYellow}`} />
         </div>
 
-        <div className={styles.heroScene} data-hero-scene>
-          <div className={styles.heroCopy}>
-            {badge && (
-              <p className={styles.missionLabel} data-hero-label>
-                <span aria-hidden />
-                {badge}
-              </p>
-            )}
-            {titleLines && titleLines.length > 0 && (
-              <h1>
-                {titleLines.map((line, index) => (
-                  <span key={`${line}-${index}`} className={styles.headlineMask}>
-                    <span data-headline-line>{line}</span>
-                  </span>
-                ))}
-              </h1>
-            )}
-            {subtitle && (
-              <p className={styles.heroDescription} data-hero-copy>
-                {subtitle}
-              </p>
-            )}
-            {(primaryAction || secondaryAction) && (
-              <div className={styles.heroActions} data-hero-actions>
-                {primaryAction && (
-                  <Link className={styles.supportAction} href={primaryAction.href}>
-                    <span className={styles.buttonThread} aria-hidden />
-                    <HandHeart className={styles.supportIcon} aria-hidden />
-                    <span>{primaryAction.label}</span>
-                    <ArrowRight className={styles.actionArrow} aria-hidden />
-                  </Link>
-                )}
-                {secondaryAction && (
-                  <Link className={styles.exploreAction} href={secondaryAction.href}>
-                    {secondaryAction.label}
-                    <ArrowRight aria-hidden />
-                  </Link>
-                )}
-              </div>
-            )}
-          </div>
+        <ChapterBar
+          chapters={chapters}
+          activeIndex={pin ? activeScene - 1 : -1}
+          visible={pin && activeScene >= 1}
+          onSelect={onChapterSelect}
+        />
 
-          {image && (
-            <figure className={styles.heroFigure}>
-              <div className={styles.heroImage} data-hero-image>
-                <img src={image} alt={title || badge || "Sankranthi Foundation"} />
-              </div>
-              {footnote && (
-                <figcaption>
-                  <span>People before programmes.</span>
-                  <strong>{footnote}</strong>
-                </figcaption>
-              )}
-            </figure>
-          )}
-
-          <div className={styles.scrollCue} data-scroll-cue aria-hidden>
-            <span>Follow the living thread</span>
-            <ArrowDown />
-          </div>
-        </div>
-
-        <div className={styles.storyStage}>
-          <div className={styles.storyIntro} data-story-intro aria-hidden>
-            <span>The living thread</span>
-            <small>Connection → Support → Empowerment → Dignity</small>
-          </div>
-
-          {story.map((item, index) => (
-            <article
-              key={item.number}
-              className={`${styles.chapter} ${index % 2 ? styles.chapterReverse : ""} ${
-                index === story.length - 1 ? styles.finalChapter : ""
-              }`}
-              data-story-chapter
+        {/* -------- Desktop / pinned cinematic stack -------- */}
+        {pin ? (
+          <motion.div className={styles.sceneStack} style={{ y: sceneLift }}>
+            <motion.div
+              className={`${styles.scene} ${styles.sceneIntro}`}
+              style={{ opacity: introOpacity }}
+              aria-hidden={activeScene !== 0}
             >
-              <div className={styles.chapterText} data-chapter-text>
-                <p className={styles.chapterMeta} style={{ color: item.accent }}>
-                  <span>{item.number}</span>
-                  {item.label}
-                </p>
-                <h2>{item.title}</h2>
-                <p>{item.text}</p>
-                <div className={styles.chapterThemes}>
-                  {item.themes.map((theme) => (
-                    <div key={theme.name}>
-                      <strong>{theme.name}</strong>
-                      <span>{theme.line}</span>
+              <div className={styles.sceneGrid}>
+                <div className={styles.slotCopy}>
+                  {badge && (
+                    <p className={styles.eyebrow}>
+                      <span aria-hidden />
+                      {badge}
+                    </p>
+                  )}
+                  {titleLines.length > 0 && (
+                    <h1 className={styles.headline}>
+                      {titleLines.map((line, index) => (
+                        <span key={`${line}-${index}`} className={styles.headlineLine}>
+                          {line}
+                        </span>
+                      ))}
+                    </h1>
+                  )}
+                  {subtitle && <p className={styles.lede}>{subtitle}</p>}
+                  {(primaryAction || secondaryAction) && (
+                    <div className={styles.actions}>
+                      {primaryAction && (
+                        <Link className={styles.ctaPrimary} href={primaryAction.href}>
+                          <span>{primaryAction.label}</span>
+                          <ArrowRight aria-hidden />
+                        </Link>
+                      )}
+                      {secondaryAction && (
+                        <Link className={styles.ctaSecondary} href={secondaryAction.href}>
+                          <span>{secondaryAction.label}</span>
+                          <ArrowRight aria-hidden />
+                        </Link>
+                      )}
                     </div>
-                  ))}
-                </div>
-                <span className={styles.chapterPrinciple}>
-                  {index === 0 && "We listen"}
-                  {index === 1 && "We create access · Communities grow stronger"}
-                </span>
-              </div>
-
-              {index < story.length - 1 ? (
-                <figure className={styles.chapterFigure} data-chapter-image>
-                  {images[index] && <img src={images[index]} alt="" />}
-                  <span className={styles.imageNumber}>{item.number}</span>
-                </figure>
-              ) : (
-                <div className={styles.mosaic} data-chapter-image>
-                  {[
-                    storyImages[1] || images[1] || image,
-                    storyImages[2] || storyImages[0] || image,
-                    storyImages[3] || storyImages[0] || image,
-                  ].map(
-                    (mosaicImage, mosaicIndex) =>
-                      mosaicImage && (
-                        <figure key={`${mosaicImage}-${mosaicIndex}`}>
-                          <img src={mosaicImage} alt="" />
-                        </figure>
-                      )
                   )}
                 </div>
-              )}
-            </article>
-          ))}
-        </div>
 
-        <div className={styles.mobileThread} aria-hidden />
-        <div className={styles.exitFade} aria-hidden />
-      </div>
+                {image && (
+                  <div className={styles.slotVisual}>
+                    <div className={styles.collage}>
+                      <figure className={styles.framePrimary}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={image} alt={altBase} />
+                      </figure>
+                      {collageSecondary && (
+                        <figure className={styles.frameSmall} aria-hidden>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={collageSecondary} alt="" />
+                        </figure>
+                      )}
+                      <aside className={styles.peopleCard}>
+                        <span>People before programmes.</span>
+                        {footnote && <strong>{footnote}</strong>}
+                      </aside>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+
+            {chapters.map((chapter, index) => {
+              const reverse = index % 2 === 1;
+              return (
+                <motion.div
+                  key={`scene-${chapter.title || chapter.label || index}`}
+                  className={`${styles.scene} ${reverse ? styles.sceneReverse : ""}`}
+                  style={{ opacity: chapterOps[index] }}
+                  aria-hidden={activeScene !== index + 1}
+                >
+                  <div className={styles.sceneGrid}>
+                    <div className={styles.slotCopy}>
+                      <ChapterCopy index={index} chapter={chapter} />
+                    </div>
+                    {chapter.image && (
+                      <div className={styles.slotVisual}>
+                        <figure className={styles.chapterFigure}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={chapter.image}
+                            alt={chapter.title || cleanLabel(chapter.label, altBase)}
+                          />
+                        </figure>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        ) : (
+          /* -------- Mobile / reduced-motion readable flow -------- */
+          <div className={styles.flowStack}>
+            <div className={styles.sceneGrid}>
+              <div className={styles.slotCopy}>
+                {badge && (
+                  <p className={styles.eyebrow}>
+                    <span aria-hidden />
+                    {badge}
+                  </p>
+                )}
+                {titleLines.length > 0 && (
+                  <h1 className={styles.headline}>
+                    {titleLines.map((line, index) => (
+                      <span key={`${line}-${index}`} className={styles.headlineLine}>
+                        {line}
+                      </span>
+                    ))}
+                  </h1>
+                )}
+                {subtitle && <p className={styles.lede}>{subtitle}</p>}
+                {(primaryAction || secondaryAction) && (
+                  <div className={styles.actions}>
+                    {primaryAction && (
+                      <Link className={styles.ctaPrimary} href={primaryAction.href}>
+                        <span>{primaryAction.label}</span>
+                        <ArrowRight aria-hidden />
+                      </Link>
+                    )}
+                    {secondaryAction && (
+                      <Link className={styles.ctaSecondary} href={secondaryAction.href}>
+                        <span>{secondaryAction.label}</span>
+                        <ArrowRight aria-hidden />
+                      </Link>
+                    )}
+                  </div>
+                )}
+              </div>
+              {image && (
+                <div className={styles.slotVisual}>
+                  <div className={styles.collage}>
+                    <figure className={styles.framePrimary}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={image} alt={altBase} />
+                    </figure>
+                    {collageSecondary && (
+                      <figure className={styles.frameSmall} aria-hidden>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={collageSecondary} alt="" />
+                      </figure>
+                    )}
+                    <aside className={styles.peopleCard}>
+                      <span>People before programmes.</span>
+                      {footnote && <strong>{footnote}</strong>}
+                    </aside>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {chapters.map((chapter, index) => {
+              const reverse = index % 2 === 1;
+              return (
+                <article
+                  key={`flow-${chapter.title || chapter.label || index}`}
+                  id={`hero-chapter-${index + 1}`}
+                  className={`${styles.flowChapter} ${reverse ? styles.sceneReverse : ""}`}
+                >
+                  <div className={styles.sceneGrid}>
+                    <div className={styles.slotCopy}>
+                      <ChapterCopy index={index} chapter={chapter} />
+                    </div>
+                    {chapter.image && (
+                      <div className={styles.slotVisual}>
+                        <figure className={styles.chapterFigure}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={chapter.image}
+                            alt={chapter.title || cleanLabel(chapter.label, altBase)}
+                            loading="lazy"
+                          />
+                        </figure>
+                      </div>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
+
+        {chapters.length > 0 && (
+          <motion.a
+            href="#hero-chapter-1"
+            className={styles.scrollCue}
+            style={pin ? { opacity: cueOpacity } : undefined}
+            onClick={onCueClick}
+          >
+            <span>Follow the living thread</span>
+            <i aria-hidden />
+            <ArrowDown aria-hidden />
+          </motion.a>
+        )}
+
+        <div className={styles.thread} aria-hidden>
+          <motion.span style={pin ? { scaleX: threadScale } : undefined} />
+        </div>
+      </motion.div>
+
+      <div className={styles.exitBlend} aria-hidden />
     </section>
   );
 }

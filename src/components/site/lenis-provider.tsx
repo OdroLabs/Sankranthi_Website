@@ -22,7 +22,7 @@ export function LenisProvider() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({
-      duration: 1.05,
+      duration: 1.7,
       smoothWheel: true,
       touchMultiplier: 1.1,
     });

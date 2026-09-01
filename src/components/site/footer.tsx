@@ -68,15 +68,15 @@ export function SiteFooter({
     1 + Number(showExplore) + Number(showInvolved) + Number(showNewsletter);
 
   return (
-    <footer id="sec-footer" className="relative bg-navy-950 text-white/90">
+    <footer id="sec-footer" className="relative bg-charcoal-950 text-white/90">
       {/* Brand gradient rule */}
       <PrideStripe className="h-1.5" />
       {/* Rainbow glow blooms — echoes the hero/PageHero treatment, kept soft
           so the footer stays calm and readable rather than a solid block. */}
-      <div className="pointer-events-none absolute -top-24 left-1/4 h-64 w-64 rounded-full bg-pride-violet/15 blur-3xl" />
-      <div className="pointer-events-none absolute -top-16 right-[8%] h-56 w-56 rounded-full bg-pride-pink/15 blur-3xl" />
-      <div className="pointer-events-none absolute bottom-0 left-[6%] h-64 w-64 rounded-full bg-pride-yellow/10 blur-3xl" />
-      <div className="pointer-events-none absolute bottom-0 right-1/4 h-56 w-56 rounded-full bg-teal-500/10 blur-3xl" />
+      <div className="pointer-events-none absolute -top-24 left-1/4 h-64 w-64 rounded-full bg-lavender-300/25 blur-3xl" />
+      <div className="pointer-events-none absolute -top-16 right-[8%] h-56 w-56 rounded-full bg-blush-300/25 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 left-[6%] h-64 w-64 rounded-full bg-peach-200/20 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 right-1/4 h-56 w-56 rounded-full bg-mint-300/20 blur-3xl" />
 
       <div
         className={`mx-auto w-full max-w-[1400px] px-4 md:px-6 relative grid gap-10 py-16 md:grid-cols-2 ${

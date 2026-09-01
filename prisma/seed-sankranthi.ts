@@ -73,6 +73,18 @@ async function main() {
     hero_opportunity_image: OPPORTUNITY_IMAGE,
     hero_community_image: COMMUNITY_STORY_IMAGE,
     hero_dignity_image: COMMUNITY_IMAGE,
+    hero_chapter1_label: "01 · Connection",
+    hero_chapter1_title: "Safe spaces where people are heard",
+    hero_chapter1_text:
+      "We begin with listening. Confidential support, affirming care and trusted referrals help people move from isolation toward safety and dignity.",
+    hero_chapter2_label: "02 · Support",
+    hero_chapter2_title: "Community care that stays close",
+    hero_chapter2_text:
+      "From wellbeing activities to practical case guidance, our programmes are shaped with LGBTQIA+ communities across Sri Lanka—not for them from a distance.",
+    hero_chapter3_label: "03 · Empowerment",
+    hero_chapter3_title: "Pathways toward independence",
+    hero_chapter3_text:
+      "Skills, livelihoods and volunteer action turn individual progress into lasting community strength—so every transition can lead toward a more secure tomorrow.",
     hero_points: "Confidential support for special cases\nCommunity-led projects\nVolunteer-powered action\nLivelihood opportunities for women",
     hero_footnote: "Every person deserves to be heard, respected and supported.",
     hero_cta1_label: "Explore our work",
