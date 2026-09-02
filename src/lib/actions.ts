@@ -496,12 +496,20 @@ export async function submitSuggestion(formData: FormData) {
 export async function submitBooking(formData: FormData) {
   const name = ((formData.get("name") as string) || "").trim();
   const phone = ((formData.get("phone") as string) || "").trim();
-  const service = ((formData.get("service") as string) || "").trim();
+  const serviceId = Number(formData.get("serviceId"));
   const date = ((formData.get("preferredDate") as string) || "").trim();
   const preferredTime = ((formData.get("preferredTime") as string) || "").trim();
 
-  if (!name || !phone || !service || !date || !preferredTime) {
+  if (!name || !phone || !Number.isInteger(serviceId) || serviceId < 1 || !date || !preferredTime) {
     return { ok: false, error: "Please complete all required fields." };
+  }
+
+  const service = await prisma.product.findFirst({
+    where: { id: serviceId, published: true, inStock: true },
+    select: { nameEn: true },
+  });
+  if (!service) {
+    return { ok: false, error: "That service is no longer available. Please choose another service." };
   }
 
   const preferredDate = new Date(`${date}T12:00:00`);
@@ -513,7 +521,7 @@ export async function submitBooking(formData: FormData) {
     data: {
       name,
       phone,
-      service,
+      service: service.nameEn,
       preferredDate,
       preferredTime,
       email: ((formData.get("email") as string) || "").trim() || null,

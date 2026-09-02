@@ -8,23 +8,46 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-type NailService = { id: number; name: string };
+export type BookableService = {
+  id: number;
+  name: string;
+  description?: string;
+  image?: string;
+  price?: string;
+};
 
-export function BookingForm({ services }: { services: NailService[] }) {
+export function BookingForm({
+  services,
+  formTitle,
+  formIntro,
+  submitLabel,
+  successTitle,
+  successBody,
+  initialServiceId,
+}: {
+  services: BookableService[];
+  formTitle?: string;
+  formIntro?: string;
+  submitLabel?: string;
+  successTitle?: string;
+  successBody?: string;
+  initialServiceId?: number;
+}) {
   const [done, setDone] = useState(false);
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
+  const [selectedService, setSelectedService] = useState(
+    initialServiceId ? String(initialServiceId) : ""
+  );
   const today = new Date().toISOString().slice(0, 10);
 
   if (done) {
     return (
-      <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-8 text-center">
+      <div className="border border-[#BFD8CC] bg-[#F2F8F4] p-8 text-center">
         <CheckCircle2 className="mx-auto h-11 w-11 text-emerald-600" />
-        <h2 className="mt-4 text-2xl font-extrabold text-navy-900">Appointment request received</h2>
-        <p className="mt-2 text-sm leading-relaxed text-emerald-900/75">
-          Our Nail Spa team will call or message you to confirm the time.
-        </p>
-        <Button className="mt-5 rounded-full" variant="outline" onClick={() => setDone(false)}>
+        {successTitle && <h2 className="mt-4 font-serif text-3xl text-[#293845]">{successTitle}</h2>}
+        {successBody && <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-[#4C6658]">{successBody}</p>}
+        <Button className="mt-5 rounded-[8px]" variant="outline" onClick={() => setDone(false)}>
           Book another visit
         </Button>
       </div>
@@ -33,7 +56,7 @@ export function BookingForm({ services }: { services: NailService[] }) {
 
   return (
     <form
-      className="space-y-5 rounded-3xl border border-brand-100 bg-white p-6 shadow-card md:p-8"
+      className="space-y-6 border border-[#DFD2C5] bg-[#FCFAF6] p-6 md:p-8"
       action={async (formData) => {
         setPending(true);
         setError("");
@@ -43,15 +66,53 @@ export function BookingForm({ services }: { services: NailService[] }) {
         else setError(result.error || "We could not submit your booking. Please try again.");
       }}
     >
-      <div className="flex items-center gap-3 border-b border-border pb-5">
-        <span className="grid h-11 w-11 place-items-center rounded-2xl bg-brand-50 text-primary">
+      <div className="flex items-center gap-3 border-b border-[#DFD2C5] pb-5">
+        <span className="grid h-11 w-11 place-items-center rounded-full bg-[#EAF3F8] text-[#2F6590]">
           <CalendarCheck className="h-5 w-5" />
         </span>
         <div>
-          <h2 className="text-xl font-extrabold text-navy-900">Book your Nail Spa visit</h2>
-          <p className="text-sm text-muted-foreground">Choose your preferred service, date and time.</p>
+          {formTitle && <h2 className="font-serif text-2xl text-[#293845]">{formTitle}</h2>}
+          {formIntro && <p className="text-sm text-[#5F7380]">{formIntro}</p>}
         </div>
       </div>
+
+      {services.length > 0 ? (
+        <fieldset>
+          <legend className="mb-3 text-sm font-semibold text-[#34434C]">Choose a service *</legend>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {services.map((service) => {
+              const serviceId = String(service.id);
+              const selected = selectedService === serviceId;
+              return (
+                <button
+                  key={service.id}
+                  type="button"
+                  aria-pressed={selected}
+                  onClick={() => setSelectedService(serviceId)}
+                  className={`flex min-h-[76px] items-center gap-3 border p-3 text-left transition-colors ${
+                    selected
+                      ? "border-[#2F6590] bg-[#EAF3F8]"
+                      : "border-[#DFD2C5] bg-white hover:border-[#2F6590]/50"
+                  }`}
+                >
+                  {service.image && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={service.image} alt="" className="h-12 w-12 shrink-0 rounded-full object-cover" />
+                  )}
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-serif text-[17px] leading-tight text-[#293845]">{service.name}</span>
+                    {service.price && <span className="mt-1 block text-xs font-semibold text-[#2F6590]">LKR {service.price}</span>}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </fieldset>
+      ) : (
+        <p className="border border-[#DFD2C5] bg-white px-4 py-3 text-sm text-[#5F7380]">
+          No services are currently available for online booking.
+        </p>
+      )}
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
@@ -70,17 +131,18 @@ export function BookingForm({ services }: { services: NailService[] }) {
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="booking-service">Nail service *</Label>
+        <Label htmlFor="booking-service">Selected service *</Label>
         <select
           id="booking-service"
-          name="service"
+          name="serviceId"
           required
-          defaultValue=""
+          value={selectedService}
+          onChange={(event) => setSelectedService(event.target.value)}
           className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <option value="" disabled>Select a service</option>
           {services.map((service) => (
-            <option key={service.id} value={service.name}>{service.name}</option>
+            <option key={service.id} value={service.id}>{service.name}</option>
           ))}
         </select>
       </div>
@@ -112,8 +174,13 @@ export function BookingForm({ services }: { services: NailService[] }) {
       </div>
 
       {error && <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
-      <Button disabled={pending} type="submit" size="lg" className="w-full rounded-full font-bold">
-        {pending ? "Sending request…" : "Request appointment"}
+      <Button
+        disabled={pending || services.length === 0}
+        type="submit"
+        size="lg"
+        className="w-full rounded-[8px] bg-[#2F6590] font-semibold text-white shadow-[0_10px_25px_rgba(47,101,144,0.15)] hover:bg-[#275879]"
+      >
+        {pending ? "Sending request…" : submitLabel}
       </Button>
       <p className="text-center text-xs text-muted-foreground">This is a booking request. We will confirm availability with you directly.</p>
     </form>
