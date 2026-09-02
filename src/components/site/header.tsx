@@ -77,6 +77,8 @@ export function SiteHeader({
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
   const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
+  // NELUME (Social Enterprise) reads as its own calm, lotus-blue sub-brand here — labels/links unchanged.
+  const isBusiness = pathname.startsWith(`/${locale}/business`);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -121,20 +123,26 @@ export function SiteHeader({
   const pillClass = (active: boolean) =>
     cn(
       "group/pill relative flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-semibold transition-colors duration-200",
-      active
-        ? "bg-[#FFF0F4] text-[#C94F72]"
-        : "text-[#202B33]/70 hover:bg-[#FFF0F4] hover:text-[#C94F72]"
+      isBusiness
+        ? active
+          ? "bg-[rgba(175,196,216,0.18)] text-[#657DA6]"
+          : "text-[#53616C] hover:bg-[rgba(175,196,216,0.14)] hover:text-[#657DA6]"
+        : active
+          ? "bg-[#FFF0F4] text-[#C94F72]"
+          : "text-[#202B33]/70 hover:bg-[#FFF0F4] hover:text-[#C94F72]"
     );
 
-  const pillUnderline = (active: boolean) => (
-    <span
-      aria-hidden
-      className={cn(
-        "pointer-events-none absolute inset-x-3 -bottom-px h-0.5 origin-center scale-x-0 rounded-full bg-[#FF6F91] transition-transform duration-300 ease-out group-hover/pill:scale-x-100",
-        active && "scale-x-100"
-      )}
-    />
-  );
+  // NELUME's active tab uses the soft pill above instead of an underline.
+  const pillUnderline = (active: boolean) =>
+    isBusiness ? null : (
+      <span
+        aria-hidden
+        className={cn(
+          "pointer-events-none absolute inset-x-3 -bottom-px h-0.5 origin-center scale-x-0 rounded-full bg-[#FF6F91] transition-transform duration-300 ease-out group-hover/pill:scale-x-100",
+          active && "scale-x-100"
+        )}
+      />
+    );
 
   const mobileItems = contact ? [...primary, contact] : primary;
 
@@ -175,11 +183,19 @@ export function SiteHeader({
         id="sec-header"
         className={cn(
           "sticky top-0 z-40 border-b transition-all duration-300",
-          scrolled
-            ? "border-[rgba(32,43,51,0.06)] bg-[rgba(255,253,249,0.90)] shadow-[0_10px_30px_rgba(32,43,51,0.06)] backdrop-blur-xl supports-[backdrop-filter]:bg-[rgba(255,253,249,0.82)]"
-            : isHome
-              ? "border-transparent bg-[rgba(255,253,249,0.28)] backdrop-blur-[10px] supports-[backdrop-filter]:bg-[rgba(255,253,249,0.18)]"
-              : "border-transparent bg-[#FFFDF9]"
+          // While the mobile overlay is open, its stacking is capped by this
+          // element's own stacking context — without this bump it renders
+          // *behind* the floating donate button (z-80) and scroll progress
+          // bar (z-90), which sit above the header at rest. See header.tsx
+          // mobile <nav> below and floating-donate.tsx / scroll-progress.tsx.
+          open && "z-[100]",
+          isBusiness
+            ? "border-[rgba(101,125,166,0.08)] bg-[rgba(248,244,238,0.94)] backdrop-blur-[16px]"
+            : scrolled
+              ? "border-[rgba(32,43,51,0.06)] bg-[rgba(255,253,249,0.90)] shadow-[0_10px_30px_rgba(32,43,51,0.06)] backdrop-blur-xl supports-[backdrop-filter]:bg-[rgba(255,253,249,0.82)]"
+              : isHome
+                ? "border-transparent bg-[rgba(255,253,249,0.28)] backdrop-blur-[10px] supports-[backdrop-filter]:bg-[rgba(255,253,249,0.18)]"
+                : "border-transparent bg-[#FFFDF9]"
         )}
       >
         <div
@@ -295,7 +311,12 @@ export function SiteHeader({
               <Button
                 asChild
                 size="sm"
-                className="hidden rounded-full bg-gradient-to-r from-[#FF6178] to-[#FF826F] px-5 font-bold text-white shadow-[0_10px_28px_rgba(255,97,127,0.22)] transition-transform duration-200 hover:-translate-y-0.5 hover:from-[#ff7388] hover:to-[#ff967f] md:inline-flex"
+                className={cn(
+                  "hidden rounded-full px-5 font-bold text-white shadow-[0_10px_28px_rgba(255,97,127,0.22)] transition-transform duration-200 hover:-translate-y-0.5 md:inline-flex",
+                  isBusiness
+                    ? "bg-[linear-gradient(135deg,#FF7187,#FF8875)] hover:opacity-95"
+                    : "bg-gradient-to-r from-[#FF6178] to-[#FF826F] hover:from-[#ff7388] hover:to-[#ff967f]"
+                )}
               >
                 <Link href={`/${locale}/donate`}>
                   <Heart className="h-4 w-4 fill-current" /> {donateLabel}
@@ -339,7 +360,7 @@ export function SiteHeader({
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="fixed inset-0 z-50 overflow-y-auto bg-[#202B33] text-[#F8F5F2] min-[1360px]:hidden"
+              className="fixed inset-0 z-[100] overflow-y-auto bg-[#202B33] text-[#F8F5F2] min-[1360px]:hidden"
             >
               <div className="mx-auto flex min-h-full max-w-[560px] flex-col px-6 pb-10 pt-24">
                 <motion.div variants={menuList} initial="hidden" animate="visible" exit="exit" className="flex-1">

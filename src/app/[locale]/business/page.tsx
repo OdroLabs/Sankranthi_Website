@@ -16,6 +16,7 @@ import {
 import type { Locale } from "@/lib/i18n";
 import { getSettings, s, sPairs } from "@/lib/settings";
 import { Reveal, StaggerContainer, StaggerItem } from "@/components/animations";
+import { NelumeHero } from "@/components/site/nelume-hero";
 
 /**
  * NELUME's luxury editorial palette — warm ivory, champagne, muted rose,
@@ -73,6 +74,9 @@ export default async function BusinessPage({ params }: { params: Promise<{ local
   const heroTitle = s(settings, "business_hero_title", locale) || "NELUME";
   const heroIntro = s(settings, "business_hero_intro", locale);
   const heroImage = s(settings, "business_hero_image");
+  // Reuses already-uploaded gallery photos for the hero's collage — no new content fields.
+  const heroSecondaryImage = s(settings, "business_gallery_image_1");
+  const heroDetailImage = s(settings, "business_gallery_image_2");
 
   const aboutTitle = s(settings, "business_about_title", locale) || "Beauty with purpose.";
   const aboutBody = s(settings, "business_about_body", locale);
@@ -95,80 +99,13 @@ export default async function BusinessPage({ params }: { params: Promise<{ local
   return (
     <div style={{ backgroundColor: NELUME.ivory }}>
       {/* ---------------------------------------------------------------- HERO */}
-      <section
-        id="sec-page-header"
-        className="relative flex min-h-[92svh] items-end overflow-hidden"
-        style={{ backgroundColor: NELUME.plumDeep }}
-      >
-        {heroImage ? (
-          <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={heroImage}
-              alt=""
-              className="animate-nelume-kenburns absolute inset-0 h-full w-full object-cover"
-            />
-            <div
-              className="absolute inset-0"
-              style={{
-                background: `linear-gradient(180deg, ${NELUME.plumDeep}66 0%, ${NELUME.plumDeep}CC 72%, ${NELUME.plumDeep} 100%)`,
-              }}
-            />
-          </>
-        ) : (
-          <>
-            <div
-              className="absolute inset-0"
-              style={{
-                background: `radial-gradient(ellipse 80% 60% at 20% 20%, ${NELUME.mauve}40, transparent 60%), radial-gradient(ellipse 70% 60% at 85% 15%, ${NELUME.rose}30, transparent 55%), ${NELUME.plumDeep}`,
-              }}
-            />
-            <div className="bg-grain absolute inset-0 opacity-40" />
-          </>
-        )}
-
-        {/* Thin gold frame — editorial, not decorative clutter */}
-        <div
-          className="pointer-events-none absolute inset-6 hidden rounded-[2px] border md:block lg:inset-10"
-          style={{ borderColor: NELUME.gold + "33" }}
-        />
-
-        <div className="relative mx-auto w-full max-w-[1400px] px-6 pb-20 pt-40 md:px-12 md:pb-28">
-          <Reveal>
-            <p
-              className="mb-6 text-xs font-bold uppercase tracking-[0.35em]"
-              style={{ color: NELUME.gold }}
-            >
-              A Social Enterprise by Sankranthi Foundation
-            </p>
-            <h1
-              className="font-serif text-6xl font-medium leading-[0.95] tracking-tight md:text-8xl"
-              style={{ color: NELUME.ivory }}
-            >
-              {heroTitle}
-            </h1>
-            <p
-              className="mt-4 text-xl font-light tracking-[0.08em] md:text-3xl"
-              style={{ color: NELUME.champagne }}
-            >
-              Beauty &amp; Wellness Center
-            </p>
-            {heroIntro && (
-              <p className="mt-7 max-w-xl text-base leading-relaxed md:text-lg" style={{ color: NELUME.ivory + "BF" }}>
-                {heroIntro}
-              </p>
-            )}
-            <a
-              href="#sec-story"
-              className="group mt-10 inline-flex items-center gap-3 rounded-full border px-7 py-3 text-sm font-semibold uppercase tracking-[0.16em] transition-colors duration-300 hover:bg-[var(--gold)]"
-              style={{ borderColor: NELUME.gold, color: NELUME.gold, ["--gold" as any]: NELUME.gold }}
-            >
-              <span className="transition-colors duration-300 group-hover:text-[#28151F]">Discover NELUME</span>
-              <ArrowDown className="h-4 w-4 transition-colors duration-300 group-hover:text-[#28151F]" />
-            </a>
-          </Reveal>
-        </div>
-      </section>
+      <NelumeHero
+        heroTitle={heroTitle}
+        heroIntro={heroIntro}
+        heroImage={heroImage}
+        secondaryImage={heroSecondaryImage}
+        detailImage={heroDetailImage}
+      />
 
       {/* -------------------------------------------------------- OUR STORY */}
       <section id="sec-story" className="relative overflow-hidden py-24 md:py-36">

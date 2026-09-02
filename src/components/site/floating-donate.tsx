@@ -6,8 +6,10 @@ import { Heart } from "lucide-react";
  *
  * Rendered directly in the locale layout — outside <main>, the header and any
  * GSAP-animated or transformed container — so `position: fixed` always
- * resolves against the viewport. z-index sits above the header (z-40) and the
- * mobile menu, below only the scroll progress bar (z-90).
+ * resolves against the viewport. z-index sits above the header (z-40) and
+ * scroll progress bar sits above that (z-90) — but the header bumps itself to
+ * z-100 while its mobile menu is open (see header.tsx), so the fullscreen
+ * overlay still always ends up on top of this button.
  */
 export function FloatingDonate({ locale, label }: { locale: string; label: string }) {
   return (
