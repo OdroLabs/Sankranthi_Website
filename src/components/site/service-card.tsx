@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { resolveServiceIcon } from "@/lib/service-icons";
 
 /** One or two spectrum accents per card, with a contextual warm tint — never a rainbow wash. */
 const ACCENTS = [
@@ -30,6 +31,7 @@ export function ServiceCard({
   index?: number;
 }) {
   const accent = ACCENTS[index % ACCENTS.length];
+  const Icon = resolveServiceIcon(icon);
 
   return (
     <motion.div whileHover="hover" initial="rest" className="group relative h-full">
@@ -58,17 +60,17 @@ export function ServiceCard({
             style={{ background: `linear-gradient(90deg, ${accent.from}, ${accent.to})` }}
           />
           <div className="relative">
-            {icon && (
+            {Icon && (
               <motion.span
                 variants={{ rest: { scale: 1, rotate: 0 }, hover: { scale: 1.08, rotate: -6 } }}
                 transition={{ type: "spring", stiffness: 300, damping: 18 }}
-                className="mb-5 grid h-[52px] w-[52px] place-items-center rounded-2xl text-2xl ring-1 ring-[rgba(32,43,51,0.06)]"
+                className="mb-5 grid h-[52px] w-[52px] place-items-center rounded-2xl ring-1 ring-[rgba(32,43,51,0.06)]"
                 style={{
                   background: `linear-gradient(135deg, ${accent.from}22, ${accent.to}18)`,
                   color: accent.from,
                 }}
               >
-                {icon}
+                <Icon className="h-6 w-6" strokeWidth={2} />
               </motion.span>
             )}
             <h3 className="mb-2 text-lg font-bold text-[#202B33] transition-colors group-hover:text-[#C94F72]">

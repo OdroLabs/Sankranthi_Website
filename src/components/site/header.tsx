@@ -31,15 +31,20 @@ export interface HeaderProps {
   showDonate: boolean;
 }
 
+// Opacity + transform only (never clip-path): iOS/Android Safari frequently
+// fail to repaint a clip-path transition on a `position: fixed` element,
+// freezing it mid-wipe so only a thin sliver at the top ever shows.
 const menuOverlay = {
-  hidden: { clipPath: "inset(0% 0% 100% 0%)" },
+  hidden: { opacity: 0, y: -16 },
   visible: {
-    clipPath: "inset(0% 0% 0% 0%)",
-    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const },
   },
   exit: {
-    clipPath: "inset(0% 0% 100% 0%)",
-    transition: { duration: 0.4, ease: [0.6, 0, 0.4, 1] as const },
+    opacity: 0,
+    y: -16,
+    transition: { duration: 0.3, ease: [0.6, 0, 0.4, 1] as const },
   },
 };
 
