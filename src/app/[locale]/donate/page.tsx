@@ -57,7 +57,7 @@ export default async function DonatePage({
         <div className="pointer-events-none absolute left-1/2 top-1/3 h-72 w-72 -translate-x-1/2 rounded-full bg-[#FFD66B]/[0.10] blur-[100px]" />
 
         <div
-          className={`relative container grid items-start gap-8 py-20 md:py-28 ${
+          className={`relative container grid items-start gap-8 py-14 md:py-20 ${
             showOnline && hasSidebar ? "lg:grid-cols-[1.15fr_0.85fr]" : ""
           }`}
         >
@@ -65,7 +65,7 @@ export default async function DonatePage({
           {showOnline && (
             <div id="sec-online" className="relative">
               <Reveal direction="left">
-                <div className="card-glow overflow-hidden rounded-[2rem] border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] p-7 shadow-card md:p-9">
+                <div className="card-glow overflow-hidden rounded-[20px] border border-[rgba(32,43,51,0.09)] bg-[#FFFDF9] p-7 shadow-sm md:p-9">
                   <Eyebrow>Give Today</Eyebrow>
                   <div className="mb-7 flex items-center gap-3">
                     <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#FF6178] to-[#FF826F] text-white shadow-[0_10px_24px_rgba(255,97,127,0.22)]">
@@ -101,7 +101,7 @@ export default async function DonatePage({
               {showImpact && (
                 <div id="sec-impact">
                   <Reveal direction="right" delay={0.1}>
-                    <div className="card-glow relative overflow-hidden rounded-[28px] border border-[rgba(32,43,51,0.07)] bg-[#202B33] p-8 text-[#F8F5F2] shadow-card">
+                    <div className="card-glow relative overflow-hidden rounded-[20px] border border-[rgba(32,43,51,0.07)] bg-[#202B33] p-7 text-[#F8F5F2] shadow-sm">
                       <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-[#FF6F91]/[0.16] blur-3xl" />
                       {impactTitle && (
                         <h3 className="text-lg font-extrabold tracking-tight">{impactTitle}</h3>
@@ -132,7 +132,7 @@ export default async function DonatePage({
               {showBank && (
                 <div id="sec-bank">
                   <Reveal direction="right" delay={0.18}>
-                    <div className="card-glow rounded-[28px] border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] p-7 shadow-card">
+                    <div className="card-glow rounded-[20px] border border-[rgba(32,43,51,0.09)] bg-[#FFFDF9] p-7 shadow-sm">
                       <div className="mb-4 flex items-center gap-3">
                         <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#FFF3ED] text-[#C94F72] ring-1 ring-[rgba(32,43,51,0.07)]">
                           <Landmark className="h-5 w-5" />

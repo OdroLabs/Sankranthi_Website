@@ -22,9 +22,9 @@ export default async function SuggestionsPage({ params }: { params: Promise<{ lo
         <div className="pointer-events-none absolute -left-32 top-0 h-96 w-96 rounded-full bg-brand-200/30 blur-[110px]" />
         <div className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-accent/15 blur-[100px]" />
 
-        <div className="relative mx-auto w-full max-w-2xl px-4 py-20 md:px-6 md:py-28">
+        <div className="relative mx-auto w-full max-w-2xl px-4 py-14 md:px-6 md:py-20">
           <Reveal direction="scale">
-            <div className="card-glow overflow-hidden rounded-[2rem] border border-border bg-white p-8 shadow-card md:p-10">
+            <div className="card-glow overflow-hidden rounded-[20px] border border-border bg-white p-7 shadow-sm md:p-9">
               <SuggestionForm
                 dict={dict}
                 successMessage={s(settings, "suggestions_success_message", locale)}

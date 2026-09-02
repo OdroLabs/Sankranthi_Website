@@ -11,12 +11,12 @@ import {
 import { prisma } from "@/lib/prisma";
 import { loc, type Locale } from "@/lib/i18n";
 import { getLabels } from "@/lib/labels";
-import { getSettings, s, sList, sNum, show } from "@/lib/settings";
+import { getSettings, s, sNum, show } from "@/lib/settings";
 import { formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { TestimonialsPanel } from "@/components/site/testimonials-panel";
-import { HomeHero } from "@/components/site/home-hero";
+import { HomeEditorialHero } from "@/components/site/home-editorial-hero";
 import { ServiceCard } from "@/components/site/service-card";
 import { TiltCard } from "@/components/site/tilt-card";
 import { Reveal, StaggerContainer, StaggerItem, CountUp } from "@/components/animations";
@@ -94,38 +94,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   const heroSubtitle = s(settings, "hero_subtitle", locale);
   const heroCta1Label = s(settings, "hero_cta1_label", locale);
   const heroCta2Label = s(settings, "hero_cta2_label", locale);
-  const heroPoints = sList(settings, "hero_points", locale);
   const heroFootnote = s(settings, "hero_footnote", locale);
-  const heroChapters = [
-    {
-      label: s(settings, "hero_chapter1_label", locale),
-      title: s(settings, "hero_chapter1_title", locale),
-      text: s(settings, "hero_chapter1_text", locale),
-      image: heroRightsImage || projects[0]?.image || heroImage,
-      points: heroPoints.slice(0, 2),
-    },
-    {
-      label: s(settings, "hero_chapter2_label", locale),
-      title: s(settings, "hero_chapter2_title", locale),
-      text: s(settings, "hero_chapter2_text", locale),
-      image: heroOpportunityImage || services[0]?.image || heroImage,
-      points: heroPoints.slice(2, 4),
-    },
-    {
-      label: s(settings, "hero_chapter3_label", locale),
-      title: s(settings, "hero_chapter3_title", locale),
-      text: s(settings, "hero_chapter3_text", locale),
-      image: heroCommunityImage || projects[1]?.image || heroImage,
-      points: heroPoints.slice(4, 6),
-    },
-  ].filter((chapter) => chapter.label || chapter.title || chapter.text);
+  const heroPromiseLabel = s(settings, "hero_promise_label", locale);
+  const heroNoteTitle = s(settings, "hero_note_title", locale);
+  const heroNoteText = s(settings, "hero_note_text", locale);
+  const heroScrollLabel = s(settings, "hero_scroll_label", locale);
 
   const aboutTitle = s(settings, "home_about_title", locale);
   const aboutText = s(settings, "home_about_text", locale);
-  const aboutImage = s(settings, "home_about_image");
-  const aboutCaption = s(settings, "home_about_caption", locale);
-  const aboutLinkLabel = s(settings, "home_about_link_label", locale);
-
   const statsTitle = s(settings, "home_stats_title", locale);
   const statsImage = s(settings, "home_stats_image");
 
@@ -145,6 +121,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
 
   const testimonialsTitle = s(settings, "home_testimonials_title", locale);
   const newsTitle = s(settings, "home_news_title", locale);
+  const newsFacebookLabel = s(settings, "home_news_facebook_label", locale);
   const eventsTitle = s(settings, "home_events_title", locale);
   const eventsLinkLabel = s(settings, "home_events_link_label", locale);
   const partnersTitle = s(settings, "home_partners_title", locale);
@@ -156,7 +133,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
 
   /* ---------------------- Which sections actually render ------------------ */
   const showHero = Boolean(heroTitle || heroSubtitle || heroBadge);
-  const showAbout = show(settings, "show_home_about", aboutText, aboutImage);
+  const showAbout = show(settings, "show_home_about", aboutTitle, aboutText);
   const showStats = show(settings, "show_home_stats", stats);
   const showServices = show(settings, "show_home_services", services);
   const showProjects = show(settings, "show_home_projects", projects);
@@ -173,8 +150,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Hero — scroll-driven living-thread story */}
       {/* ------------------------------------------------------------------ */}
       {showHero && (
-        <HomeHero
-          image={heroImage || undefined}
+        <HomeEditorialHero
           badge={heroBadge || undefined}
           title={heroTitle || undefined}
           subtitle={heroSubtitle || undefined}
@@ -194,14 +170,21 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 }
               : undefined
           }
-          footnote={heroFootnote || undefined}
-          supportImage={heroDignityImage || aboutImage || heroImage || undefined}
-          chapters={heroChapters.map((chapter) => ({
-            label: chapter.label || undefined,
-            title: chapter.title || undefined,
-            text: chapter.text || undefined,
-            image: chapter.image || undefined,
-            points: chapter.points,
+          galleryImages={[
+            heroImage,
+            heroRightsImage || projects[0]?.image,
+            heroOpportunityImage || services[0]?.image,
+            heroCommunityImage || projects[1]?.image,
+            heroDignityImage || heroImage,
+          ].filter((value): value is string => Boolean(value))}
+          supportText={heroFootnote || undefined}
+          promiseLabel={heroPromiseLabel || undefined}
+          noteTitle={heroNoteTitle || undefined}
+          noteText={heroNoteText || undefined}
+          scrollLabel={heroScrollLabel || undefined}
+          impactStats={stats.slice(0, 2).map((stat) => ({
+            value: stat.value,
+            label: loc(stat, "label", locale),
           }))}
         />
       )}
@@ -210,80 +193,27 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Who we are                                                          */}
       {/* ------------------------------------------------------------------ */}
       {showAbout && (
-        <section id="sec-about" className="surface-ivory relative py-14 md:py-20">
-          <div className="pointer-events-none absolute inset-x-0 -top-16 h-24 bg-gradient-to-b from-[#FFF9F5] to-transparent" />
-          <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6">
-          <div
-            className={`grid items-center gap-12 lg:gap-20 ${
-              aboutImage ? "lg:grid-cols-[0.92fr_1.08fr]" : ""
-            }`}
-          >
-            <Reveal direction="left">
-              <div className="mb-6 space-y-3">
-                {s(settings, "home_about_eyebrow", locale) && (
-                  <SectionTag>{s(settings, "home_about_eyebrow", locale)}</SectionTag>
-                )}
-                {aboutTitle && (
-                  <h2 className="text-display-xl font-serif font-medium tracking-tight text-charcoal-900">
-                    {aboutTitle}
-                  </h2>
-                )}
-              </div>
-              {aboutText && (
-                <p className="max-w-xl whitespace-pre-line text-base leading-7 text-muted-foreground">
-                  {aboutText}
-                </p>
-              )}
-              {aboutLinkLabel && (
-                <Button
-                  asChild
-                  variant="link"
-                  className="group mt-4 px-0 font-bold"
-                >
-                  <Link href={`/${locale}/about`}>
-                    <span className="border-b-2 border-transparent transition-colors group-hover:border-[#FF6F91]">
-                      {aboutLinkLabel}
-                    </span>
-                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                  </Link>
-                </Button>
-              )}
-            </Reveal>
-
-            {aboutImage && (
-              <div className="relative">
-                <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-[#FFF0F4] via-transparent to-[#EFF9F4]/80" />
-                {/* Plain CSS/GSAP reveal, not the Framer ImageReveal/Parallax
-                    pair — that combination is unreliable for two-column CMS
-                    photos like this one (see the same note on the About
-                    page's overview photo). */}
-                <div
-                  data-animate
-                  data-delay="0.1"
-                  className="relative overflow-hidden rounded-3xl shadow-card-hover"
-                >
-                  <div
-                    data-parallax="14"
-                    className="aspect-[4/3] scale-110 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${aboutImage})` }}
-                  />
-                  {aboutCaption && (
-                    <Reveal
-                      direction="scale"
-                      delay={0.5}
-                      className="glass-light absolute bottom-4 left-4 right-4 flex items-center gap-3 rounded-2xl px-5 py-4"
-                    >
-                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-white">
-                        <Sparkles className="h-5 w-5" />
-                      </span>
-                      <p className="text-sm font-bold text-charcoal-900">{aboutCaption}</p>
-                    </Reveal>
-                  )}
-                </div>
-              </div>
+        <section id="sec-about" className="relative overflow-hidden border-y border-[#F2E7E3] bg-[#FFFDF9] py-16 md:py-20">
+          <div className="pointer-events-none absolute -left-16 top-1/2 h-28 w-72 -translate-y-1/2 rounded-[50%] border-t-2 border-[#83D8B6]/40" />
+          <div className="pointer-events-none absolute -right-16 top-1/2 h-28 w-72 -translate-y-1/2 rounded-[50%] border-t-2 border-[#FF6F91]/35" />
+          <Reveal className="relative mx-auto max-w-4xl px-6 text-center">
+            {s(settings, "home_about_eyebrow", locale) && (
+              <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.18em] text-[#F35F62]">
+                {s(settings, "home_about_eyebrow", locale)}
+              </p>
             )}
-          </div>
-          </div>
+            {aboutTitle && (
+              <h2 className="mx-auto mt-3 max-w-3xl font-serif text-3xl font-medium leading-[1.08] tracking-normal text-[#20313A] md:text-5xl">
+                {aboutTitle}
+              </h2>
+            )}
+            <span className="mx-auto mt-5 block h-0.5 w-14 bg-[#F35F62]" />
+            {aboutText && (
+              <p className="mx-auto mt-5 max-w-3xl whitespace-pre-line text-sm leading-6 text-[#647078] md:text-base md:leading-7">
+                {aboutText}
+              </p>
+            )}
+          </Reveal>
         </section>
       )}
 
@@ -292,8 +222,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* ------------------------------------------------------------------ */}
       {showStats && (
         <section id="sec-stats" className="relative">
-          <div className="pointer-events-none absolute inset-x-0 -top-10 h-16 bg-gradient-to-b from-[#FFFDF9] to-transparent" />
-          <div className="surface-mint relative overflow-hidden py-16 text-charcoal-900 md:py-24">
+          <div className="surface-mint relative overflow-hidden py-12 text-charcoal-900 md:py-14">
             {statsImage && (
               <div className="absolute inset-0 overflow-hidden">
                 <div
@@ -302,34 +231,40 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 />
               </div>
             )}
-            <div className="pointer-events-none absolute right-0 top-0 h-72 w-72 rounded-full bg-[#83D8B6]/[0.14] blur-3xl" />
-            <div className="pointer-events-none absolute -left-10 bottom-0 h-64 w-64 rounded-full bg-[#FFD66B]/[0.10] blur-3xl" />
+            <span className="pointer-events-none absolute inset-x-0 -top-10 text-center font-serif text-[9rem] leading-none text-[#3AAE91]/[0.045] md:text-[14rem]">
+              IMPACT
+            </span>
 
             <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative">
               {(statsTitle || s(settings, "home_stats_eyebrow", locale)) && (
-                <Reveal className="mx-auto mb-12 max-w-2xl space-y-3 text-center">
+                <Reveal className="mx-auto mb-8 max-w-2xl space-y-2 text-center">
                   {s(settings, "home_stats_eyebrow", locale) && (
-                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#C94F72]">
+                    <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.18em] text-[#F35F62]">
                       {s(settings, "home_stats_eyebrow", locale)}
                     </p>
                   )}
                   {statsTitle && (
-                    <h2 className="text-display-xl font-serif font-medium tracking-tight text-charcoal-900">{statsTitle}</h2>
+                    <h2 className="font-serif text-2xl font-medium tracking-normal text-[#20313A] md:text-3xl">{statsTitle}</h2>
                   )}
-                  <span className="living-spectrum-line mx-auto" />
                 </Reveal>
               )}
-              <StaggerContainer className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
-                {stats.map((stat) => (
+              <StaggerContainer className="grid grid-cols-2 md:grid-cols-4">
+                {stats.map((stat, index) => {
+                  const StatIcon = [Heart, Sparkles, CalendarDays, MapPin][index % 4];
+                  return (
                   <StaggerItem key={stat.id}>
-                    <div className="card-glow group h-full rounded-[28px] border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] p-7 text-center shadow-card transition-all duration-300 hover:-translate-y-[5px]">
-                      <p className="font-number text-3xl font-extrabold text-gradient md:text-4xl">
+                    <div className={`h-full px-4 py-5 text-center md:px-7 ${index > 0 ? "border-l border-[#3AAE91]/20" : ""}`}>
+                      <p className="font-number text-3xl font-extrabold text-[#2D9F84] md:text-4xl">
                         <CountUp value={stat.value} />
                       </p>
-                      <p className="mt-2.5 text-sm text-[#667078]">{loc(stat, "label", locale)}</p>
+                      <p className="mt-2 flex items-center justify-center gap-1.5 text-xs font-semibold text-[#52656B] md:text-sm">
+                        <StatIcon className="h-4 w-4 text-[#2D9F84]" />
+                        {loc(stat, "label", locale)}
+                      </p>
                     </div>
                   </StaggerItem>
-                ))}
+                  );
+                })}
               </StaggerContainer>
             </div>
           </div>
@@ -340,13 +275,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Services                                                            */}
       {/* ------------------------------------------------------------------ */}
       {showServices && (
-        <section id="sec-services" className="surface-peach relative overflow-hidden py-16 md:py-24">
+        <section id="sec-services" className="surface-peach relative overflow-hidden py-12 md:py-20">
           <div className="pointer-events-none absolute inset-x-0 -top-10 h-16 bg-gradient-to-b from-[#EFF9F4] to-transparent" />
           <div className="pointer-events-none absolute -right-40 top-24 h-80 w-80 rounded-full bg-[#FF9B69]/[0.10] blur-3xl" />
           <div className="pointer-events-none absolute -left-32 bottom-10 h-64 w-64 rounded-full bg-[#FFD66B]/[0.10] blur-3xl" />
           <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative">
             {(servicesTitle || servicesText || s(settings, "home_services_eyebrow", locale)) && (
-              <Reveal className="mb-14 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+              <Reveal className="mb-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
                 <div className="max-w-xl">
                   {s(settings, "home_services_eyebrow", locale) && (
                     <SectionTag>{s(settings, "home_services_eyebrow", locale)}</SectionTag>
@@ -379,7 +314,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
               ))}
             </StaggerContainer>
             {servicesLinkLabel && (
-              <Reveal className="mt-12 text-center">
+              <Reveal className="mt-9 text-center">
                 <Button asChild variant="outline" size="lg" className="rounded-full px-8 font-semibold">
                   <Link href={`/${locale}/services`}>{servicesLinkLabel}</Link>
                 </Button>
@@ -393,12 +328,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Featured projects                                                   */}
       {/* ------------------------------------------------------------------ */}
       {showProjects && (
-        <section id="sec-projects" className="surface-ivory relative overflow-hidden py-16 md:py-24">
+        <section id="sec-projects" className="surface-ivory relative overflow-hidden py-12 md:py-20">
           <div className="pointer-events-none absolute inset-x-0 -top-10 h-16 bg-gradient-to-b from-[#FFF3ED] to-transparent" />
           <div className="pointer-events-none absolute -left-32 top-0 h-72 w-72 rounded-full bg-[#A995E8]/[0.08] blur-3xl" />
           <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative">
             {(projectsTitle || projectsText || s(settings, "home_projects_eyebrow", locale)) && (
-              <Reveal className="mb-12 max-w-3xl space-y-3">
+              <Reveal className="mb-9 max-w-3xl space-y-3">
                 {s(settings, "home_projects_eyebrow", locale) && (
                   <SectionTag>{s(settings, "home_projects_eyebrow", locale)}</SectionTag>
                 )}
@@ -419,7 +354,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                 <Link
                   key={project.id}
                   href={`/${locale}/projects/${project.slug ?? project.id}`}
-                  className={`group flex h-full flex-col overflow-hidden rounded-[28px] border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] shadow-card transition-all duration-300 hover:-translate-y-[5px] hover:border-[rgba(255,111,145,0.25)] hover:shadow-card-hover ${
+                  className={`group flex h-full flex-col overflow-hidden rounded-[20px] border border-[rgba(32,43,51,0.09)] bg-[#FFFDF9] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(255,111,145,0.25)] hover:shadow-card ${
                     big ? "lg:flex-row" : ""
                   }`}
                 >
@@ -483,7 +418,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
             })()}
 
             {projectsLinkLabel && (
-              <Reveal className="mt-12 text-center">
+              <Reveal className="mt-9 text-center">
                 <Button
                   asChild
                   variant="outline"
@@ -502,7 +437,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Get in touch — warm supportive band                                 */}
       {/* ------------------------------------------------------------------ */}
       {showContact && (
-        <section id="sec-contact" className="surface-blush relative overflow-hidden py-16 text-charcoal-900 md:py-24">
+        <section id="sec-contact" className="surface-blush relative overflow-hidden py-12 text-charcoal-900 md:py-20">
           <div className="pointer-events-none absolute inset-x-0 -top-10 h-16 bg-gradient-to-b from-[#FFFDF9] to-transparent" />
           {contactImage && (
               <div className="absolute inset-0 overflow-hidden">
@@ -515,9 +450,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
             <div className="pointer-events-none absolute -right-16 top-8 h-64 w-64 rounded-full bg-[#FF6F91]/[0.08] blur-3xl" />
             <div className="pointer-events-none absolute -left-10 bottom-0 h-56 w-56 rounded-full bg-[#FF9B69]/[0.10] blur-3xl" />
 
-            <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr]">
+            <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative grid items-center gap-9 lg:grid-cols-[0.85fr_1.15fr]">
               <Reveal direction="scale">
-                <TiltCard className="relative mx-auto w-full max-w-sm overflow-hidden rounded-[28px] border border-[rgba(32,43,51,0.07)] bg-[#FFF3ED] p-10 text-center text-charcoal-900 shadow-card">
+                <TiltCard className="relative mx-auto w-full max-w-sm overflow-hidden rounded-[20px] border border-[rgba(32,43,51,0.09)] bg-[#FFF3ED] p-8 text-center text-charcoal-900 shadow-sm">
                   <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#FF6F91]/[0.10] blur-2xl" />
                   <span className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-full bg-white/70 ring-1 ring-[rgba(32,43,51,0.07)]">
                     <PhoneCall className="h-6 w-6 text-[#C94F72]" />
@@ -585,7 +520,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Testimonials                                                        */}
       {/* ------------------------------------------------------------------ */}
       {showTestimonials && (
-        <section id="sec-testimonials" className="surface-lavender relative py-16 md:py-24">
+        <section id="sec-testimonials" className="surface-lavender relative py-12 md:py-20">
           <div className="pointer-events-none absolute inset-x-0 -top-10 h-16 bg-gradient-to-b from-[#FFF0F4] to-transparent" />
           <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6">
           <Reveal>
@@ -606,7 +541,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* News — migrated 1:1 from the legacy static site's news-section      */}
       {/* ------------------------------------------------------------------ */}
       {showNews && (
-        <section id="sec-news" className="surface-ivory relative pb-16 pt-4 md:pb-24">
+        <section id="sec-news" className="surface-ivory relative pb-12 pt-4 md:pb-20">
           <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6">
           {(newsTitle || s(settings, "home_news_eyebrow", locale)) && (
             <Reveal className="mb-12 max-w-2xl space-y-3">
@@ -661,7 +596,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                     {loc(item, "title", locale)}
                   </h3>
                   <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-bold text-[#C94F72]">
-                    Read more
+                    {dict.common.readMore}
                     <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
                   </span>
                 </div>
@@ -686,11 +621,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
             );
           })()}
 
-          {s(settings, "facebook") && (
+          {s(settings, "facebook") && newsFacebookLabel && (
             <Reveal className="mt-12 text-center">
               <Button asChild variant="outline" size="lg" className="rounded-full px-8 font-semibold">
                 <a href={s(settings, "facebook")} target="_blank" rel="noopener noreferrer">
-                  Follow us on Facebook
+                  {newsFacebookLabel}
                 </a>
               </Button>
             </Reveal>
@@ -703,7 +638,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Events                                                              */}
       {/* ------------------------------------------------------------------ */}
       {showEvents && (
-        <section className="surface-sun relative pb-16 md:pb-24">
+        <section className="surface-ivory relative pb-16 md:pb-24">
           <div id="sec-events" className="mx-auto max-w-2xl px-4 md:px-6">
             <Reveal className="mb-8 space-y-3 text-center">
               {s(settings, "home_events_eyebrow", locale) && (

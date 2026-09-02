@@ -32,7 +32,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
         image={s(settings, "projects_hero_image") || undefined}
       />
 
-      <div className="mx-auto w-full max-w-[1400px] px-4 py-20 md:px-6 md:py-28">
+      <div className="mx-auto w-full max-w-[1400px] px-4 py-14 md:px-6 md:py-20">
         {projects.length === 0 && (
           <EmptyState message={s(settings, "projects_empty_text", locale)} />
         )}
@@ -41,7 +41,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
           <Reveal direction="up">
             <Link
               href={`/${locale}/projects/${featured.slug ?? featured.id}`}
-              className="group card-glow relative grid overflow-hidden rounded-3xl border bg-card shadow-card transition-shadow duration-300 hover:shadow-card-hover lg:grid-cols-2"
+              className="group card-glow relative grid overflow-hidden rounded-[24px] border bg-card shadow-sm transition-shadow duration-300 hover:shadow-card lg:grid-cols-2"
             >
               <div className="relative aspect-[16/11] w-full overflow-hidden lg:aspect-auto">
                 {featured.image ? (
@@ -57,7 +57,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-navy-950/70 via-navy-950/0 to-navy-950/0 lg:hidden" />
               </div>
-              <div className="relative flex flex-col justify-center p-8 md:p-12">
+              <div className="relative flex flex-col justify-center p-7 md:p-9">
                 <span className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#FF6F91]/[0.08] blur-3xl" />
                 <div className="relative mb-5 flex flex-wrap items-center gap-3">
                   <Badge

@@ -75,10 +75,10 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         intro={s(settings, "services_hero_intro", locale)}
         image={s(settings, "services_hero_image") || undefined}
       />
-      <section className="surface-peach relative overflow-hidden py-16 md:py-24">
+      <section className="surface-peach relative overflow-hidden py-14 md:py-20">
         <div className="pointer-events-none absolute inset-0 bg-grid-fade opacity-[0.15]" />
         <div className="relative mx-auto w-full max-w-[1400px] px-4 md:px-6">
-          <StaggerContainer className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((service, i) => {
               const accent = ACCENTS[i % ACCENTS.length];
               return (
@@ -87,7 +87,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                     <Link
                       href={`/${locale}/services/${service.slug ?? service.id}`}
                       className={cn(
-                        "group relative flex h-full flex-col overflow-hidden rounded-[28px] border border-[rgba(32,43,51,0.07)] shadow-card ring-1 ring-transparent transition-all duration-300 hover:-translate-y-[5px] hover:shadow-card-hover",
+                        "group relative flex h-full flex-col overflow-hidden rounded-[20px] border border-[rgba(32,43,51,0.09)] shadow-sm ring-1 ring-transparent transition-all duration-300 hover:-translate-y-1 hover:shadow-card",
                         accent.tint,
                         accent.ring
                       )}

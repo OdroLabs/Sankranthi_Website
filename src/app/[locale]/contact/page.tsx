@@ -58,8 +58,8 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
           <div className="pointer-events-none absolute -right-32 bottom-0 h-[26rem] w-[26rem] rounded-full bg-[#83D8B6]/[0.10] blur-[110px]" />
 
           <div
-            className={`relative mx-auto w-full max-w-[1400px] px-4 py-20 md:px-6 md:py-28 ${
-              showDetails && showForm ? "grid gap-12 lg:grid-cols-5" : ""
+            className={`relative mx-auto w-full max-w-[1400px] px-4 py-14 md:px-6 md:py-20 ${
+              showDetails && showForm ? "grid gap-8 lg:grid-cols-5" : ""
             }`}
           >
             {showDetails && (
@@ -74,7 +74,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
                 )}
                 <Reveal direction="left">
                   <TiltCard>
-                    <div className="card-glow overflow-hidden rounded-3xl border border-border bg-white shadow-card transition-shadow duration-300">
+                    <div className="card-glow overflow-hidden rounded-[20px] border border-border bg-white shadow-sm transition-shadow duration-300 hover:shadow-card">
                       <StaggerContainer>
                         {items.map((item, i) => (
                           <StaggerItem key={`${item.label}-${i}`}>
@@ -127,7 +127,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
                 direction="right"
                 className={showDetails ? "lg:col-span-3" : "mx-auto w-full max-w-2xl"}
               >
-                <div className="card-glow rounded-[2rem] border border-border bg-white p-8 shadow-card md:p-10">
+                <div className="card-glow rounded-[20px] border border-border bg-white p-7 shadow-sm md:p-9">
                   <Eyebrow>Send a Message</Eyebrow>
                   {formTitle && (
                     <h2 className="mb-2 text-display-lg font-extrabold tracking-tight text-navy-900">
@@ -151,9 +151,9 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
         <Reveal>
           <div
             id="sec-map"
-            className="mx-auto w-full max-w-[1400px] px-4 pb-20 md:px-6 md:pb-28"
+            className="mx-auto w-full max-w-[1400px] px-4 pb-14 md:px-6 md:pb-20"
           >
-            <div className="overflow-hidden rounded-[2rem] border border-border shadow-card">
+            <div className="overflow-hidden rounded-[20px] border border-border shadow-sm">
               <iframe
                 src={mapEmbed}
                 className="h-80 w-full border-0"

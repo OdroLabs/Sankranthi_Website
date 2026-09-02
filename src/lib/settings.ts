@@ -412,53 +412,43 @@ export const settingPages: SettingPage[] = [
           TA(
             "hero_title",
             "Title",
-            "Add a line break where you want the large hero headline to wrap."
+            "Shown as the large homepage headline. Recommended: Empowering Change, Inspiring Hope. Line breaks are preserved for other titles."
           ),
           TA("hero_subtitle", "Subtitle"),
+          T("hero_promise_label", "Vertical promise label", "Blank hides the left-side label."),
+          T("hero_footnote", "Support statement below the buttons", "Blank hides the statement."),
+          T("hero_note_title", "Reassurance card heading", "Blank hides the heading."),
+          TA("hero_note_text", "Reassurance card text", "Leave both reassurance fields blank to hide the card."),
+          T("hero_scroll_label", "Scroll prompt", "Blank hides the scroll control."),
           IMG(
             "hero_image",
-            "Main hero photograph",
-            "Large editorial photograph beside the hero headline. Use a warm, authentic people-focused image."
+            "Gallery photograph 1",
+            "Use a warm, authentic people-focused image."
           ),
           IMG(
             "hero_rights_image",
-            "Chapter 1 photograph",
-            "Shown beside Chapter 1 text while scrolling (image on the right)."
+            "Gallery photograph 2",
+            "Shown in the second vertical image strip."
           ),
-          T("hero_chapter1_label", "Chapter 1 label", "Short label above the chapter title. Leave blank to hide this chapter."),
-          T("hero_chapter1_title", "Chapter 1 title"),
-          TA("hero_chapter1_text", "Chapter 1 body"),
           IMG(
             "hero_opportunity_image",
-            "Chapter 2 photograph",
-            "Shown beside Chapter 2 text while scrolling (image on the left)."
+            "Gallery photograph 3",
+            "Shown in the central vertical image strip."
           ),
-          T("hero_chapter2_label", "Chapter 2 label", "Leave blank to hide this chapter."),
-          T("hero_chapter2_title", "Chapter 2 title"),
-          TA("hero_chapter2_text", "Chapter 2 body"),
           IMG(
             "hero_community_image",
-            "Chapter 3 photograph",
-            "Shown beside Chapter 3 text while scrolling (image on the right)."
+            "Gallery photograph 4",
+            "Shown in the fourth vertical image strip."
           ),
-          T("hero_chapter3_label", "Chapter 3 label", "Leave blank to hide this chapter."),
-          T("hero_chapter3_title", "Chapter 3 title"),
-          TA("hero_chapter3_text", "Chapter 3 body"),
           IMG(
             "hero_dignity_image",
-            "Supporting collage photograph",
-            "Optional second photograph in the opening hero collage."
+            "Gallery photograph 5",
+            "Shown in the final vertical image strip."
           ),
           T("hero_cta1_label", "Primary button text", "Leave blank to hide the button."),
           P("hero_cta1_link", "Primary button link", "Relative path such as /contact, or a full URL."),
           T("hero_cta2_label", "Secondary button text", "Leave blank to hide the button."),
           P("hero_cta2_link", "Secondary button link"),
-          LINES("hero_points", "Story highlight items", {
-            itemLabel: "Highlight",
-            addLabel: "Add highlight",
-            help: "Optional short lines shown under chapter body text (first two on chapter 1, next on chapter 2, and so on).",
-          }),
-          T("hero_footnote", "Photograph caption"),
         ],
       },
       {
@@ -470,9 +460,6 @@ export const settingPages: SettingPage[] = [
           T("home_about_eyebrow", "Small label above the heading"),
           T("home_about_title", "Heading", "Leave blank to use the organisation name."),
           TA("home_about_text", "Body text", "Leave blank to use the About page overview."),
-          IMG("home_about_image", "Photo"),
-          T("home_about_caption", "Caption on the photo"),
-          T("home_about_link_label", "Link text", "Leave blank to hide the link."),
         ],
       },
       {
@@ -545,6 +532,7 @@ export const settingPages: SettingPage[] = [
           T("home_news_eyebrow", "Small label above the heading"),
           T("home_news_title", "Heading"),
           NUM("home_news_count", "How many to show", "Default 3."),
+          T("home_news_facebook_label", "Facebook button text", "Blank hides the button. The Facebook URL is managed under General settings."),
         ],
       },
       {

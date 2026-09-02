@@ -82,7 +82,7 @@ export function PageHero({
         </>
       )}
 
-      <div className="relative mx-auto w-full max-w-[1400px] px-4 pb-20 pt-16 md:px-6 md:pb-28 md:pt-20">
+      <div className="relative mx-auto w-full max-w-[1400px] px-4 pb-14 pt-12 md:px-6 md:pb-16 md:pt-14">
         {eyebrow && (
           <p
             data-hero

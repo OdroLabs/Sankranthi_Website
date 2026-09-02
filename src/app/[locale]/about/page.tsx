@@ -154,7 +154,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         image={s(settings, "about_hero_image") || undefined}
       />
 
-      <div className="surface-ivory mx-auto w-full max-w-[1400px] space-y-20 px-4 py-20 md:space-y-28 md:px-6 md:py-28">
+      <div className="surface-ivory mx-auto w-full max-w-[1400px] space-y-14 px-4 py-14 md:space-y-20 md:px-6 md:py-20">
         <TextBlock
           id="sec-overview"
           icon={BookOpen}
@@ -172,7 +172,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
                   <StaggerItem key={block.title || block.text}>
                     <TiltCard className="h-full">
                       <div
-                        className={`card-glow group relative h-full overflow-hidden rounded-[28px] p-9 shadow-card transition-shadow duration-300 md:p-11 ${
+                        className={`card-glow group relative h-full overflow-hidden rounded-[20px] p-8 shadow-sm transition-shadow duration-300 hover:shadow-card md:p-9 ${
                           dark
                             ? "bg-[#202B33] text-white"
                             : "border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] text-[#202B33]"
@@ -217,7 +217,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         {values.length > 0 && (
           <section id="sec-values">
             {valuesTitle && (
-              <Reveal className="mb-12 flex flex-col items-center gap-4 text-center">
+              <Reveal className="mb-9 flex flex-col items-center gap-4 text-center">
                 <div className="flex items-center gap-3">
                   <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-white shadow-[0_10px_24px_rgba(255,97,127,0.22)]">
                     <Sparkles className="h-5 w-5" />
@@ -235,7 +235,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
                 return (
                   <StaggerItem key={i}>
                     <TiltCard className="h-full">
-                      <div className={`card-glow group relative h-full overflow-hidden rounded-[28px] border border-[rgba(32,43,51,0.07)] p-7 shadow-card transition-shadow duration-300 ${accent.tint}`}>
+                      <div className={`card-glow group relative h-full overflow-hidden rounded-[20px] border border-[rgba(32,43,51,0.09)] p-6 shadow-sm transition-shadow duration-300 hover:shadow-card ${accent.tint}`}>
                         <span
                           className={`absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r ${accent.bar} opacity-70 transition-opacity duration-300 group-hover:opacity-100`}
                         />
@@ -274,7 +274,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           <Reveal>
             <section
               id="sec-extra"
-              className="donate-spectrum-wash bg-grain relative overflow-hidden rounded-[2rem] border border-[rgba(32,43,51,0.07)] p-10 text-[#202B33] shadow-card md:p-14"
+              className="donate-spectrum-wash bg-grain relative overflow-hidden rounded-[24px] border border-[rgba(32,43,51,0.09)] p-8 text-[#202B33] shadow-sm md:p-10"
             >
               <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-[#FF6F91]/[0.12] blur-3xl" />
               <div className="pointer-events-none absolute -bottom-20 -left-10 h-72 w-72 rounded-full bg-[#83D8B6]/[0.12] blur-3xl" />
