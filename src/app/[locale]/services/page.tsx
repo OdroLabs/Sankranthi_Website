@@ -74,6 +74,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         title={s(settings, "services_hero_title", locale)}
         intro={s(settings, "services_hero_intro", locale)}
         image={s(settings, "services_hero_image") || undefined}
+        nextSurface="peach"
       />
       <section className="surface-peach relative overflow-hidden py-14 md:py-20">
         <div className="pointer-events-none absolute inset-0 bg-grid-fade opacity-[0.15]" />

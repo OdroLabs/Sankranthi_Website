@@ -31,9 +31,10 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: L
         title={s(settings, "news_hero_title", locale)}
         intro={s(settings, "news_hero_intro", locale)}
         image={s(settings, "news_hero_image") || undefined}
+        nextSurface="ivory"
       />
 
-      <div className="relative overflow-hidden py-12 md:py-20">
+      <div className="surface-ivory relative overflow-hidden py-12 md:py-20">
         <div className="pointer-events-none absolute -left-32 top-24 h-72 w-72 rounded-full bg-[#FF6F91]/[0.08] blur-3xl" />
         <div className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-[#83CDED]/[0.10] blur-3xl" />
 

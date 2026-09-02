@@ -438,7 +438,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* ------------------------------------------------------------------ */}
       {showContact && (
         <section id="sec-contact" className="surface-blush relative overflow-hidden py-12 text-charcoal-900 md:py-20">
-          <div className="pointer-events-none absolute inset-x-0 -top-10 h-16 bg-gradient-to-b from-[#FFFDF9] to-transparent" />
           {contactImage && (
               <div className="absolute inset-0 overflow-hidden">
                 <div

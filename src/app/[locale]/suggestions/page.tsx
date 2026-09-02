@@ -16,9 +16,10 @@ export default async function SuggestionsPage({ params }: { params: Promise<{ lo
         title={s(settings, "suggestions_hero_title", locale)}
         intro={s(settings, "suggestions_hero_intro", locale)}
         image={s(settings, "suggestions_hero_image") || undefined}
+        nextSurface="blush"
       />
 
-      <div className="relative overflow-hidden">
+      <div className="surface-blush relative overflow-hidden">
         <div className="pointer-events-none absolute -left-32 top-0 h-96 w-96 rounded-full bg-brand-200/30 blur-[110px]" />
         <div className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-accent/15 blur-[100px]" />
 

@@ -1,6 +1,4 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
+import type { CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -9,6 +7,9 @@ import { cn } from "@/lib/utils";
  * above a navy band). Three gentle variants keep back-to-back dividers from
  * reading as the same wave repeated down the page; "wave" is the original
  * default so every existing call site is unaffected.
+ *
+ * Kept at full opacity on purpose: this is a structural colour bridge. Fading
+ * it in exposes the mismatched band underneath and reads as a white flash.
  */
 const PATHS = {
   wave: "M0,72 L0,40 C240,4 480,0 720,14 C960,28 1200,64 1440,30 L1440,72 Z",
@@ -20,26 +21,24 @@ export function Curve({
   flip,
   className,
   variant = "wave",
+  style,
 }: {
   flip?: boolean;
   className?: string;
   variant?: keyof typeof PATHS;
+  style?: CSSProperties;
 }) {
-  const reduceMotion = useReducedMotion();
   const d = PATHS[variant];
 
   return (
-    <motion.svg
+    <svg
       viewBox="0 0 1440 72"
       preserveAspectRatio="none"
       aria-hidden
       className={cn("block h-10 w-full fill-current md:h-[72px]", flip && "rotate-180", className)}
-      initial={reduceMotion ? false : { opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true, amount: 0, margin: "200px 0px 200px 0px" }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      style={style}
     >
       <path d={d} />
-    </motion.svg>
+    </svg>
   );
 }

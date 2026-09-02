@@ -107,8 +107,10 @@ export default async function EventsPage({ params }: { params: Promise<{ locale:
         title={s(settings, "events_hero_title", locale)}
         intro={s(settings, "events_hero_intro", locale)}
         image={s(settings, "events_hero_image") || undefined}
+        nextSurface="ivory"
       />
 
+      <div className="surface-ivory relative overflow-hidden">
       {/* Upcoming — hidden entirely when there is nothing scheduled and no
           empty-state message has been set in the admin. */}
       {(upcoming.length > 0 || emptyText) && (
@@ -175,6 +177,7 @@ export default async function EventsPage({ params }: { params: Promise<{ locale:
           </Section>
         </section>
       )}
+      </div>
     </>
   );
 }

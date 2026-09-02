@@ -49,9 +49,10 @@ export default async function DonatePage({
         title={s(settings, "donate_hero_title", locale)}
         intro={s(settings, "donate_intro", locale)}
         image={s(settings, "donate_hero_image") || undefined}
+        nextSurface="blush"
       />
 
-      <div className="bg-grain relative overflow-hidden bg-[#FFF9F5]">
+      <div className="bg-grain surface-blush relative overflow-hidden">
         <div className="pointer-events-none absolute -left-40 -top-20 h-[28rem] w-[28rem] rounded-full bg-[#FF6F91]/[0.10] blur-[120px]" />
         <div className="pointer-events-none absolute -right-32 bottom-0 h-[26rem] w-[26rem] rounded-full bg-[#83D8B6]/[0.12] blur-[120px]" />
         <div className="pointer-events-none absolute left-1/2 top-1/3 h-72 w-72 -translate-x-1/2 rounded-full bg-[#FFD66B]/[0.10] blur-[100px]" />

@@ -72,6 +72,7 @@ const navSections: NavSection[] = [
       { href: "/admin/settings/footer", label: "Footer", icon: PanelBottom },
       { href: "/admin/settings/home", label: "Home Page", icon: Home },
       { href: "/admin/settings/about", label: "About Page", icon: Info },
+      { href: "/admin/settings/projects", label: "Projects Page", icon: FolderKanban },
       { href: "/admin/settings/contact", label: "Contact Page", icon: Phone },
       { href: "/admin/settings/donate", label: "Donation Page", icon: Heart },
       { href: "/admin/settings/business", label: "Social Enterprise", icon: Sparkles },

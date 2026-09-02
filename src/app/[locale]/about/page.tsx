@@ -152,9 +152,11 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         title={s(settings, "about_hero_title", locale)}
         intro={s(settings, "about_hero_intro", locale)}
         image={s(settings, "about_hero_image") || undefined}
+        nextSurface="ivory"
       />
 
-      <div className="surface-ivory mx-auto w-full max-w-[1400px] space-y-14 px-4 py-14 md:space-y-20 md:px-6 md:py-20">
+      <div className="surface-ivory relative overflow-hidden">
+      <div className="mx-auto w-full max-w-[1400px] space-y-14 px-4 py-14 md:space-y-20 md:px-6 md:py-20">
         <TextBlock
           id="sec-overview"
           icon={BookOpen}
@@ -292,6 +294,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
             </section>
           </Reveal>
         )}
+      </div>
       </div>
     </>
   );

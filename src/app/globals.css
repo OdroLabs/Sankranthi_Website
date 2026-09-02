@@ -371,14 +371,15 @@
   background: linear-gradient(90deg, #ff716d 0%, #ff716d 72%, #ffd66b 86%, #83d8b6 100%);
 }
 
-/* Page / inner-page heroes: cream base with almost-invisible organic lighting */
+/* Page / inner-page heroes: cream base with almost-invisible organic lighting.
+   Glows stay in the upper half so the bottom wave scallops don't pick up a
+   pink/mint corner patch against the next surface. */
 .hero-organic-light {
   background-color: var(--cream);
   background-image:
-    radial-gradient(circle at 15% 30%, rgba(255, 111, 145, 0.1), transparent 32%),
-    radial-gradient(circle at 55% 40%, rgba(255, 214, 107, 0.1), transparent 30%),
-    radial-gradient(circle at 90% 20%, rgba(131, 216, 182, 0.1), transparent 34%),
-    radial-gradient(circle at 82% 88%, rgba(131, 205, 237, 0.08), transparent 36%);
+    radial-gradient(circle at 18% 18%, rgba(255, 111, 145, 0.09), transparent 30%),
+    radial-gradient(circle at 52% 28%, rgba(255, 214, 107, 0.09), transparent 28%),
+    radial-gradient(circle at 88% 16%, rgba(131, 216, 182, 0.09), transparent 30%);
 }
 
 .donate-spectrum-wash {

@@ -1,11 +1,29 @@
 import { Curve } from "./curve";
 
+/**
+ * Full-bleed surface colours used under the hero wave. The wave fill must
+ * match the band that follows — otherwise the ivory curve reads as a white
+ * stripe on cream / blush / peach.
+ */
+export const PAGE_SURFACES = {
+  cream: "#FFF9F5",
+  ivory: "#FFFDF9",
+  peach: "#FFF3ED",
+  blush: "#FFF0F4",
+  mint: "#EFF9F4",
+  sun: "#FFF8DD",
+  lavender: "#F5F1FF",
+} as const;
+
+export type PageSurface = keyof typeof PAGE_SURFACES;
+
 export function PageHero({
   title,
   intro,
   eyebrow,
   image,
   theme = "default",
+  nextSurface = "ivory",
 }: {
   title: string;
   intro?: string;
@@ -18,11 +36,17 @@ export function PageHero({
    * NELUME social-enterprise page — see NELUME_PALETTE in business/page.tsx.
    */
   theme?: "default" | "nelume";
+  /**
+   * Colour of the section immediately under this hero. Drives the bottom
+   * wave fill so the seam stays seamless.
+   */
+  nextSurface?: PageSurface;
 }) {
   // Nothing set in the admin for this page header — render nothing at all.
   if (!title && !intro && !eyebrow) return null;
 
   const isNelume = theme === "nelume";
+  const waveColor = isNelume ? "#EFEAE6" : PAGE_SURFACES[nextSurface];
 
   return (
     <section
@@ -51,27 +75,27 @@ export function PageHero({
             ? undefined
             : {
                 backgroundImage: [
-                  "radial-gradient(circle at 15% 30%, rgba(255,111,145,0.10), transparent 32%)",
-                  "radial-gradient(circle at 55% 40%, rgba(255,214,107,0.10), transparent 30%)",
-                  "radial-gradient(circle at 90% 20%, rgba(131,216,182,0.10), transparent 34%)",
-                  "radial-gradient(circle at 78% 88%, rgba(131,205,237,0.07), transparent 36%)",
+                  "radial-gradient(circle at 18% 18%, rgba(255,111,145,0.09), transparent 30%)",
+                  "radial-gradient(circle at 52% 28%, rgba(255,214,107,0.09), transparent 28%)",
+                  "radial-gradient(circle at 88% 16%, rgba(131,216,182,0.09), transparent 30%)",
                 ].join(", "),
               }
         }
       />
       {!isNelume && (
         <>
+          {/* Keep glows in the upper hero — bottom-edge orbs tint the wave scallops */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -left-16 top-8 h-56 w-56 rounded-full bg-[#FF6F91]/[0.08] blur-3xl"
+            className="pointer-events-none absolute -left-16 top-0 h-48 w-48 rounded-full bg-[#FF6F91]/[0.07] blur-3xl"
           />
           <div
             aria-hidden
-            className="pointer-events-none absolute left-1/2 top-1/3 h-64 w-64 -translate-x-1/2 rounded-full bg-[#FFD66B]/[0.08] blur-3xl"
+            className="pointer-events-none absolute left-1/2 top-8 h-56 w-56 -translate-x-1/2 rounded-full bg-[#FFD66B]/[0.07] blur-3xl"
           />
           <div
             aria-hidden
-            className="pointer-events-none absolute -bottom-16 right-[-4%] h-60 w-60 rounded-full bg-[#83D8B6]/[0.09] blur-3xl"
+            className="pointer-events-none absolute -right-10 top-4 h-52 w-52 rounded-full bg-[#83D8B6]/[0.07] blur-3xl"
           />
         </>
       )}
@@ -117,7 +141,18 @@ export function PageHero({
         />
       </div>
 
-      <Curve className={`absolute inset-x-0 -bottom-px ${isNelume ? "text-[#EFEAE6]" : "text-[#FFFDF9]"}`} />
+      {/* Soften organic lighting inside the wave scallops so left/right corners
+          don't read as a pink/mint patch against the next surface. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-20 md:h-28"
+        style={{
+          background: `linear-gradient(to bottom, transparent 0%, ${waveColor} 88%)`,
+        }}
+      />
+
+      {/* Structural colour bridge — always painted, never faded in */}
+      <Curve className="absolute inset-x-0 -bottom-px z-[2]" style={{ color: waveColor }} />
     </section>
   );
 }

@@ -743,6 +743,25 @@ export const settingPages: SettingPage[] = [
     ],
   },
 
+  /* ----------------------------------------------------------- Projects page */
+  {
+    slug: "projects",
+    title: "Projects Page",
+    description:
+      "The Projects page header and empty state. Manage project cards and detail content under Content → Projects.",
+    sections: [
+      {
+        section: "Page header",
+        preview: { path: "/projects", anchor: "sec-page-header" },
+        items: [
+          T("projects_hero_title", "Page title"),
+          TA("projects_hero_intro", "Intro text"),
+          IMG("projects_hero_image", "Header background image"),
+        ],
+      },
+    ],
+  },
+
   /* ----------------------------------------------------- Other page headers */
   {
     slug: "pages",
@@ -750,16 +769,6 @@ export const settingPages: SettingPage[] = [
     description:
       "Headers and empty-state messages for the listing pages. Each list hides itself when nothing is published.",
     sections: [
-      {
-        section: "Projects",
-        preview: { path: "/projects", anchor: "sec-page-header" },
-        items: [
-          T("projects_hero_title", "Page title"),
-          TA("projects_hero_intro", "Intro text"),
-          IMG("projects_hero_image", "Header background image"),
-          T("projects_empty_text", "Message when the list is empty"),
-        ],
-      },
       {
         section: "Services",
         preview: { path: "/services", anchor: "sec-page-header" },

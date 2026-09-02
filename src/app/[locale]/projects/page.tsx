@@ -30,8 +30,10 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
         title={s(settings, "projects_hero_title", locale)}
         intro={s(settings, "projects_hero_intro", locale)}
         image={s(settings, "projects_hero_image") || undefined}
+        nextSurface="ivory"
       />
 
+      <div className="surface-ivory relative overflow-hidden">
       <div className="mx-auto w-full max-w-[1400px] px-4 py-14 md:px-6 md:py-20">
         {projects.length === 0 && (
           <EmptyState message={s(settings, "projects_empty_text", locale)} />
@@ -151,6 +153,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
             })}
           </StaggerContainer>
         )}
+      </div>
       </div>
     </>
   );

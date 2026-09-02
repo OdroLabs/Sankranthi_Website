@@ -30,8 +30,10 @@ export default async function PublicationsPage({ params }: { params: Promise<{ l
         title={s(settings, "publications_hero_title", locale)}
         intro={s(settings, "publications_hero_intro", locale)}
         image={s(settings, "publications_hero_image") || undefined}
+        nextSurface="ivory"
       />
 
+      <div className="surface-ivory relative overflow-hidden">
       <div className="container py-14 md:py-20">
         {publications.length === 0 ? (
           <EmptyState message={s(settings, "publications_empty_text", locale)} />
@@ -100,6 +102,7 @@ export default async function PublicationsPage({ params }: { params: Promise<{ l
             ))}
           </StaggerContainer>
         )}
+      </div>
       </div>
     </>
   );
