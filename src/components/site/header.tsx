@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -31,9 +32,7 @@ export interface HeaderProps {
   showDonate: boolean;
 }
 
-// Opacity + transform only (never clip-path): iOS/Android Safari frequently
-// fail to repaint a clip-path transition on a `position: fixed` element,
-// freezing it mid-wipe so only a thin sliver at the top ever shows.
+// Transform-based transitions repaint reliably on mobile browsers.
 const menuOverlay = {
   hidden: { opacity: 0, y: -16 },
   visible: {
@@ -79,6 +78,7 @@ export function SiteHeader({
 }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
   const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
@@ -91,6 +91,8 @@ export function SiteHeader({
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => setPortalRoot(document.body), []);
 
   useEffect(() => {
     const el = headerRef.current;
@@ -188,12 +190,6 @@ export function SiteHeader({
         id="sec-header"
         className={cn(
           "sticky top-0 z-40 border-b transition-all duration-300",
-          // While the mobile overlay is open, its stacking is capped by this
-          // element's own stacking context — without this bump it renders
-          // *behind* the floating donate button (z-80) and scroll progress
-          // bar (z-90), which sit above the header at rest. See header.tsx
-          // mobile <nav> below and floating-donate.tsx / scroll-progress.tsx.
-          open && "z-[100]",
           isBusiness
             ? "border-[rgba(101,125,166,0.08)] bg-[rgba(248,244,238,0.94)] backdrop-blur-[16px]"
             : scrolled
@@ -356,7 +352,8 @@ export function SiteHeader({
         </div>
 
         {/* Mobile menu — premium fullscreen overlay */}
-        <AnimatePresence>
+        {portalRoot && createPortal(
+          <AnimatePresence>
           {open && (
             <motion.nav
               key="mobile-menu"
@@ -367,6 +364,14 @@ export function SiteHeader({
               exit="exit"
               className="fixed inset-0 z-[100] overflow-y-auto bg-[#202B33] text-[#F8F5F2] min-[1360px]:hidden"
             >
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Close menu"
+                className="fixed right-5 top-5 z-[110] grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6F91]"
+              >
+                <X className="h-5 w-5" />
+              </button>
               <div className="mx-auto flex min-h-full max-w-[560px] flex-col px-6 pb-10 pt-24">
                 <motion.div variants={menuList} initial="hidden" animate="visible" exit="exit" className="flex-1">
                   <div className="grid gap-1">
@@ -468,7 +473,9 @@ export function SiteHeader({
               </div>
             </motion.nav>
           )}
-        </AnimatePresence>
+          </AnimatePresence>,
+          portalRoot
+        )}
       </header>
     </>
   );
