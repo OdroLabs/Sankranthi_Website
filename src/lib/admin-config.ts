@@ -1,3 +1,5 @@
+import { SERVICE_ICON_OPTIONS } from "@/lib/service-icons";
+
 export type FieldType =
   | "text"
   | "textarea"
@@ -148,7 +150,13 @@ export const entities: EntityDef[] = [
         required: true,
         help: "Shown on cards (home page and services list).",
       },
-      { name: "icon", label: "Icon (emoji)", type: "text", help: "e.g. ❤️ 🩺 ⚖️ 📚" },
+      {
+        name: "icon",
+        label: "Icon",
+        type: "select",
+        options: SERVICE_ICON_OPTIONS,
+        help: "Shown on the service card and detail page.",
+      },
       { name: "image", label: "Main image", type: "image" },
       {
         name: "content",

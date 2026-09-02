@@ -205,12 +205,12 @@ async function main() {
   ] });
 
   await prisma.service.createMany({ data: [
-    { slug: "special-case-support", titleEn: "Special Case Support", descriptionEn: "A confidential first point of contact for people facing urgent, sensitive or complex situations. We listen, assess needs and coordinate appropriate help.", icon: "🤝", featuresEn: "Confidential first conversation\nNeeds assessment and safety planning\nReferrals to trusted specialist partners\nFollow-up and practical guidance", order: 1 },
-    { slug: "community-wellbeing", titleEn: "Community Wellbeing", descriptionEn: "Health awareness, emotional wellbeing activities and trusted referrals that make care easier to reach.", icon: "🌿", order: 2 },
-    { slug: "women-livelihoods", titleEn: "Women’s Livelihoods", descriptionEn: "Skills, mentoring and enterprise pathways—including our community Nail Spa—that support sustainable income.", icon: "✨", order: 3 },
-    { slug: "youth-family-support", titleEn: "Youth & Family Support", descriptionEn: "Practical guidance, learning support and safe connections for young people and families navigating change.", icon: "🏠", order: 4 },
-    { slug: "volunteer-action", titleEn: "Volunteer Action", descriptionEn: "Meaningful ways for individuals and teams to contribute time, skills and care to community-led initiatives.", icon: "🙌", order: 5 },
-    { slug: "research-advocacy", titleEn: "Research & Advocacy", descriptionEn: "Community evidence, publications and constructive advocacy that turn lived experience into better decisions.", icon: "📚", order: 6 },
+    { slug: "special-case-support", titleEn: "Special Case Support", descriptionEn: "A confidential first point of contact for people facing urgent, sensitive or complex situations. We listen, assess needs and coordinate appropriate help.", icon: "handshake", featuresEn: "Confidential first conversation\nNeeds assessment and safety planning\nReferrals to trusted specialist partners\nFollow-up and practical guidance", order: 1 },
+    { slug: "community-wellbeing", titleEn: "Community Wellbeing", descriptionEn: "Health awareness, emotional wellbeing activities and trusted referrals that make care easier to reach.", icon: "leaf", order: 2 },
+    { slug: "women-livelihoods", titleEn: "Women’s Livelihoods", descriptionEn: "Skills, mentoring and enterprise pathways—including our community Nail Spa—that support sustainable income.", icon: "briefcase", order: 3 },
+    { slug: "youth-family-support", titleEn: "Youth & Family Support", descriptionEn: "Practical guidance, learning support and safe connections for young people and families navigating change.", icon: "home", order: 4 },
+    { slug: "volunteer-action", titleEn: "Volunteer Action", descriptionEn: "Meaningful ways for individuals and teams to contribute time, skills and care to community-led initiatives.", icon: "users", order: 5 },
+    { slug: "research-advocacy", titleEn: "Research & Advocacy", descriptionEn: "Community evidence, publications and constructive advocacy that turn lived experience into better decisions.", icon: "book-open", order: 6 },
   ] });
 
   await prisma.project.createMany({ data: [

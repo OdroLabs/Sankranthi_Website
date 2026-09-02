@@ -10,6 +10,7 @@ import { EmptyState } from "@/components/site/empty-state";
 import { TiltCard } from "@/components/site/tilt-card";
 import { Reveal, StaggerContainer, StaggerItem } from "@/components/animations";
 import { cn } from "@/lib/utils";
+import { resolveServiceIcon } from "@/lib/service-icons";
 
 /**
  * Rotating rainbow accent per card — icon wash, top edge, hover ring and
@@ -110,16 +111,21 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                         </div>
                       )}
                       <div className="relative flex flex-1 flex-col p-7">
-                        {service.icon && (
-                          <span
-                            className={cn(
-                              "mb-5 grid h-14 w-14 place-items-center rounded-2xl text-2xl",
-                              accent.icon
-                            )}
-                          >
-                            {service.icon}
-                          </span>
-                        )}
+                        {(() => {
+                          const Icon = resolveServiceIcon(service.icon);
+                          return (
+                            Icon && (
+                              <span
+                                className={cn(
+                                  "mb-5 grid h-14 w-14 place-items-center rounded-2xl",
+                                  accent.icon
+                                )}
+                              >
+                                <Icon className="h-7 w-7" strokeWidth={1.75} />
+                              </span>
+                            )
+                          );
+                        })()}
                         <h2 className="mb-2.5 font-serif text-xl font-medium leading-snug text-[#202B33] transition-colors group-hover:text-[#C94F72]">
                           {loc(service, "title", locale)}
                         </h2>
