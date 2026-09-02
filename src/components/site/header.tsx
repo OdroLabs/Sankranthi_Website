@@ -303,7 +303,7 @@ export function SiteHeader({
               </Button>
             )}
             <button
-              className="relative z-[60] grid h-10 w-10 place-items-center rounded-full transition-colors hover:bg-[#FFF0F4] lg:hidden"
+              className="relative z-[60] grid h-10 w-10 place-items-center rounded-full transition-colors hover:bg-[#FFF0F4] min-[1360px]:hidden"
               onClick={() => setOpen((v) => !v)}
               aria-label={dict.nav.menu}
               aria-expanded={open}
@@ -339,7 +339,7 @@ export function SiteHeader({
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="fixed inset-0 z-50 overflow-y-auto bg-[#202B33] text-[#F8F5F2] lg:hidden"
+              className="fixed inset-0 z-50 overflow-y-auto bg-[#202B33] text-[#F8F5F2] min-[1360px]:hidden"
             >
               <div className="mx-auto flex min-h-full max-w-[560px] flex-col px-6 pb-10 pt-24">
                 <motion.div variants={menuList} initial="hidden" animate="visible" exit="exit" className="flex-1">
