@@ -139,7 +139,7 @@ export function NelumeHero({ heroTitle, heroIntro, heroImage, secondaryImage, de
           <div className="mt-9 flex items-center gap-3">
             <a
               href="#sec-story"
-              className="group inline-flex items-center gap-3 rounded-full bg-[#657DA6] px-7 py-[15px] text-sm font-semibold text-white shadow-[0_10px_30px_rgba(101,125,166,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#596F99]"
+              className="group inline-flex items-center gap-3 rounded-[10px] bg-[#657DA6] px-6 py-[14px] text-sm font-semibold text-white shadow-[0_10px_30px_rgba(101,125,166,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#596F99]"
             >
               Discover NELUME
               <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-[3px]" />
