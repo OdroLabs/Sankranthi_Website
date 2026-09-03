@@ -182,10 +182,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
           noteTitle={heroNoteTitle || undefined}
           noteText={heroNoteText || undefined}
           scrollLabel={heroScrollLabel || undefined}
-          impactStats={stats.slice(0, 2).map((stat) => ({
-            value: stat.value,
-            label: loc(stat, "label", locale),
-          }))}
         />
       )}
 
@@ -738,7 +734,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Donate CTA                                                          */}
       {/* ------------------------------------------------------------------ */}
       {showDonate && (
-        <section id="sec-donate" className="surface-cream relative pb-20 md:pb-28">
+        <section id="sec-donate" className="surface-cream relative pt-16 pb-20 md:pt-24 md:pb-28">
           <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6">
           <Reveal direction="scale">
             <div className="donate-spectrum-wash relative grid items-center gap-8 overflow-hidden rounded-[2rem] border border-[rgba(32,43,51,0.07)] p-10 text-[#202B33] shadow-card md:grid-cols-[1.2fr_auto] md:p-14">
