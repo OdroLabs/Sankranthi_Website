@@ -383,12 +383,12 @@
 }
 
 .donate-spectrum-wash {
-  background-color: var(--blush);
+  background-color: var(--mint-soft);
   background-image:
-    radial-gradient(circle at 12% 20%, rgba(255, 113, 109, 0.14), transparent 34%),
-    radial-gradient(circle at 52% 0%, rgba(255, 214, 107, 0.12), transparent 32%),
-    radial-gradient(circle at 92% 70%, rgba(131, 216, 182, 0.12), transparent 36%),
-    radial-gradient(circle at 70% 100%, rgba(169, 149, 232, 0.1), transparent 38%);
+    radial-gradient(circle at 12% 20%, rgba(131, 216, 182, 0.22), transparent 34%),
+    radial-gradient(circle at 52% 0%, rgba(255, 214, 107, 0.14), transparent 32%),
+    radial-gradient(circle at 92% 70%, rgba(131, 205, 237, 0.2), transparent 36%),
+    radial-gradient(circle at 70% 100%, rgba(255, 255, 255, 0.7), transparent 38%);
 }
 
 .surface-cream { background-color: var(--cream); }

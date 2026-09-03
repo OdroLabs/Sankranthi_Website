@@ -90,14 +90,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   const heroCommunityImage = s(settings, "hero_community_image");
   const heroDignityImage = s(settings, "hero_dignity_image");
   const heroTitle = s(settings, "hero_title", locale);
-  const heroBadge = s(settings, "hero_badge", locale);
   const heroSubtitle = s(settings, "hero_subtitle", locale);
   const heroCta1Label = s(settings, "hero_cta1_label", locale);
   const heroCta2Label = s(settings, "hero_cta2_label", locale);
-  const heroFootnote = s(settings, "hero_footnote", locale);
-  const heroPromiseLabel = s(settings, "hero_promise_label", locale);
-  const heroNoteTitle = s(settings, "hero_note_title", locale);
-  const heroNoteText = s(settings, "hero_note_text", locale);
   const heroScrollLabel = s(settings, "hero_scroll_label", locale);
 
   const aboutTitle = s(settings, "home_about_title", locale);
@@ -132,7 +127,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   const donateButton2 = s(settings, "home_donate_button2", locale);
 
   /* ---------------------- Which sections actually render ------------------ */
-  const showHero = Boolean(heroTitle || heroSubtitle || heroBadge);
+  const showHero = Boolean(heroTitle || heroSubtitle);
   const showAbout = show(settings, "show_home_about", aboutTitle, aboutText);
   const showStats = show(settings, "show_home_stats", stats);
   const showServices = show(settings, "show_home_services", services);
@@ -151,7 +146,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* ------------------------------------------------------------------ */}
       {showHero && (
         <HomeEditorialHero
-          badge={heroBadge || undefined}
           title={heroTitle || undefined}
           subtitle={heroSubtitle || undefined}
           primaryAction={
@@ -177,10 +171,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
             heroCommunityImage || projects[1]?.image,
             heroDignityImage || heroImage,
           ].filter((value): value is string => Boolean(value))}
-          supportText={heroFootnote || undefined}
-          promiseLabel={heroPromiseLabel || undefined}
-          noteTitle={heroNoteTitle || undefined}
-          noteText={heroNoteText || undefined}
           scrollLabel={heroScrollLabel || undefined}
         />
       )}
@@ -737,14 +727,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
         <section id="sec-donate" className="surface-cream relative pt-16 pb-20 md:pt-24 md:pb-28">
           <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6">
           <Reveal direction="scale">
-            <div className="donate-spectrum-wash relative grid items-center gap-8 overflow-hidden rounded-[2rem] border border-[rgba(32,43,51,0.07)] p-10 text-[#202B33] shadow-card md:grid-cols-[1.2fr_auto] md:p-14">
-              <span className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-[#FF6F91]/[0.12] blur-3xl" />
-              <span className="pointer-events-none absolute -bottom-20 left-1/3 h-56 w-56 rounded-full bg-[#83D8B6]/[0.12] blur-3xl" />
-              <span className="pointer-events-none absolute right-1/4 top-1/2 h-40 w-40 rounded-full bg-[#FFD66B]/[0.10] blur-3xl" />
+            <div className="donate-spectrum-wash relative grid items-center gap-8 overflow-hidden rounded-[2rem] border border-[#2D9F84]/20 p-10 text-[#202B33] shadow-[0_18px_50px_rgba(45,159,132,0.10)] md:grid-cols-[1.2fr_auto] md:p-14">
+              <span className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-[#83CDED]/[0.16] blur-3xl" />
+              <span className="pointer-events-none absolute -bottom-20 left-1/3 h-56 w-56 rounded-full bg-[#83D8B6]/[0.18] blur-3xl" />
+              <span className="pointer-events-none absolute right-1/4 top-1/2 h-40 w-40 rounded-full bg-[#FFD66B]/[0.14] blur-3xl" />
               <div className="relative">
                 {s(settings, "home_donate_eyebrow", locale) && (
-                  <p className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] text-[#C94F72]">
-                    <span className="block h-0.5 w-8 rounded-full bg-[#FF6F91]" />
+                  <p className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] text-[#237E6A]">
+                    <span className="block h-0.5 w-8 rounded-full bg-[#2D9F84]" />
                     {s(settings, "home_donate_eyebrow", locale)}
                   </p>
                 )}
@@ -775,7 +765,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                       asChild
                       size="lg"
                       variant="outline"
-                      className="rounded-full px-8 font-semibold"
+                      className="rounded-full border-[#2D9F84]/30 bg-white/65 px-8 font-semibold text-[#237E6A] hover:bg-white hover:text-[#1F6E5D]"
                     >
                       <Link href={`/${locale}/contact`}>{donateButton2}</Link>
                     </Button>

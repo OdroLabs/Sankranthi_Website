@@ -1,20 +1,14 @@
 import Link from "next/link";
-import { ArrowDown, ArrowRight, HandHeart, Heart, Users } from "lucide-react";
+import { ArrowDown, ArrowRight, HandHeart } from "lucide-react";
 import styles from "./home-editorial-hero.module.css";
 
 type HomeEditorialHeroProps = {
-  badge?: string;
   title?: string;
   subtitle?: string;
   primaryAction?: { label: string; href: string };
   secondaryAction?: { label: string; href: string };
   galleryImages?: string[];
-  supportText?: string;
-  promiseLabel?: string;
-  noteTitle?: string;
-  noteText?: string;
   scrollLabel?: string;
-  impactStats?: Array<{ value: string; label: string }>;
 };
 
 function highlightedTitle(title?: string) {
@@ -39,18 +33,12 @@ function highlightedTitle(title?: string) {
 }
 
 export function HomeEditorialHero({
-  badge,
   title,
   subtitle,
   primaryAction,
   secondaryAction,
   galleryImages = [],
-  supportText,
-  promiseLabel,
-  noteTitle,
-  noteText,
   scrollLabel,
-  impactStats = [],
 }: HomeEditorialHeroProps) {
   const supportingImages = galleryImages
     .filter((value): value is string => Boolean(value))
@@ -62,16 +50,8 @@ export function HomeEditorialHero({
 
   return (
     <section id="sec-hero" className={styles.hero}>
-      {promiseLabel && (
-        <aside className={styles.promiseRail} aria-hidden>
-          <Heart />
-          <span>{promiseLabel}</span>
-        </aside>
-      )}
-
       <div className={styles.inner}>
         <div className={styles.copy}>
-          {badge && <p className={styles.eyebrow}>{badge}</p>}
           {title && <h1 className={styles.title}>{highlightedTitle(title)}</h1>}
           {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
           {(primaryAction || secondaryAction) && (
@@ -90,16 +70,6 @@ export function HomeEditorialHero({
               )}
             </div>
           )}
-          {(supportText || supportingImages.length > 0) && (
-            <div className={styles.support}>
-              {supportingImages.length > 0 && (
-                <span className={styles.avatars} aria-hidden>
-                  {supportingImages.slice(0, 3).map((src) => <img key={src} src={src} alt="" />)}
-                </span>
-              )}
-              {supportText && <span>{supportText}</span>}
-            </div>
-          )}
         </div>
 
         {stripImages.length > 0 && (
@@ -116,38 +86,15 @@ export function HomeEditorialHero({
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={src}
-                    alt={index === 2 ? title || badge || "Sankranthi Foundation" : ""}
+                    alt={index === 2 ? title || "Sankranthi Foundation" : ""}
                     aria-hidden={index !== 2}
                   />
                 </button>
               ))}
             </div>
-            {(noteTitle || noteText) && (
-              <aside className={styles.note}>
-                <span className={styles.noteIcon}><HandHeart aria-hidden /></span>
-                <span>
-                  {noteTitle && <strong>{noteTitle}</strong>}
-                  {noteText}
-                </span>
-              </aside>
-            )}
           </div>
         )}
       </div>
-
-      {impactStats.length > 0 && (
-        <aside className={styles.impactRail} aria-label="Community impact">
-          {impactStats.slice(0, 2).map((stat, index) => (
-            <div key={`${stat.label}-${index}`} className={styles.impactItem}>
-              <span className={styles.impactIcon}>
-                {index === 0 ? <Users aria-hidden /> : <HandHeart aria-hidden />}
-              </span>
-              <strong>{stat.value}</strong>
-              <span>{stat.label}</span>
-            </div>
-          ))}
-        </aside>
-      )}
 
       {scrollLabel && (
         <Link className={styles.scrollCue} href="#sec-about" aria-label={scrollLabel}>
