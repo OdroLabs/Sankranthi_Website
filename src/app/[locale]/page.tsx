@@ -3,6 +3,7 @@ import {
   Heart,
   ArrowRight,
   CalendarDays,
+  Headphones,
   MapPin,
   PhoneCall,
   Mail,
@@ -40,6 +41,68 @@ function link(locale: string, value: string): string {
   if (/^(https?:)?\/\//.test(target) || target.startsWith("mailto:") || target.startsWith("tel:"))
     return target;
   return `/${locale}${target.startsWith("/") ? target : `/${target}`}`;
+}
+
+function DotPattern({ className = "" }: { className?: string }) {
+  return (
+    <span className={`grid grid-cols-5 gap-2 opacity-70 ${className}`} aria-hidden="true">
+      {Array.from({ length: 20 }).map((_, index) => (
+        <span key={index} className="h-1 w-1 rounded-full bg-current" />
+      ))}
+    </span>
+  );
+}
+
+function SpectrumRule({ className = "" }: { className?: string }) {
+  return (
+    <span className={`flex h-1 overflow-hidden ${className}`} aria-hidden="true">
+      {["#EA4F67", "#FF9F43", "#F5C84B", "#45A66B", "#4B8DCF", "#704B9F"].map((color) => (
+        <span key={color} className="h-full flex-1" style={{ backgroundColor: color }} />
+      ))}
+    </span>
+  );
+}
+
+function RainbowChevron() {
+  return (
+    <svg viewBox="0 0 500 600" preserveAspectRatio="none" className="h-full w-full" aria-hidden="true">
+      <polygon points="90,0 500,0 500,600 90,600 350,300" fill="#F6D9D2" />
+      <polygon points="145,0 500,0 500,600 145,600 405,300" fill="#EF615D" />
+      <polygon points="205,0 500,0 500,600 205,600 465,300" fill="#F09A3E" />
+      <polygon points="265,0 500,0 500,600 265,600 525,300" fill="#F8C13C" />
+      <polygon points="325,0 500,0 500,600 325,600 585,300" fill="#45A363" />
+      <polygon points="385,0 500,0 500,600 385,600 645,300" fill="#5388C9" />
+      <polygon points="445,0 500,0 500,600 445,600 705,300" fill="#664899" />
+    </svg>
+  );
+}
+
+function LeafIcon({ className = "" }: { className?: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- design asset from screenshot
+    <img
+      src="/illustrations/leaf-icon.png"
+      alt=""
+      width={80}
+      height={64}
+      className={`h-[56px] w-auto object-contain ${className}`}
+      aria-hidden="true"
+    />
+  );
+}
+
+function HandHeartIllustration() {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- design asset
+    <img
+      src="/illustrations/hand-heart.png"
+      alt=""
+      width={420}
+      height={315}
+      className="relative z-10 h-auto w-full max-w-[380px] object-contain"
+      aria-hidden="true"
+    />
+  );
 }
 
 export default async function HomePage({ params }: { params: Promise<{ locale: Locale }> }) {
@@ -111,8 +174,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   const contactTitle = s(settings, "home_contact_title", locale);
   const contactText = s(settings, "home_contact_text", locale);
   const contactCardTitle = s(settings, "home_contact_card_title", locale);
-  const contactImage = s(settings, "home_contact_image");
-  const contactButton = s(settings, "home_contact_button", locale);
 
   const testimonialsTitle = s(settings, "home_testimonials_title", locale);
   const newsTitle = s(settings, "home_news_title", locale);
@@ -423,81 +484,55 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Get in touch — warm supportive band                                 */}
       {/* ------------------------------------------------------------------ */}
       {showContact && (
-        <section id="sec-contact" className="surface-blush relative overflow-hidden py-12 text-charcoal-900 md:py-20">
-          {contactImage && (
-              <div className="absolute inset-0 overflow-hidden">
-                <div
-                  className="absolute -inset-y-[14%] inset-x-0 scale-110 bg-cover bg-center opacity-[0.08]"
-                  style={{ backgroundImage: `url(${contactImage})` }}
-                />
-              </div>
-            )}
-            <div className="pointer-events-none absolute -right-16 top-8 h-64 w-64 rounded-full bg-[#FF6F91]/[0.08] blur-3xl" />
-            <div className="pointer-events-none absolute -left-10 bottom-0 h-56 w-56 rounded-full bg-[#FF9B69]/[0.10] blur-3xl" />
+        <section id="sec-contact" className="bg-[#FFFDF9] px-4 py-8 text-[#172133] md:px-6 md:py-12">
+          <div className="relative mx-auto min-h-[570px] w-full max-w-[1400px] overflow-hidden rounded-[28px] border border-[#EEE8DF] bg-[#FFFAF4] shadow-[0_15px_50px_rgba(34,42,53,0.08)]">
+            <div className="pointer-events-none absolute -bottom-32 -left-28 h-[360px] w-[360px] rounded-full bg-[#FFD8D0]/75" />
+            <DotPattern className="absolute left-6 top-7 text-[#F29B9E] md:left-8 md:top-8" />
+            <DotPattern className="absolute bottom-8 left-[66%] hidden text-[#EFA5A5] lg:grid" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[34%] lg:block">
+              <RainbowChevron />
+            </div>
 
-            <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 relative grid items-center gap-9 lg:grid-cols-[0.85fr_1.15fr]">
+            <div className="relative z-10 grid min-h-[570px] items-center gap-10 p-7 md:p-12 lg:grid-cols-[360px_minmax(0,1fr)_270px] lg:px-14 xl:grid-cols-[390px_minmax(0,1fr)_340px] xl:px-16">
               <Reveal direction="scale">
-                <TiltCard className="relative mx-auto w-full max-w-sm overflow-hidden rounded-[20px] border border-[rgba(32,43,51,0.09)] bg-[#FFF3ED] p-8 text-center text-charcoal-900 shadow-sm">
-                  <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#FF6F91]/[0.10] blur-2xl" />
-                  <span className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-full bg-white/70 ring-1 ring-[rgba(32,43,51,0.07)]">
-                    <PhoneCall className="h-6 w-6 text-[#C94F72]" />
+                <TiltCard className="relative mx-auto w-full max-w-[360px] rounded-[26px] border border-white/90 bg-white px-7 py-8 text-[#172133] shadow-[0_18px_55px_rgba(36,42,48,0.12)] md:px-8 md:py-10">
+                  <span className="relative mx-auto mb-6 flex h-[86px] w-[86px] items-center justify-center rounded-full bg-[#FFF1EB]">
+                    <Headphones className="h-11 w-11" strokeWidth={1.6} />
+                    <Heart className="absolute h-[18px] w-[18px] fill-[#FF5F73] text-[#FF5F73]" />
                   </span>
                   {contactCardTitle && (
-                    <h3 className="text-2xl font-extrabold">{contactCardTitle}</h3>
+                    <h3 className="text-center font-serif text-[2rem] font-medium leading-[1.08]">{contactCardTitle}</h3>
                   )}
-                  <span className="mx-auto my-4 block h-0.5 w-8 rounded-full bg-charcoal-900/25" />
-                  {address && <p className="whitespace-pre-line text-sm text-charcoal-800/85">{address}</p>}
-                  {phone && (
-                    <a
-                      href={`tel:${phone.replace(/\s/g, "")}`}
-                      className="mt-4 block font-number text-xl font-bold text-charcoal-900 hover:underline"
-                    >
-                      {phone}
-                    </a>
-                  )}
-                  {email && (
-                    <a
-                      href={`mailto:${email}`}
-                      className="mt-2 inline-flex items-center gap-1.5 text-sm text-charcoal-800/85 hover:underline"
-                    >
-                      <Mail className="h-3.5 w-3.5" /> {email}
-                    </a>
-                  )}
+                  <SpectrumRule className="mx-auto my-6 w-[145px]" />
+                  <p className="mb-8 text-center text-sm leading-7 text-[#5D6470]">Compassionate support<br />when you need it most.</p>
+                  <div className="space-y-5 text-sm font-semibold text-[#242C38]">
+                    {phone && <a href={`tel:${phone.replace(/\s/g, "")}`} className="flex items-center gap-4 hover:underline"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#FFF1F1] text-[#E84965]"><PhoneCall className="h-[19px] w-[19px]" /></span>{phone}</a>}
+                    {address && <p className="flex items-center gap-4"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#FFF5E7] text-[#E99731]"><MapPin className="h-[19px] w-[19px]" /></span><span className="whitespace-pre-line">{address}</span></p>}
+                    {email && <a href={`mailto:${email}`} className="flex min-w-0 items-center gap-4 hover:underline"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#F5EFFC] text-[#70559C]"><Mail className="h-[19px] w-[19px]" /></span><span className="min-w-0 break-words">{email}</span></a>}
+                  </div>
                 </TiltCard>
               </Reveal>
-              <Reveal delay={0.15}>
+              <Reveal delay={0.15} className="lg:pl-6">
                 {s(settings, "home_contact_eyebrow", locale) && (
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#C94F72]">
+                  <p className="text-xs font-bold uppercase tracking-[0.08em] text-[#D94262]">
                     {s(settings, "home_contact_eyebrow", locale)}
                   </p>
                 )}
+                <span className="mt-5 block h-1 w-10 bg-[#D94262]" />
                 {contactTitle && (
-                  <h2 className="text-display-xl mt-3 font-serif font-medium tracking-tight text-charcoal-900">
+                  <h2 className="mt-6 max-w-[650px] font-serif text-[2.65rem] font-medium leading-[1.08] tracking-normal text-[#142035] md:text-[3.5rem]">
                     {contactTitle}
                   </h2>
                 )}
-                <span className="mt-4 flex gap-1.5">
-                  <span className="block h-1 w-8 rounded-full bg-[#FF6F91]" />
-                  <span className="block h-1 w-4 rounded-full bg-[#FF6F91]/40" />
-                </span>
                 {contactText && (
-                  <p className="mt-6 max-w-xl whitespace-pre-line leading-relaxed text-charcoal-700">
+                  <p className="mt-7 max-w-[570px] whitespace-pre-line text-base leading-8 text-[#626978]">
                     {contactText}
                   </p>
                 )}
-                {contactButton && (
-                  <Button
-                    asChild
-                    size="lg"
-                    className="mt-8 rounded-full bg-[#202B33] px-8 font-bold text-white shadow-[0_10px_28px_rgba(32,43,51,0.18)] transition-transform duration-300 hover:-translate-y-0.5 hover:bg-[#2A353C]"
-                  >
-                    <Link href={`/${locale}/contact`}>
-                      {contactButton} <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                )}
               </Reveal>
+              <div className="hidden lg:block" />
             </div>
+          </div>
         </section>
       )}
 
@@ -724,41 +759,40 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
       {/* Donate CTA                                                          */}
       {/* ------------------------------------------------------------------ */}
       {showDonate && (
-        <section id="sec-donate" className="surface-cream relative pt-16 pb-20 md:pt-24 md:pb-28">
-          <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6">
+        <section id="sec-donate" className="bg-[#FFFDF9] px-4 pb-20 md:px-6 md:pb-28">
+          <div className="mx-auto w-full max-w-[1400px]">
           <Reveal direction="scale">
-            <div className="donate-spectrum-wash cta-gradient-shift relative grid items-center gap-8 overflow-hidden rounded-[2rem] border border-[#2D9F84]/20 p-10 text-[#202B33] shadow-[0_18px_50px_rgba(45,159,132,0.10)] md:grid-cols-[1.2fr_auto] md:p-14">
-              <span className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-pride-flag" />
-              <span className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-pride-pink/[0.22] blur-3xl" />
-              <span className="pointer-events-none absolute -bottom-20 left-1/3 h-56 w-56 rounded-full bg-teal-500/[0.22] blur-3xl" />
-              <span className="pointer-events-none absolute right-1/4 top-1/2 h-40 w-40 rounded-full bg-pride-yellow/[0.2] blur-3xl" />
-              <span className="pointer-events-none absolute -left-10 bottom-1/4 h-44 w-44 rounded-full bg-pride-violet/[0.2] blur-3xl" />
+            <div className="relative grid min-h-[360px] items-center gap-8 overflow-hidden rounded-[28px] border border-[#EEE9DF] bg-[#FFFAF2] px-8 py-10 text-[#202B33] shadow-[0_15px_45px_rgba(34,42,53,0.07)] md:px-14 lg:grid-cols-[1fr_0.8fr_0.75fr] lg:px-20">
+              <span className="pointer-events-none absolute -left-24 top-0 h-full w-[170px] rounded-[50%] bg-[#EEF3DF]" />
+              <span className="pointer-events-none absolute -right-16 -top-20 h-60 w-60 rounded-full bg-[#E7F1FC]" />
+              <span className="pointer-events-none absolute -bottom-24 -right-20 h-[230px] w-[270px] rounded-full bg-[#EEE6F5]" />
+              <DotPattern className="absolute right-8 top-7 text-[#4C8DD3]" />
               <div className="relative">
-                {s(settings, "home_donate_eyebrow", locale) && (
-                  <p className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] text-[#237E6A]">
-                    <span className="block h-0.5 w-8 rounded-full bg-[#2D9F84]" />
-                    {s(settings, "home_donate_eyebrow", locale)}
-                  </p>
-                )}
+                <LeafIcon />
                 {donateTitle && (
-                  <h2 className="text-display-xl mt-4 max-w-2xl font-serif font-medium">{donateTitle}</h2>
+                  <h2 className="mt-3 max-w-[520px] font-serif text-[2.5rem] font-medium leading-[1.08] tracking-normal text-[#142035] md:text-[3.35rem]">{donateTitle}</h2>
                 )}
+                <SpectrumRule className="my-6 w-[150px]" />
                 {donateText && (
-                  <p className="mt-3 max-w-xl whitespace-pre-line leading-relaxed text-[#667078]">
+                  <p className="max-w-[480px] whitespace-pre-line text-base leading-8 text-[#606979]">
                     {donateText}
                   </p>
                 )}
               </div>
+              <div className="relative flex min-h-[250px] items-center justify-center">
+                <HandHeartIllustration />
+              </div>
               {(donateButton || donateButton2) && (
-                <div className="relative flex flex-wrap gap-3">
+                <div className="relative flex flex-col items-start gap-4 lg:items-center">
                   {donateButton && (
                     <Button
                       asChild
                       size="lg"
-                      className="rounded-full bg-gradient-to-r from-[#FF6178] to-[#FF826F] px-8 font-bold text-white shadow-[0_10px_28px_rgba(255,97,127,0.22)] transition-transform duration-300 hover:-translate-y-0.5 hover:from-[#ff7388] hover:to-[#ff967f]"
+                      className="h-auto min-w-[255px] justify-between rounded-full bg-[#FFC130] px-5 py-3.5 text-base font-bold text-[#192436] shadow-[0_10px_24px_rgba(246,183,35,0.22)] transition-transform hover:-translate-y-0.5 hover:bg-[#FFD05A]"
                     >
                       <Link href={`/${locale}/donate`}>
-                        <Heart className="h-4 w-4 fill-white text-white" /> {donateButton}
+                        <span className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-white"><Heart className="h-[18px] w-[18px] fill-[#E8485E] text-[#E8485E]" /></span>{donateButton}</span>
+                        <ArrowRight className="h-5 w-5" />
                       </Link>
                     </Button>
                   )}
@@ -767,9 +801,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
                       asChild
                       size="lg"
                       variant="outline"
-                      className="rounded-full border-[#2D9F84]/30 bg-white/65 px-8 font-semibold text-[#237E6A] hover:bg-white hover:text-[#1F6E5D]"
+                      className="h-auto min-w-[255px] justify-between rounded-full border-[#366942] bg-white/60 px-7 py-4 text-base font-semibold text-[#254F32] hover:bg-white hover:text-[#254F32]"
                     >
-                      <Link href={`/${locale}/contact`}>{donateButton2}</Link>
+                      <Link href={`/${locale}/contact`}>{donateButton2}<ArrowRight className="h-5 w-5" /></Link>
                     </Button>
                   )}
                 </div>
