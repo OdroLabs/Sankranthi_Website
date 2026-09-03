@@ -387,16 +387,19 @@
    light base so the dark card text stays comfortably legible. Paired with
    a solid pride-flag bar along the card's top edge for a clear, literal
    flag reference. */
+/* Pride-flag wash — a vivid full-width diagonal sweep through the official
+   flag hues. Paired with a solid pride-flag bar along the card's top edge
+   (see the donate CTA markup) for a clear, literal flag reference. */
 .donate-spectrum-wash {
   background-color: var(--blush);
   background-image: linear-gradient(
     115deg,
-    rgba(228, 3, 3, 0.32) 0%,
-    rgba(255, 140, 0, 0.3) 18%,
-    rgba(255, 237, 0, 0.28) 36%,
-    rgba(0, 128, 38, 0.26) 54%,
-    rgba(36, 64, 142, 0.28) 72%,
-    rgba(115, 41, 130, 0.32) 100%
+    rgba(228, 3, 3, 0.58) 0%,
+    rgba(255, 140, 0, 0.55) 18%,
+    rgba(255, 237, 0, 0.5) 36%,
+    rgba(0, 128, 38, 0.48) 54%,
+    rgba(36, 64, 142, 0.52) 72%,
+    rgba(115, 41, 130, 0.58) 100%
   );
   background-size: 160% 160%;
 }

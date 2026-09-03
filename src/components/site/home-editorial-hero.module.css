@@ -24,15 +24,6 @@
   max-width: 38rem;
 }
 
-.eyebrow {
-  margin: 0 0 1rem;
-  color: var(--coral);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
 .title {
   max-width: 36rem;
   margin: 0;
@@ -133,33 +124,6 @@
 .secondary svg {
   width: 1rem;
   height: 1rem;
-}
-
-.support {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  margin-top: 1.35rem;
-  color: #647078;
-  font-size: 0.76rem;
-  font-weight: 700;
-}
-
-.avatars {
-  display: flex;
-}
-
-.avatars img {
-  width: 2.1rem;
-  height: 2.1rem;
-  margin-left: -0.5rem;
-  border: 2px solid #fffdf9;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.avatars img:first-child {
-  margin-left: 0;
 }
 
 .visual {
@@ -277,157 +241,9 @@
   }
 }
 
-.note {
-  position: absolute;
-  z-index: 3;
-  left: 2%;
-  bottom: 1%;
-  display: flex;
-  width: 15rem;
-  align-items: center;
-  gap: 0.8rem;
-  padding: 0.9rem 1rem;
-  border: 1px solid rgba(32, 49, 58, 0.07);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 18px 42px rgba(32, 49, 58, 0.1);
-  font-size: 0.68rem;
-  line-height: 1.4;
-}
-
-.note::after {
-  content: "";
-  position: absolute;
-  right: 0.8rem;
-  bottom: 0;
-  left: 0.8rem;
-  height: 2px;
-  background: linear-gradient(90deg, var(--coral), #ffd66b, #83d8b6, #83cded, #a995e8);
-}
-
-.noteIcon {
-  display: grid;
-  width: 2.75rem;
-  height: 2.75rem;
-  flex: 0 0 auto;
-  place-items: center;
-  border-radius: 50%;
-  background: #f5f1ff;
-  color: var(--coral);
-}
-
-.noteIcon svg {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-.note strong {
-  display: block;
-  margin-bottom: 0.15rem;
-  color: var(--ink);
-  font-family: "DM Serif Display", ui-serif, Georgia, serif;
-  font-size: 0.92rem;
-  font-weight: 400;
-}
-
-.promiseRail,
-.impactRail,
 .scrollCue {
   position: absolute;
   z-index: 5;
-}
-
-.promiseRail {
-  top: 50%;
-  left: 1.1rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  transform: translateY(-50%);
-  writing-mode: vertical-rl;
-}
-
-.promiseRail::before,
-.promiseRail::after {
-  content: "";
-  width: 1px;
-  height: 3.5rem;
-  background: rgba(32, 49, 58, 0.22);
-}
-
-.promiseRail svg {
-  width: 0.9rem;
-  height: 0.9rem;
-  color: var(--coral);
-}
-
-.promiseRail span {
-  font-size: 0.55rem;
-  font-weight: 800;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-}
-
-.impactRail {
-  top: 50%;
-  right: 1rem;
-  display: grid;
-  gap: 2.25rem;
-  width: 5rem;
-  transform: translateY(-50%);
-  text-align: center;
-}
-
-.impactItem {
-  position: relative;
-  display: grid;
-  justify-items: center;
-}
-
-.impactItem + .impactItem::before {
-  content: "";
-  position: absolute;
-  top: -1.2rem;
-  width: 1px;
-  height: 0.8rem;
-  background: rgba(32, 49, 58, 0.2);
-}
-
-.impactIcon {
-  display: grid;
-  width: 2rem;
-  height: 2rem;
-  margin-bottom: 0.35rem;
-  place-items: center;
-  border: 1px solid rgba(243, 95, 98, 0.25);
-  border-radius: 50%;
-  color: var(--coral);
-}
-
-.impactItem:nth-child(2) .impactIcon {
-  border-color: rgba(131, 216, 182, 0.5);
-  color: #2d9f84;
-}
-
-.impactIcon svg {
-  width: 0.9rem;
-  height: 0.9rem;
-}
-
-.impactItem strong {
-  font-family: "DM Serif Display", ui-serif, Georgia, serif;
-  font-size: 1.7rem;
-  font-weight: 400;
-  line-height: 1;
-}
-
-.impactItem > span:last-child {
-  max-width: 4.5rem;
-  margin-top: 0.25rem;
-  color: #647078;
-  font-size: 0.58rem;
-  font-weight: 700;
-  line-height: 1.35;
 }
 
 .scrollCue {
@@ -463,8 +279,6 @@
 }
 
 @media (max-width: 899px) {
-  .promiseRail,
-  .impactRail,
   .scrollCue {
     display: none;
   }
@@ -489,10 +303,6 @@
     width: 18%;
   }
 
-  .note {
-    left: 0;
-    width: 13rem;
-  }
 }
 
 @media (max-width: 520px) {
@@ -532,11 +342,6 @@
     height: 2.35rem;
   }
 
-  .support {
-    margin-top: 1.25rem;
-    font-size: 0.68rem;
-  }
-
   .visual {
     min-height: 320px;
   }
@@ -564,11 +369,6 @@
     width: 32%;
   }
 
-  .note {
-    bottom: -0.25rem;
-    width: 12.5rem;
-    padding: 0.75rem 0.85rem;
-  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
