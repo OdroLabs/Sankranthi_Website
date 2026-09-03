@@ -737,10 +737,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
         <section id="sec-donate" className="surface-cream relative pt-16 pb-20 md:pt-24 md:pb-28">
           <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6">
           <Reveal direction="scale">
-            <div className="donate-spectrum-wash relative grid items-center gap-8 overflow-hidden rounded-[2rem] border border-[rgba(32,43,51,0.07)] p-10 text-[#202B33] shadow-card md:grid-cols-[1.2fr_auto] md:p-14">
-              <span className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-[#FF6F91]/[0.12] blur-3xl" />
-              <span className="pointer-events-none absolute -bottom-20 left-1/3 h-56 w-56 rounded-full bg-[#83D8B6]/[0.12] blur-3xl" />
-              <span className="pointer-events-none absolute right-1/4 top-1/2 h-40 w-40 rounded-full bg-[#FFD66B]/[0.10] blur-3xl" />
+            <div className="donate-spectrum-wash cta-gradient-shift relative grid items-center gap-8 overflow-hidden rounded-[2rem] border border-[rgba(32,43,51,0.07)] p-10 text-[#202B33] shadow-card md:grid-cols-[1.2fr_auto] md:p-14">
+              <span className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-pride-flag" />
+              <span className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-pride-pink/[0.14] blur-3xl" />
+              <span className="pointer-events-none absolute -bottom-20 left-1/3 h-56 w-56 rounded-full bg-teal-500/[0.14] blur-3xl" />
+              <span className="pointer-events-none absolute right-1/4 top-1/2 h-40 w-40 rounded-full bg-pride-yellow/[0.14] blur-3xl" />
+              <span className="pointer-events-none absolute -left-10 bottom-1/4 h-44 w-44 rounded-full bg-pride-violet/[0.14] blur-3xl" />
               <div className="relative">
                 {s(settings, "home_donate_eyebrow", locale) && (
                   <p className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] text-[#C94F72]">
