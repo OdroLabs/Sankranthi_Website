@@ -362,6 +362,7 @@ export function SiteHeader({
               initial="hidden"
               animate="visible"
               exit="exit"
+              data-lenis-prevent
               className="fixed inset-0 z-[100] overflow-y-auto bg-[#202B33] text-[#F8F5F2] min-[1360px]:hidden"
             >
               <button

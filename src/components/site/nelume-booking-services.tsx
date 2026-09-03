@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { ArrowRight, CalendarCheck, X } from "lucide-react";
+import { ArrowRight, CalendarCheck, Clock, Mail, MapPin, MessageCircle, X } from "lucide-react";
 import { BookingForm, type BookableService } from "./booking-form";
 import { NelumeIcon } from "./nelume-watermark";
 
@@ -18,7 +18,18 @@ type NelumeBookingServicesProps = {
   submitLabel?: string;
   successTitle?: string;
   successBody?: string;
+  location?: string;
+  hours?: string;
+  availableDays?: string;
+  timeSlots?: string[];
+  contactEmail?: string;
+  contactWhatsapp?: string;
 };
+
+function whatsappHref(number: string) {
+  const digits = number.replace(/[^\d]/g, "");
+  return `https://wa.me/${digits}`;
+}
 
 export function NelumeBookingServices({
   services,
@@ -32,7 +43,15 @@ export function NelumeBookingServices({
   submitLabel,
   successTitle,
   successBody,
+  location,
+  hours,
+  availableDays,
+  timeSlots,
+  contactEmail,
+  contactWhatsapp,
 }: NelumeBookingServicesProps) {
+  const hoursLines = (hours || "").split("\n").map((line) => line.trim()).filter(Boolean);
+  const hasVisitInfo = Boolean(location || hoursLines.length > 0 || availableDays || contactEmail || contactWhatsapp);
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<BookableService | null>(null);
@@ -123,6 +142,64 @@ export function NelumeBookingServices({
         </button>
       )}
 
+      {hasVisitInfo && (
+        <div className="mx-auto mt-10 grid max-w-[820px] gap-6 border-t border-[#DFD2C5] pt-8 text-left sm:grid-cols-2">
+          {(location || hoursLines.length > 0 || availableDays) && (
+            <div className="space-y-3">
+              {location && (
+                <p className="flex items-start gap-2.5 text-sm text-[#34434C]">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#2F6590]" />
+                  <span>{location}</span>
+                </p>
+              )}
+              {hoursLines.length > 0 && (
+                <div className="flex items-start gap-2.5 text-sm text-[#34434C]">
+                  <Clock className="mt-0.5 h-4 w-4 shrink-0 text-[#2F6590]" />
+                  <div>
+                    {hoursLines.map((line, i) => (
+                      <p key={i}>{line}</p>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {availableDays && (
+                <p className="flex items-start gap-2.5 text-sm text-[#34434C]">
+                  <CalendarCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#2F6590]" />
+                  <span>{availableDays}</span>
+                </p>
+              )}
+            </div>
+          )}
+          {(contactEmail || contactWhatsapp) && (
+            <div className="space-y-3">
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#5F7380]">
+                Prefer to reach us directly?
+              </p>
+              {contactEmail && (
+                <a
+                  href={`mailto:${contactEmail}`}
+                  className="flex items-center gap-2.5 text-sm font-semibold text-[#2F6590] hover:underline"
+                >
+                  <Mail className="h-4 w-4 shrink-0" />
+                  {contactEmail}
+                </a>
+              )}
+              {contactWhatsapp && (
+                <a
+                  href={whatsappHref(contactWhatsapp)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2.5 text-sm font-semibold text-[#2F6590] hover:underline"
+                >
+                  <MessageCircle className="h-4 w-4 shrink-0" />
+                  {contactWhatsapp}
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
       {mounted && open && bookingEnabled && createPortal(
         <div className="fixed inset-0 z-[100]" role="presentation">
           <button
@@ -135,6 +212,7 @@ export function NelumeBookingServices({
             role="dialog"
             aria-modal="true"
             aria-labelledby="nelume-booking-title"
+            data-lenis-prevent
             className="absolute inset-y-0 right-0 w-full max-w-[620px] overflow-y-auto bg-[#F8F5EF] shadow-[-24px_0_60px_rgba(24,36,44,0.18)]"
           >
             <div className="sticky top-0 z-10 flex items-start justify-between gap-6 border-b border-[#DFD2C5] bg-[#F8F5EF]/95 px-6 py-5 backdrop-blur md:px-8">
@@ -171,6 +249,8 @@ export function NelumeBookingServices({
                 submitLabel={submitLabel || "Request appointment"}
                 successTitle={successTitle}
                 successBody={successBody}
+                timeSlots={timeSlots}
+                availableDays={availableDays}
               />
             </div>
           </aside>

@@ -16,6 +16,8 @@ export type BookableService = {
   price?: string;
 };
 
+const DEFAULT_TIME_SLOTS = ["09:00 AM", "10:30 AM", "12:00 PM", "02:00 PM", "03:30 PM", "05:00 PM"];
+
 export function BookingForm({
   services,
   formTitle,
@@ -24,6 +26,8 @@ export function BookingForm({
   successTitle,
   successBody,
   initialServiceId,
+  timeSlots,
+  availableDays,
 }: {
   services: BookableService[];
   formTitle?: string;
@@ -32,7 +36,10 @@ export function BookingForm({
   successTitle?: string;
   successBody?: string;
   initialServiceId?: number;
+  timeSlots?: string[];
+  availableDays?: string;
 }) {
+  const slots = timeSlots && timeSlots.length > 0 ? timeSlots : DEFAULT_TIME_SLOTS;
   const [done, setDone] = useState(false);
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
@@ -150,6 +157,7 @@ export function BookingForm({
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
           <Label htmlFor="booking-date">Preferred date *</Label>
+          {availableDays && <p className="text-xs text-[#5F7380]">Available {availableDays}</p>}
           <Input id="booking-date" name="preferredDate" type="date" min={today} required />
         </div>
         <div className="space-y-1.5">
@@ -162,8 +170,9 @@ export function BookingForm({
             className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <option value="" disabled>Select a time</option>
-            <option>09:00 AM</option><option>10:30 AM</option><option>12:00 PM</option>
-            <option>02:00 PM</option><option>03:30 PM</option><option>05:00 PM</option>
+            {slots.map((slot) => (
+              <option key={slot}>{slot}</option>
+            ))}
           </select>
         </div>
       </div>

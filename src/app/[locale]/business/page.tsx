@@ -67,8 +67,6 @@ export default async function BusinessPage({ params }: { params: Promise<{ local
   const heroEyebrow = s(settings, "business_hero_eyebrow", locale);
   const heroIntro = s(settings, "business_hero_intro", locale);
   const heroImage = s(settings, "business_hero_image");
-  const heroPrimaryLabel = s(settings, "business_hero_primary_label", locale);
-  const heroImpactLabel = s(settings, "business_hero_impact_label", locale);
 
   const aboutTitle = s(settings, "business_about_title", locale);
   const aboutTitleLines = splitTitleLines(aboutTitle.replace(/([.!?])(?=[A-Z])/g, "$1\n"));
@@ -102,6 +100,12 @@ export default async function BusinessPage({ params }: { params: Promise<{ local
   const bookingSubmitLabel = s(settings, "business_booking_submit_label", locale);
   const bookingSuccessTitle = s(settings, "business_booking_success_title", locale);
   const bookingSuccessBody = s(settings, "business_booking_success_body", locale);
+  const bookingLocation = s(settings, "business_location", locale);
+  const bookingHours = s(settings, "business_hours", locale);
+  const bookingDays = s(settings, "business_booking_days", locale);
+  const bookingSlots = sList(settings, "business_booking_slots");
+  const bookingEmail = s(settings, "business_booking_email");
+  const bookingWhatsapp = s(settings, "business_booking_whatsapp");
 
   const values = sPairs(settings, "business_values", locale);
   const valueMotifs: NelumeMotif[] = ["lotus", "leaf", "waterRipple"];
@@ -130,8 +134,6 @@ export default async function BusinessPage({ params }: { params: Promise<{ local
         heroEyebrow={heroEyebrow}
         heroIntro={heroIntro}
         heroImage={heroImage}
-        primaryLabel={heroPrimaryLabel}
-        impactLabel={heroImpactLabel}
       />
 
       {/* ============================== STORY — 2-photo collage + copy */}
@@ -334,6 +336,12 @@ export default async function BusinessPage({ params }: { params: Promise<{ local
                 submitLabel={bookingSubmitLabel}
                 successTitle={bookingSuccessTitle}
                 successBody={bookingSuccessBody}
+                location={bookingLocation}
+                hours={bookingHours}
+                availableDays={bookingDays}
+                timeSlots={bookingSlots}
+                contactEmail={bookingEmail}
+                contactWhatsapp={bookingWhatsapp}
               />
             </Reveal>
           </div>
@@ -395,10 +403,6 @@ export default async function BusinessPage({ params }: { params: Promise<{ local
                 </p>
               )}
               <div className="mt-6 flex flex-wrap items-center gap-3">
-                {ctaPrimaryLabel && <Link href="#sec-services" className={BTN_PRIMARY} style={{ backgroundColor: C.blue }}>
-                  {ctaPrimaryLabel}
-                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
-                </Link>}
                 {ctaSecondaryLabel && <Link
                   href={`/${locale}/about`}
                   className={BTN_SECONDARY}
