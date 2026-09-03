@@ -717,7 +717,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
             ))}
           </div>
           </div>
-        </section>
+        </section> 
       )}
 
       {/* ------------------------------------------------------------------ */}
