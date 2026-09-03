@@ -351,6 +351,15 @@ export const settingPages: SettingPage[] = [
           T("header_donate_label", "Donate button text", "Leave blank to use the standard label."),
         ],
       },
+      {
+        section: "Floating WhatsApp button",
+        preview: { path: "", anchor: "sec-header" },
+        hideNote: "Also needs the WhatsApp number set under General → Contact details.",
+        items: [
+          SW("show_floating_whatsapp", "Show a floating WhatsApp button on every page", "Uses the WhatsApp number set under General → Contact details."),
+          TA("floating_whatsapp_message", "Pre-filled message", "Optional. Fills the chat's first message when someone taps the button."),
+        ],
+      },
     ],
   },
 

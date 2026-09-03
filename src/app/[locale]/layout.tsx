@@ -12,6 +12,7 @@ import { ScrollFX } from "@/components/site/scroll-fx";
 import { LenisProvider } from "@/components/site/lenis-provider";
 import { ScrollProgress } from "@/components/site/scroll-progress";
 import { FloatingDonate } from "@/components/site/floating-donate";
+import { FloatingWhatsapp } from "@/components/site/floating-whatsapp";
 import { PrideStripe } from "@/components/pride-stripe";
 import { LivingSpectrum } from "@/components/site/living-spectrum";
 
@@ -121,6 +122,12 @@ export default async function LocaleLayout({
       {/* Fixed CTA — kept outside <main> and any transformed/animated parent */}
       {sBool(settings, "show_floating_donate", true) && (
         <FloatingDonate locale={locale} label={dict.donate.donateNow} />
+      )}
+      {sBool(settings, "show_floating_whatsapp", true) && s(settings, "whatsapp") && (
+        <FloatingWhatsapp
+          number={s(settings, "whatsapp")}
+          message={s(settings, "floating_whatsapp_message", locale) || undefined}
+        />
       )}
     </div>
   );
