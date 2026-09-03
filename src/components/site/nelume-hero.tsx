@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import {
   motion,
   useReducedMotion,
@@ -14,14 +13,11 @@ import { NelumeIcon, NelumeWatermark } from "./nelume-watermark";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 export interface NelumeHeroProps {
-  locale: string;
   heroTitle: string;
   heroTagline?: string;
   heroEyebrow?: string;
   heroIntro?: string;
   heroImage?: string;
-  breadcrumbSection?: string;
-  breadcrumbBrand?: string;
   primaryLabel?: string;
   impactLabel?: string;
 }
@@ -30,14 +26,11 @@ export interface NelumeHeroProps {
  * Reference-matched hero: ivory copy | organic wave-edge lifestyle photo.
  */
 export function NelumeHero({
-  locale,
   heroTitle,
   heroTagline,
   heroEyebrow,
   heroIntro,
   heroImage,
-  breadcrumbSection,
-  breadcrumbBrand,
   primaryLabel,
   impactLabel,
 }: NelumeHeroProps) {
@@ -119,20 +112,6 @@ export function NelumeHero({
         className="-bottom-28 -left-24 z-[1] hidden md:block"
         drift
       />
-
-      <nav
-        aria-label="Breadcrumb"
-        className="absolute left-[clamp(2rem,3.5vw,4rem)] top-5 z-20 flex items-center gap-2 font-sans text-[11px] font-medium tracking-wide text-[#536F84]"
-        style={{ fontFamily: "Manrope, Inter, sans-serif" }}
-      >
-        <Link href={`/${locale}`} className="transition-colors hover:text-[#2F6590]">
-          Home
-        </Link>
-        {(breadcrumbSection || breadcrumbBrand) && <span aria-hidden>/</span>}
-        {breadcrumbSection && <span>{breadcrumbSection}</span>}
-        {breadcrumbSection && breadcrumbBrand && <span aria-hidden>/</span>}
-        {breadcrumbBrand && <span aria-current="page" className="text-[#708DA4]">{breadcrumbBrand}</span>}
-      </nav>
 
       <div className="relative z-10 flex items-center px-6 pb-14 pt-24 md:min-h-[620px] md:px-[7vw] md:pb-16 lg:min-h-[680px] xl:min-h-[720px]">
         <motion.div

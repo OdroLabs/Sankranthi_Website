@@ -67,7 +67,6 @@ export default async function BusinessPage({ params }: { params: Promise<{ local
   const heroEyebrow = s(settings, "business_hero_eyebrow", locale);
   const heroIntro = s(settings, "business_hero_intro", locale);
   const heroImage = s(settings, "business_hero_image");
-  const breadcrumbSection = s(settings, "business_breadcrumb_section", locale);
   const heroPrimaryLabel = s(settings, "business_hero_primary_label", locale);
   const heroImpactLabel = s(settings, "business_hero_impact_label", locale);
 
@@ -126,14 +125,11 @@ export default async function BusinessPage({ params }: { params: Promise<{ local
       style={{ backgroundColor: C.ivory, color: C.ink, fontFamily: SANS }}
     >
       <NelumeHero
-        locale={locale}
         heroTitle={heroTitle}
         heroTagline={heroTagline}
         heroEyebrow={heroEyebrow}
         heroIntro={heroIntro}
         heroImage={heroImage}
-        breadcrumbSection={breadcrumbSection}
-        breadcrumbBrand={heroTitle}
         primaryLabel={heroPrimaryLabel}
         impactLabel={heroImpactLabel}
       />
