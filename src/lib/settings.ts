@@ -417,17 +417,12 @@ export const settingPages: SettingPage[] = [
         preview: { path: "", anchor: "sec-hero" },
         hideNote: "Clear the title to hide the whole hero.",
         items: [
-          T("hero_badge", "Badge line above the title"),
           TA(
             "hero_title",
             "Title",
             "Shown as the large homepage headline. Recommended: Empowering Change, Inspiring Hope. Line breaks are preserved for other titles."
           ),
           TA("hero_subtitle", "Subtitle"),
-          T("hero_promise_label", "Vertical promise label", "Blank hides the left-side label."),
-          T("hero_footnote", "Support statement below the buttons", "Blank hides the statement."),
-          T("hero_note_title", "Reassurance card heading", "Blank hides the heading."),
-          TA("hero_note_text", "Reassurance card text", "Leave both reassurance fields blank to hide the card."),
           T("hero_scroll_label", "Scroll prompt", "Blank hides the scroll control."),
           IMG(
             "hero_image",
@@ -518,8 +513,6 @@ export const settingPages: SettingPage[] = [
           T("home_contact_title", "Heading"),
           TA("home_contact_text", "Body text"),
           T("home_contact_card_title", "Red card heading", "e.g. Call Us"),
-          IMG("home_contact_image", "Background image"),
-          T("home_contact_button", "Button text", "Blank hides the button."),
         ],
       },
       {
@@ -572,7 +565,6 @@ export const settingPages: SettingPage[] = [
         hideNote: AUTO_HIDE,
         items: [
           SW("show_home_donate", "Show this section"),
-          T("home_donate_eyebrow", "Small label above the heading"),
           T("home_donate_title", "Heading"),
           TA("home_donate_text", "Body text"),
           T("home_donate_button", "Donate button text"),
@@ -766,6 +758,7 @@ export const settingPages: SettingPage[] = [
           T("projects_hero_title", "Page title"),
           TA("projects_hero_intro", "Intro text"),
           IMG("projects_hero_image", "Header background image"),
+          T("projects_empty_text", "Message when the list is empty"),
         ],
       },
     ],
@@ -867,9 +860,6 @@ export const settingPages: SettingPage[] = [
           T("business_hero_eyebrow", "Hero eyebrow", "Small all-caps line above the page title."),
           TA("business_hero_intro", "Intro text"),
           IMG("business_hero_image", "Hero photo", "Full-height lifestyle photo on the right of the hero (spa / wellness)."),
-          T("business_breadcrumb_section", "Breadcrumb section label"),
-          T("business_hero_primary_label", "Hero primary button"),
-          T("business_hero_impact_label", "Services shortcut button", "Scrolls to the admin-managed Nail Spa Services list."),
         ],
       },
       {

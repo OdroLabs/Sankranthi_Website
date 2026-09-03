@@ -36,9 +36,6 @@ const settings: Record<string, string> = {
   business_hero_intro:
     "NELUME is a social enterprise established by Sankranthi Foundation that brings together beauty, wellness, inclusion and economic empowerment.",
   business_hero_image: HERO,
-  business_breadcrumb_section: "Social Enterprise",
-  business_hero_primary_label: "Discover NELUME",
-  business_hero_impact_label: "Explore Our Services",
   business_about_title: "More than beauty.\nA space for possibility.",
   business_about_body:
     "NELUME is more than a nail care and wellness center.\n\nWe provide professional nail care and wellness services in a calm, welcoming and inclusive environment, while creating dignified employment and skills development opportunities for people from marginalized backgrounds who have traditionally been excluded from formal employment.\n\nNELUME was created in response to the barriers many transgender women and sex workers in particular continue to face in accessing stable employment, professional opportunities and economic independence.",
