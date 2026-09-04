@@ -39,7 +39,6 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
 
   const historyTitle = s(settings, "about_history_title", locale);
   const history = s(settings, "about_history", locale);
-  const historyImage = s(settings, "about_history_image");
 
   const extraTitle = s(settings, "about_extra_title", locale);
   const extraText = s(settings, "about_extra_text", locale);
@@ -161,34 +160,38 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           <Reveal>
             <section
               id="sec-history"
-              className="bg-grain relative overflow-hidden rounded-[2rem] border border-[rgba(32,43,51,0.08)] bg-[#FFFDF9] p-8 text-center shadow-card md:p-14"
+              className="bg-grain relative overflow-hidden rounded-[2rem] border border-[rgba(32,43,51,0.08)] bg-[#FFFDF9] p-8 shadow-card md:p-14 lg:p-16"
             >
               <div className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-[#FF6F91]/[0.10] blur-3xl" />
               <div className="pointer-events-none absolute -bottom-20 -left-10 h-72 w-72 rounded-full bg-[#FF9B69]/[0.10] blur-3xl" />
 
-              <div className="relative mx-auto max-w-6xl">
-                <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-white shadow-[0_10px_24px_rgba(255,97,127,0.25)]">
-                  <History className="h-6 w-6" />
-                </span>
-                {historyTitle && (
-                  <h2 className="text-display-xl mt-5 font-serif font-medium tracking-tight text-[#202B33]">
-                    {historyTitle}
-                  </h2>
-                )}
-                <span className="mx-auto mt-5 block h-1 w-24 rounded-full bg-gradient-to-r from-[#FF617F] to-[#FF846F]" />
-                <p className="mx-auto mt-6 max-w-5xl whitespace-pre-line leading-relaxed text-charcoal-700 md:text-lg">
-                  {history}
-                </p>
-                {historyImage && (
-                  <div
-                    data-animate
-                    data-delay="0.12"
-                    className="relative mx-auto mt-10 max-w-4xl overflow-hidden rounded-3xl shadow-card-hover"
+              <div className="relative">
+                <div className="text-center">
+                  <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-white shadow-[0_10px_24px_rgba(255,97,127,0.25)]">
+                    <History className="h-6 w-6" />
+                  </span>
+                  <p className="mt-5 text-xs font-semibold uppercase tracking-[0.3em] text-[#FF6F91]">
+                    Our Story
+                  </p>
+                  {historyTitle && (
+                    <h2 className="text-display-xl mt-3 font-serif font-medium tracking-tight text-[#202B33]">
+                      {historyTitle}
+                    </h2>
+                  )}
+                  <span className="mx-auto mt-5 block h-1 w-24 rounded-full bg-gradient-to-r from-[#FF617F] to-[#FF846F]" />
+                </div>
+
+                <div className="relative mt-10">
+                  <span
+                    aria-hidden
+                    className="pointer-events-none block font-serif text-7xl leading-none text-[#FF6F91]/25"
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={historyImage} alt={historyTitle} className="aspect-[16/9] w-full object-cover" />
-                  </div>
-                )}
+                    &ldquo;
+                  </span>
+                  <p className="-mt-7 whitespace-pre-line text-[17px] leading-8 text-charcoal-700/90 first-letter:float-left first-letter:mr-3 first-letter:font-serif first-letter:text-6xl first-letter:font-semibold first-letter:leading-[0.85] first-letter:text-[#FF6F91] md:text-lg md:leading-9">
+                    {history}
+                  </p>
+                </div>
               </div>
             </section>
           </Reveal>
