@@ -1,11 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CalendarDays, MapPin } from "lucide-react";
+import { ArrowRight, MapPin } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { loc, type Locale } from "@/lib/i18n";
 import { getLabels } from "@/lib/labels";
 import { getSettings, s, show } from "@/lib/settings";
-import { formatDate } from "@/lib/utils";
 import { PageHero } from "@/components/site/page-hero";
 import { Section } from "@/components/site/section";
 import { EmptyState } from "@/components/site/empty-state";
@@ -145,7 +144,7 @@ export default async function EventsPage({ params }: { params: Promise<{ locale:
       )}
 
       {showGallery && (
-        <section className="relative overflow-hidden bg-[#202B33] text-[#F8F5F2]">
+        <section id="sec-gallery" className="relative overflow-hidden bg-[#202B33] text-[#F8F5F2]">
           <div className="pointer-events-none absolute -left-24 top-0 h-72 w-72 rounded-full bg-[#FF6F91]/[0.10] blur-3xl" />
           <div className="pointer-events-none absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-[#83D8B6]/[0.10] blur-3xl" />
           <Section

@@ -78,7 +78,6 @@ const settings: Record<string, string> = {
   business_cta_title: "Step into NELUME.",
   business_cta_body: "A space for beauty, wellness\nand meaningful change.",
   business_cta_image: CTA,
-  business_cta_primary_label: "Visit NELUME",
   business_cta_secondary_label: "Learn about Sankranthi Foundation",
 };
 

@@ -550,7 +550,6 @@ export const settingPages: SettingPage[] = [
         items: [
           T("about_history_title", "Heading"),
           TA("about_history", "Text"),
-          IMG("about_history_image", "Photo"),
         ],
       },
       {
@@ -715,7 +714,7 @@ export const settingPages: SettingPage[] = [
         ],
       },
       {
-        section: "Events & Gallery",
+        section: "Events",
         preview: { path: "/events", anchor: "sec-page-header" },
         items: [
           T("events_hero_title", "Page title"),
@@ -723,6 +722,12 @@ export const settingPages: SettingPage[] = [
           IMG("events_hero_image", "Header background image"),
           T("events_empty_text", "Message when the list is empty"),
           T("home_events_title", "Upcoming events heading"),
+        ],
+      },
+      {
+        section: "Gallery",
+        preview: { path: "/events", anchor: "sec-gallery" },
+        items: [
           SW("show_gallery", "Show the photo gallery"),
           T("gallery_title", "Gallery heading"),
         ],
@@ -858,8 +863,7 @@ export const settingPages: SettingPage[] = [
           T("business_cta_title", "Final call-to-action heading"),
           TA("business_cta_body", "Final call-to-action body", "Use a new line to break the sentence elegantly."),
           IMG("business_cta_image", "Final call-to-action photo", "Warm spa interior shown on the left of the closing CTA."),
-          T("business_cta_primary_label", "Final primary button"),
-          T("business_cta_secondary_label", "Final secondary button"),
+          T("business_cta_secondary_label", "Final button"),
         ],
       },
     ],

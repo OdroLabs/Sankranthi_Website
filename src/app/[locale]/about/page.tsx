@@ -1,6 +1,5 @@
-import { Eye, Target, Users, BookOpen, Sparkles, History } from "lucide-react";
+import { Eye, Target, Users, BookOpen, Sparkles, History, type LucideIcon } from "lucide-react";
 import type { Locale } from "@/lib/i18n";
-import { getLabels } from "@/lib/labels";
 import { getSettings, s, sPairs } from "@/lib/settings";
 import { PageHero } from "@/components/site/page-hero";
 import { TiltCard } from "@/components/site/tilt-card";
@@ -17,10 +16,91 @@ const VALUE_ACCENTS = [
   { bar: "from-[#83CDED] to-[#A995E8]", tint: "bg-[#FFFDF9]" },
 ];
 
+function TextBlock({
+  id,
+  icon: Icon,
+  title,
+  text,
+  image,
+  reverse,
+}: {
+  id: string;
+  icon: LucideIcon;
+  title: string;
+  text: string;
+  image?: string;
+  reverse?: boolean;
+}) {
+  if (!text) return null;
+
+  if (image) {
+    return (
+      <section id={id} className="grid items-center gap-12 lg:grid-cols-[1fr_1fr]">
+        <Reveal
+          direction={reverse ? "right" : "left"}
+          className={reverse ? "lg:order-2" : undefined}
+        >
+          <div className="max-w-xl">
+            {title && (
+              <div className="mb-5 flex items-center gap-4">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-white shadow-[0_10px_24px_rgba(255,97,127,0.22)]">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <span className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
+              </div>
+            )}
+            {title && (
+              <h2 className="text-display-xl font-serif font-medium tracking-tight text-[#202B33]">
+                {title}
+              </h2>
+            )}
+            <p className="mt-5 whitespace-pre-line leading-relaxed text-muted-foreground md:text-lg">
+              {text}
+            </p>
+          </div>
+        </Reveal>
+        <div
+          data-animate
+          data-delay="0.12"
+          className={`relative overflow-hidden rounded-3xl shadow-card-hover ${reverse ? "lg:order-1" : ""}`}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={image} alt={title} className="aspect-[4/3] w-full object-cover" />
+          <span className="pointer-events-none absolute inset-x-6 -bottom-3 h-[2px] rounded-full bg-living-spectrum opacity-70" />
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section id={id} className="grid gap-8 lg:grid-cols-[minmax(0,220px)_1fr] lg:gap-16">
+      <Reveal direction="up">
+        <div className="flex items-center gap-4 lg:flex-col lg:items-start lg:gap-6">
+          <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-white shadow-[0_10px_24px_rgba(255,97,127,0.22)]">
+            <Icon className="h-6 w-6" />
+          </span>
+          <span className="hidden h-28 w-px bg-gradient-to-b from-border to-transparent lg:block" />
+        </div>
+      </Reveal>
+      <Reveal direction="up" delay={0.08}>
+        <div className="max-w-2xl">
+          {title && (
+            <h2 className="text-display-xl font-serif font-medium tracking-tight text-[#202B33]">
+              {title}
+            </h2>
+          )}
+          <p className="mt-5 whitespace-pre-line leading-relaxed text-muted-foreground md:text-lg">
+            {text}
+          </p>
+        </div>
+      </Reveal>
+    </section>
+  );
+}
+
 export default async function AboutPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
   const settings = await getSettings();
-  const dict = getLabels(locale, settings);
 
   const overviewTitle = s(settings, "about_overview_title", locale);
   const overview = s(settings, "about_overview", locale);
@@ -48,102 +128,6 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
     { icon: Eye, title: visionTitle, text: vision, gradient: "from-[#FF617F] to-[#FF846F]" },
     { icon: Target, title: missionTitle, text: mission, gradient: "from-[#83D8B6] to-[#83CDED]" },
   ].filter((b) => b.text);
-
-  /**
-   * Heading + prose block, rendered only when there is text. `reverse` swaps
-   * which side the photo sits on so the page doesn't feel like the same
-   * two-column block repeated three times. When there's no photo the block
-   * still reads as an asymmetric composition — a narrow icon/rule column
-   * beside the prose — rather than a centered stack.
-   *
-   * The photo itself intentionally uses the site-wide GSAP `data-animate` /
-   * `data-parallax` reveal (the same mechanism PageHero's own background
-   * photo uses) rather than the Framer Motion ImageReveal/Parallax pair —
-   * that combination turned out to be unreliable for these two-column CMS
-   * photos specifically, so plain, proven CSS/GSAP wins here even though
-   * the rest of the page uses Framer Motion.
-   */
-  const TextBlock = ({
-    id,
-    icon: Icon,
-    title,
-    text,
-    image,
-    reverse,
-  }: {
-    id: string;
-    icon: typeof Eye;
-    title: string;
-    text: string;
-    image?: string;
-    reverse?: boolean;
-  }) => {
-    if (!text) return null;
-
-    if (image) {
-      return (
-        <section id={id} className="grid items-center gap-12 lg:grid-cols-[1fr_1fr]">
-          <Reveal
-            direction={reverse ? "right" : "left"}
-            className={reverse ? "lg:order-2" : undefined}
-          >
-            <div className="max-w-xl">
-              {title && (
-                <div className="mb-5 flex items-center gap-4">
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-white shadow-[0_10px_24px_rgba(255,97,127,0.22)]">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <span className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
-                </div>
-              )}
-              {title && (
-                <h2 className="text-display-xl font-serif font-medium tracking-tight text-[#202B33]">
-                  {title}
-                </h2>
-              )}
-              <p className="mt-5 whitespace-pre-line leading-relaxed text-muted-foreground md:text-lg">
-                {text}
-              </p>
-            </div>
-          </Reveal>
-          <div
-            data-animate
-            data-delay="0.12"
-            className={`relative overflow-hidden rounded-3xl shadow-card-hover ${reverse ? "lg:order-1" : ""}`}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={image} alt={title} className="aspect-[4/3] w-full object-cover" />
-            <span className="pointer-events-none absolute inset-x-6 -bottom-3 h-[2px] rounded-full bg-living-spectrum opacity-70" />
-          </div>
-        </section>
-      );
-    }
-
-    return (
-      <section id={id} className="grid gap-8 lg:grid-cols-[minmax(0,220px)_1fr] lg:gap-16">
-        <Reveal direction="up">
-          <div className="flex items-center gap-4 lg:flex-col lg:items-start lg:gap-6">
-            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#FF617F] to-[#FF846F] text-white shadow-[0_10px_24px_rgba(255,97,127,0.22)]">
-              <Icon className="h-6 w-6" />
-            </span>
-            <span className="hidden h-28 w-px bg-gradient-to-b from-border to-transparent lg:block" />
-          </div>
-        </Reveal>
-        <Reveal direction="up" delay={0.08}>
-          <div className="max-w-2xl">
-            {title && (
-              <h2 className="text-display-xl font-serif font-medium tracking-tight text-[#202B33]">
-                {title}
-              </h2>
-            )}
-            <p className="mt-5 whitespace-pre-line leading-relaxed text-muted-foreground md:text-lg">
-              {text}
-            </p>
-          </div>
-        </Reveal>
-      </section>
-    );
-  };
 
   return (
     <>

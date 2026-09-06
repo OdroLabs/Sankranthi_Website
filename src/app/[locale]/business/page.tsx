@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { loc, type Locale } from "@/lib/i18n";
 import { prisma } from "@/lib/prisma";
 import { getSettings, s, sList, sPairs } from "@/lib/settings";
@@ -26,8 +25,6 @@ const C = {
   sage: "#7D8C74",
 };
 
-const BTN_PRIMARY =
-  "group inline-flex items-center gap-2 rounded-[8px] px-6 py-3 text-[12px] font-semibold text-white shadow-[0_10px_25px_rgba(47,101,144,0.15)] transition-transform duration-300 hover:-translate-y-0.5";
 const BTN_SECONDARY =
   "inline-flex items-center gap-2 rounded-[8px] border px-6 py-3 text-[12px] font-semibold text-[#2F5F84] transition-colors duration-300 hover:bg-white/60";
 
@@ -113,7 +110,6 @@ export default async function BusinessPage({ params }: { params: Promise<{ local
   const ctaTitle = s(settings, "business_cta_title", locale);
   const ctaBody = s(settings, "business_cta_body", locale);
   const ctaImage = s(settings, "business_cta_image");
-  const ctaPrimaryLabel = s(settings, "business_cta_primary_label", locale);
   const ctaSecondaryLabel = s(settings, "business_cta_secondary_label", locale);
 
   const showAbout = aboutTitle || aboutParagraphs.length > 0 || aboutImage || aboutImage2 || aboutImage3;
@@ -121,7 +117,7 @@ export default async function BusinessPage({ params }: { params: Promise<{ local
   const showOpportunity = opportunityTitle || opportunityBody || opportunityImage || objectives.length > 0;
   const showServices = bookableServices.length > 0 || servicesTitle || servicesCtaLabel;
   const showValues = values.length > 0;
-  const showCta = ctaTitle || ctaBody || ctaPrimaryLabel || ctaSecondaryLabel;
+  const showCta = ctaTitle || ctaBody || ctaImage || ctaSecondaryLabel;
 
   return (
     <div

@@ -66,7 +66,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
                     variant={featured.status === "completed" ? "success" : "secondary"}
                     className="rounded-full capitalize"
                   >
-                    {(dict.common as any)[featured.status] ?? featured.status}
+                    {dict.common[featured.status as keyof typeof dict.common] ?? featured.status}
                   </Badge>
                   {featured.startDate && (
                     <span className="text-xs font-medium text-muted-foreground">
@@ -128,7 +128,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
                           variant={project.status === "completed" ? "success" : "secondary"}
                           className="rounded-full capitalize"
                         >
-                          {(dict.common as any)[project.status] ?? project.status}
+                          {dict.common[project.status as keyof typeof dict.common] ?? project.status}
                         </Badge>
                         {project.startDate && (
                           <span className="text-xs text-muted-foreground">

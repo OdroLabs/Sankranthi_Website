@@ -200,7 +200,6 @@ async function main() {
     business_cta_title: "Step into NELUME.",
     business_cta_body: "A space for beauty, wellness\nand meaningful change.",
     business_cta_image: NELUME_CTA,
-    business_cta_primary_label: "Visit NELUME",
     business_cta_secondary_label: "Learn about Sankranthi Foundation",
     suggestions_hero_title: "Your Suggestions",
     suggestions_hero_intro: "Good community services begin with listening. Share an idea, concern or improvement with us.",
