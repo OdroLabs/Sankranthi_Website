@@ -198,12 +198,6 @@ const IMG = (key: string, label: string, help?: string): SettingDef => ({
   type: "image",
   help,
 });
-const NUM = (key: string, label: string, help?: string): SettingDef => ({
-  key,
-  label,
-  type: "number",
-  help,
-});
 const SW = (key: string, label: string, help?: string): SettingDef => ({
   key,
   label,
@@ -230,7 +224,6 @@ const LINES = (
 ): SettingDef => ({ key, label, type: "lines", i18n: true, ...opts });
 
 const AUTO_HIDE = "Clear the text below and this section disappears from the site.";
-const AUTO_HIDE_LIST = "Remove every item and this section disappears from the site.";
 
 export const settingPages: SettingPage[] = [
   /* ---------------------------------------------------------------- General */
@@ -410,7 +403,7 @@ export const settingPages: SettingPage[] = [
     slug: "home",
     title: "Home Page",
     description:
-      "Every section of the home page, top to bottom. Each one hides itself when its content is empty.",
+      "The four sections shown on the home page. Each one hides itself when its content is empty.",
     sections: [
       {
         section: "Hero",
@@ -467,43 +460,6 @@ export const settingPages: SettingPage[] = [
         ],
       },
       {
-        section: "Impact numbers",
-        preview: { path: "", anchor: "sec-stats" },
-        hideNote: AUTO_HIDE_LIST + " Manage the numbers under Content → Impact Stats.",
-        items: [
-          SW("show_home_stats", "Show this section"),
-          T("home_stats_eyebrow", "Small label above the heading"),
-          T("home_stats_title", "Heading"),
-          IMG("home_stats_image", "Background image"),
-        ],
-      },
-      {
-        section: "Services",
-        preview: { path: "", anchor: "sec-services" },
-        hideNote: AUTO_HIDE_LIST + " Manage them under Content → Services.",
-        items: [
-          SW("show_home_services", "Show this section"),
-          T("home_services_eyebrow", "Small label above the heading"),
-          T("home_services_title", "Heading"),
-          TA("home_services_text", "Intro text", "Optional."),
-          NUM("home_services_count", "How many to show", "Default 6."),
-          T("home_services_link_label", "View-all button text", "Blank hides the button."),
-        ],
-      },
-      {
-        section: "Featured projects",
-        preview: { path: "", anchor: "sec-projects" },
-        hideNote: AUTO_HIDE_LIST + " Manage them under Content → Projects.",
-        items: [
-          SW("show_home_projects", "Show this section"),
-          T("home_projects_eyebrow", "Small label above the heading"),
-          T("home_projects_title", "Heading"),
-          TA("home_projects_text", "Intro text", "Optional."),
-          NUM("home_projects_count", "How many to show", "Default 4."),
-          T("home_projects_link_label", "View-all button text", "Blank hides the button."),
-        ],
-      },
-      {
         section: "Get in touch band",
         preview: { path: "", anchor: "sec-contact" },
         hideNote: AUTO_HIDE,
@@ -513,50 +469,6 @@ export const settingPages: SettingPage[] = [
           T("home_contact_title", "Heading"),
           TA("home_contact_text", "Body text"),
           T("home_contact_card_title", "Red card heading", "e.g. Call Us"),
-        ],
-      },
-      {
-        section: "Testimonials",
-        preview: { path: "", anchor: "sec-testimonials" },
-        hideNote: AUTO_HIDE_LIST + " Manage them under Content → Testimonials.",
-        items: [
-          SW("show_home_testimonials", "Show this section"),
-          T("home_testimonials_eyebrow", "Small label above the heading"),
-          T("home_testimonials_title", "Heading"),
-        ],
-      },
-      {
-        section: "Latest news",
-        preview: { path: "", anchor: "sec-news" },
-        hideNote: AUTO_HIDE_LIST + " Manage articles under Content → News.",
-        items: [
-          SW("show_home_news", "Show this section"),
-          T("home_news_eyebrow", "Small label above the heading"),
-          T("home_news_title", "Heading"),
-          NUM("home_news_count", "How many to show", "Default 3."),
-          T("home_news_facebook_label", "Facebook button text", "Blank hides the button. The Facebook URL is managed under General settings."),
-        ],
-      },
-      {
-        section: "Upcoming events",
-        preview: { path: "", anchor: "sec-events" },
-        hideNote: AUTO_HIDE_LIST + " Manage events under Content → Events.",
-        items: [
-          SW("show_home_events", "Show this section"),
-          T("home_events_eyebrow", "Small label above the heading"),
-          T("home_events_title", "Heading"),
-          NUM("home_events_count", "How many to show", "Default 2."),
-          T("home_events_link_label", "View-all button text", "Blank hides the button."),
-        ],
-      },
-      {
-        section: "Partners",
-        preview: { path: "", anchor: "sec-partners" },
-        hideNote: AUTO_HIDE_LIST + " Manage them under Content → Partners.",
-        items: [
-          SW("show_home_partners", "Show this section"),
-          T("home_partners_eyebrow", "Small label above the heading"),
-          T("home_partners_title", "Heading"),
         ],
       },
       {
@@ -799,6 +711,7 @@ export const settingPages: SettingPage[] = [
           TA("news_hero_intro", "Intro text"),
           IMG("news_hero_image", "Header background image"),
           T("news_empty_text", "Message when the list is empty"),
+          T("home_news_title", "Related news heading", "Shown above recent articles on a news detail page."),
         ],
       },
       {
@@ -809,6 +722,7 @@ export const settingPages: SettingPage[] = [
           TA("events_hero_intro", "Intro text"),
           IMG("events_hero_image", "Header background image"),
           T("events_empty_text", "Message when the list is empty"),
+          T("home_events_title", "Upcoming events heading"),
           SW("show_gallery", "Show the photo gallery"),
           T("gallery_title", "Gallery heading"),
         ],
