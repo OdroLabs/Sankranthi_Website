@@ -17,7 +17,7 @@ export interface NavCatalogItem {
 /** Order here is only the starting order, before an admin has ever saved the list. */
 export const NAV_ITEM_CATALOG: NavCatalogItem[] = [
   { key: "about", label: "About Us", fallback: true },
-  { key: "projects", label: "Our Work", fallback: true },
+  { key: "projects", label: "Past Projects", fallback: true },
   { key: "services", label: "Our Services", fallback: false },
   { key: "publications", label: "Publications", fallback: false },
   { key: "news", label: "News", fallback: false },

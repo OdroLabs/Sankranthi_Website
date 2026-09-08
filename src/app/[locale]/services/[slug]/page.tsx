@@ -16,7 +16,6 @@ import { getSettings, s } from "@/lib/settings";
 import { RichText } from "@/components/site/rich-text";
 import { Button } from "@/components/ui/button";
 import { Curve } from "@/components/site/curve";
-import { resolveServiceIcon } from "@/lib/service-icons";
 import { TiltCard } from "@/components/site/tilt-card";
 import { Reveal, StaggerContainer, StaggerItem, ImageReveal } from "@/components/animations";
 import { cn } from "@/lib/utils";
@@ -124,17 +123,7 @@ export default async function ServiceDetailPage({
             </ImageReveal>
           )}
 
-          <Reveal className="mb-6 flex items-center gap-4">
-            {(() => {
-              const Icon = resolveServiceIcon(service.icon);
-              return (
-                Icon && (
-                  <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-50 to-brand-100 ring-1 ring-brand-200/70">
-                    <Icon className="h-7 w-7 text-brand-600" strokeWidth={1.75} />
-                  </span>
-                )
-              );
-            })()}
+          <Reveal className="mb-6">
             <h2 className="font-serif text-2xl font-medium tracking-tight text-navy-900 md:text-4xl">
               {title}
             </h2>

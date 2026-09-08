@@ -1,4 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&family=Montserrat:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&family=Montserrat:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Caveat:wght@500;600;700&display=swap");
+
+@font-face {
+  font-family: "Rustic Roadway";
+  src: url("/fonts/RusticRoadway.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;

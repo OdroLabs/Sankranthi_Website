@@ -506,8 +506,10 @@ export const settingPages: SettingPage[] = [
         preview: { path: "/about", anchor: "sec-overview" },
         hideNote: AUTO_HIDE,
         items: [
+          T("about_overview_eyebrow", "Small label above the heading", "e.g. Overview"),
           T("about_overview_title", "Heading"),
           TA("about_overview", "Text"),
+          T("about_overview_tagline", "Handwritten-style accent line", "e.g. Rooted in community, driven by purpose."),
           IMG("about_overview_image", "Photo"),
         ],
       },
@@ -544,12 +546,18 @@ export const settingPages: SettingPage[] = [
         items: [T("about_community_title", "Heading"), TA("about_community", "Text")],
       },
       {
-        section: "Our story",
-        preview: { path: "/about", anchor: "sec-history" },
-        hideNote: AUTO_HIDE,
+        section: "Our story — journey milestones",
+        preview: { path: "/about", anchor: "sec-history-milestones" },
+        hideNote: "The whole strip hides itself when there are no milestones.",
         items: [
-          T("about_history_title", "Heading"),
-          TA("about_history", "Text"),
+          PAIRS("about_history_milestones", "Milestones", {
+            leftLabel: "Heading",
+            rightLabel: "Text",
+            itemLabel: "Milestone",
+            addLabel: "Add a milestone",
+            help: "Each one becomes a numbered card with an automatically-cycled icon and colour. Four reads best.",
+          }),
+          T("about_history_milestones_tagline", "Handwritten-style accent line", "e.g. A stronger community. A brighter future."),
         ],
       },
       {

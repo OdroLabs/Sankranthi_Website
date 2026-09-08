@@ -13,7 +13,7 @@ const en = {
   nav: {
     home: "Home",
     about: "About Us",
-    projects: "Our Work",
+    projects: "Past Projects",
     services: "Our Services",
     publications: "Publications",
     news: "News",
