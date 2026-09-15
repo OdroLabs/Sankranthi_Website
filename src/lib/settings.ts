@@ -779,9 +779,17 @@ export const settingPages: SettingPage[] = [
       "Manage the NELUME page, its photography, impact story, services presentation and appointment booking copy.",
     sections: [
       {
+        section: "Visibility",
+        preview: { path: "/business", anchor: "sec-page-header" },
+        items: [
+          SW("business_show", "Show Social Enterprise page", "Turn off to hide the whole /business (NELUME) page from visitors — it shows a not-found page instead. Turn the nav link off separately under Header & Navigation."),
+        ],
+      },
+      {
         section: "Hero",
         preview: { path: "/business", anchor: "sec-page-header" },
         items: [
+          SW("business_hero_show", "Show Hero section", "Turn off to hide this section on the page."),
           T("business_hero_title", "Page title", "Large brand name in the hero, e.g. NELUME."),
           T("business_hero_tagline", "Hero tagline", "Shown under the title, e.g. Beauty, Wellness & Opportunity."),
           T("business_hero_eyebrow", "Hero eyebrow", "Small all-caps line above the page title."),
@@ -793,6 +801,7 @@ export const settingPages: SettingPage[] = [
         section: "Story",
         preview: { path: "/business", anchor: "sec-story" },
         items: [
+          SW("business_story_show", "Show Story section", "Turn off to hide this section on the page."),
           T("business_about_title", "About heading", "Use a new line to split into two lines. The second line renders in italic."),
           TA("business_about_body", "About body", "2–3 short paragraphs. Blank lines start a new paragraph."),
           IMG("business_about_image", "About collage — top", "Large top photo in the story collage."),
@@ -804,6 +813,7 @@ export const settingPages: SettingPage[] = [
         section: "Impact",
         preview: { path: "/business", anchor: "sec-impact" },
         items: [
+          SW("business_impact_show", "Show Impact section", "Turn off to hide this section on the page."),
           T("business_impact_title", "Impact section heading", "Use a new line so “Social Impact” can sit on its own italic line."),
           TA("business_impact_body", "Impact section body", "Short explanation of the social-enterprise model."),
           LINES("business_impact_flow", "Impact journey labels", {
@@ -817,6 +827,7 @@ export const settingPages: SettingPage[] = [
         section: "Opportunity",
         preview: { path: "/business", anchor: "sec-opportunity" },
         items: [
+          SW("business_opportunity_show", "Show Opportunity section", "Turn off to hide this section on the page."),
           T("business_opportunity_title", "Opportunity heading"),
           TA("business_opportunity_body", "Opportunity body"),
           IMG("business_opportunity_image", "Opportunity photo", "Hands holding a lotus, or similar botanical / human moment."),
@@ -833,6 +844,7 @@ export const settingPages: SettingPage[] = [
         section: "Services & Booking",
         preview: { path: "/business", anchor: "sec-services" },
         items: [
+          SW("business_services_show", "Show Services & Booking section", "Turn off to hide this whole section (services list and booking) on the page."),
           T("business_services_title", "Services heading", "Use a new line for a second italic line. Service cards are managed under Nail Spa Services."),
           T("business_services_cta_label", "Booking button text", "Opens the appointment drawer without preselecting a service. Leave blank to hide it."),
           SW("business_booking_show", "Show appointment booking", "Displays booking actions for published, in-stock Nail Spa Services."),
@@ -861,6 +873,7 @@ export const settingPages: SettingPage[] = [
         section: "Values & CTA",
         preview: { path: "/business", anchor: "sec-values" },
         items: [
+          SW("business_values_show", "Show Values & CTA section", "Turn off to hide this section on the page."),
           PAIRS("business_values", "Values", {
             leftLabel: "Value",
             rightLabel: "Caption",

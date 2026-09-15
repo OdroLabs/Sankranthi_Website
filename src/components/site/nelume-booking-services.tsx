@@ -87,12 +87,9 @@ export function NelumeBookingServices({
       {services.length > 0 ? (
         <div className="mx-auto grid max-w-[1050px] gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {services.map((service) => (
-            <button
+            <div
               key={service.id}
-              type="button"
-              onClick={() => openBooking(service)}
-              className="group flex min-w-0 flex-col border-b border-[#DFD2C5] pb-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6590] focus-visible:ring-offset-4"
-              aria-label={`Book ${service.name}`}
+              className="group flex min-w-0 flex-col border-b border-[#DFD2C5] pb-5 text-left"
             >
               <span className="relative h-[180px] w-full overflow-hidden rounded-b-[28px] rounded-t-[90px] bg-[#EAF3F8]">
                 {service.image ? (
@@ -122,7 +119,7 @@ export function NelumeBookingServices({
                 </span>
                 <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-[#2F6590] transition-transform group-hover:translate-x-1" />
               </span>
-            </button>
+            </div>
           ))}
         </div>
       ) : (

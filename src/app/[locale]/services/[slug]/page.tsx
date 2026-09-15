@@ -111,12 +111,13 @@ export default async function ServiceDetailPage({
           </nav>
         </div>
 
-        <Curve className="absolute inset-x-0 -bottom-px text-background" />
+        <Curve className="absolute inset-x-0 -bottom-px text-white" />
       </section>
 
-      <div className="relative mx-auto grid w-full max-w-[1400px] gap-10 px-4 py-12 md:px-6 md:py-16 lg:grid-cols-[1fr_340px]">
-        {/* Main column */}
-        <article>
+      <div className="bg-white">
+        <div className="relative mx-auto grid w-full max-w-[1400px] gap-10 px-4 py-12 md:px-6 md:py-16 lg:grid-cols-[1fr_340px]">
+          {/* Main column */}
+          <article>
           {service.image && (
             <ImageReveal className="relative mb-8 aspect-[16/9] w-full rounded-[24px] border border-border shadow-card">
               <Image src={service.image} alt="" fill className="object-cover" />
@@ -253,12 +254,12 @@ export default async function ServiceDetailPage({
 
           {/* Contact promo card */}
           <Reveal direction="right" delay={0.1}>
-            <div className="bg-grain relative overflow-hidden rounded-[24px] bg-[#202B33] p-7 text-[#F8F5F2]">
+            <div className="relative overflow-hidden rounded-[24px] border border-[rgba(32,43,51,0.07)] bg-[#FFFDF9] p-7 text-[#202B33] shadow-sm">
               <div className="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-[#FF6F91]/[0.14] blur-3xl" />
               <h3 className="relative font-serif text-2xl font-medium leading-tight">{dict.home.getSupport}</h3>
               {/* Body copy comes from Site Settings → Home Page → Get in touch band. */}
               {contactPromoText && (
-                <p className="relative mt-2 text-sm text-white/75">{contactPromoText}</p>
+                <p className="relative mt-2 text-sm text-muted-foreground">{contactPromoText}</p>
               )}
               {phone && (
                 <a
@@ -271,39 +272,42 @@ export default async function ServiceDetailPage({
               <Button
                 asChild
                 variant="outline"
-                className="relative mt-4 w-full rounded-full border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white"
+                className="relative mt-4 w-full rounded-full border-[rgba(32,43,51,0.15)] bg-transparent text-[#202B33] hover:bg-[#202B33]/5 hover:text-[#202B33]"
               >
                 <Link href={`/${locale}/contact`}>{dict.nav.contact}</Link>
               </Button>
             </div>
           </Reveal>
         </aside>
+        </div>
       </div>
 
       {/* CTA band */}
-      <section className="mx-auto w-full max-w-[1400px] px-4 pb-16 md:px-6">
-        <Reveal direction="scale">
-          <div className="donate-spectrum-wash relative overflow-hidden rounded-[24px] border border-[rgba(32,43,51,0.07)] p-10 text-[#202B33] shadow-card md:p-12">
-            <div className="pointer-events-none absolute -right-10 -top-10 h-56 w-56 rounded-full bg-[#FF6F91]/[0.12] blur-3xl" />
-            <div className="relative flex flex-wrap items-center justify-between gap-6">
-              <div>
-                {donateTitle && (
-                  <h2 className="max-w-xl font-serif text-2xl font-medium md:text-3xl">{donateTitle}</h2>
-                )}
-                {donateText && <p className="mt-2 max-w-xl text-[#667078]">{donateText}</p>}
+      <section className="bg-white">
+        <div className="mx-auto w-full max-w-[1400px] px-4 pb-16 md:px-6">
+          <Reveal direction="scale">
+            <div className="donate-spectrum-wash relative overflow-hidden rounded-[24px] border border-[rgba(32,43,51,0.07)] p-10 text-[#202B33] shadow-card md:p-12">
+              <div className="pointer-events-none absolute -right-10 -top-10 h-56 w-56 rounded-full bg-[#FF6F91]/[0.12] blur-3xl" />
+              <div className="relative flex flex-wrap items-center justify-between gap-6">
+                <div>
+                  {donateTitle && (
+                    <h2 className="max-w-xl font-serif text-2xl font-medium md:text-3xl">{donateTitle}</h2>
+                  )}
+                  {donateText && <p className="mt-2 max-w-xl text-[#667078]">{donateText}</p>}
+                </div>
+                <Button
+                  asChild
+                  size="lg"
+                  className="rounded-full bg-gradient-to-r from-[#FF6178] to-[#FF826F] px-7 font-bold text-white shadow-[0_10px_28px_rgba(255,97,127,0.22)]"
+                >
+                  <Link href={`/${locale}/donate`}>
+                    {dict.home.makeDonation} <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
               </div>
-              <Button
-                asChild
-                size="lg"
-                className="rounded-full bg-gradient-to-r from-[#FF6178] to-[#FF826F] px-7 font-bold text-white shadow-[0_10px_28px_rgba(255,97,127,0.22)]"
-              >
-                <Link href={`/${locale}/donate`}>
-                  {dict.home.makeDonation} <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
             </div>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
       </section>
     </>
   );

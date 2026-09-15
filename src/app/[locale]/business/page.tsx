@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { loc, type Locale } from "@/lib/i18n";
 import { prisma } from "@/lib/prisma";
-import { getSettings, s, sList, sPairs } from "@/lib/settings";
+import { getSettings, s, show, sList, sPairs } from "@/lib/settings";
 import { Reveal } from "@/components/animations";
 import type { BookableService } from "@/components/site/booking-form";
 import { NelumeBookingServices } from "@/components/site/nelume-booking-services";
@@ -46,6 +47,8 @@ export default async function BusinessPage({ params }: { params: Promise<{ local
       orderBy: { order: "asc" },
     }),
   ]);
+
+  if (!show(settings, "business_show")) notFound();
 
   const bookableServices: BookableService[] = products.map((product) => ({
     id: product.id,
@@ -112,25 +115,28 @@ export default async function BusinessPage({ params }: { params: Promise<{ local
   const ctaImage = s(settings, "business_cta_image");
   const ctaSecondaryLabel = s(settings, "business_cta_secondary_label", locale);
 
-  const showAbout = aboutTitle || aboutParagraphs.length > 0 || aboutImage || aboutImage2 || aboutImage3;
-  const showImpact = impactTitle || impactBody || impactFlow.length > 0;
-  const showOpportunity = opportunityTitle || opportunityBody || opportunityImage || objectives.length > 0;
-  const showServices = bookableServices.length > 0 || servicesTitle || servicesCtaLabel;
-  const showValues = values.length > 0;
-  const showCta = ctaTitle || ctaBody || ctaImage || ctaSecondaryLabel;
+  const showHero = show(settings, "business_hero_show");
+  const showAbout = show(settings, "business_story_show", aboutTitle, aboutParagraphs.length > 0, aboutImage, aboutImage2, aboutImage3);
+  const showImpact = show(settings, "business_impact_show", impactTitle, impactBody, impactFlow.length > 0);
+  const showOpportunity = show(settings, "business_opportunity_show", opportunityTitle, opportunityBody, opportunityImage, objectives.length > 0);
+  const showServices = show(settings, "business_services_show", bookableServices.length > 0, servicesTitle, servicesCtaLabel);
+  const showValues = show(settings, "business_values_show", values.length > 0);
+  const showCta = show(settings, "business_values_show", ctaTitle, ctaBody, ctaImage, ctaSecondaryLabel);
 
   return (
     <div
       className="overflow-x-hidden"
       style={{ backgroundColor: C.ivory, color: C.ink, fontFamily: SANS }}
     >
-      <NelumeHero
-        heroTitle={heroTitle}
-        heroTagline={heroTagline}
-        heroEyebrow={heroEyebrow}
-        heroIntro={heroIntro}
-        heroImage={heroImage}
-      />
+      {showHero && (
+        <NelumeHero
+          heroTitle={heroTitle}
+          heroTagline={heroTagline}
+          heroEyebrow={heroEyebrow}
+          heroIntro={heroIntro}
+          heroImage={heroImage}
+        />
+      )}
 
       {/* ============================== STORY — 2-photo collage + copy */}
       {showAbout && (
