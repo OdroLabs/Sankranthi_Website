@@ -296,6 +296,26 @@ export const settingPages: SettingPage[] = [
           ),
         ],
       },
+      {
+        section: "Email notifications (SMTP)",
+        hideNote:
+          "Leave the SMTP host blank to turn emails off — the Contact, Suggestion, Booking, Newsletter and Donation forms keep saving to the admin panel either way, they just won't email anyone.",
+        items: [
+          P("smtp_host", "SMTP host", "e.g. smtp.gmail.com, smtp.office365.com, or your provider's host."),
+          P("smtp_port", "SMTP port", "587 for TLS (most common), or 465 for SSL."),
+          SW("smtp_secure", "Use SSL", "Turn on for port 465. Leave off for STARTTLS on port 587 — that's correct for most providers."),
+          P("smtp_username", "SMTP username", "Usually the full mailbox address you're sending from."),
+          P("smtp_password", "SMTP password", "Use an app password where your provider supports one (Gmail, Outlook, etc.), not your normal account password. Stored in the database."),
+          P("smtp_from_name", "\"From\" name", "Shown as the sender name in inboxes. Defaults to the organisation name above."),
+          P("smtp_from_email", "\"From\" email", "Defaults to the SMTP username above."),
+          P(
+            "smtp_to_email",
+            "Send form notifications to",
+            "Where Contact, Suggestion, Booking, Newsletter and Donation submissions are emailed. Comma-separate multiple addresses. Defaults to the Email address under Contact details."
+          ),
+          P("smtp_cc_email", "CC", "Optional. Comma-separate multiple addresses to also copy on every notification."),
+        ],
+      },
     ],
   },
 

@@ -11,6 +11,7 @@ import { getSettingPage, type SettingDef } from "./settings";
 import { allLabelDefs } from "./labels";
 import { sanitizeRichText } from "./sanitize";
 import { slugify, uniqueSlug } from "./slug";
+import { sendNotificationEmail } from "./mailer";
 
 const SLUGGED_MODELS = ["project", "service", "news", "event"] as const;
 
@@ -463,19 +464,43 @@ export async function deleteUser(id: number): Promise<ActionResult> {
 
 // ---------- Public form actions ----------
 
+/**
+ * Best-effort email notification for a public form submission. The database
+ * write is the thing that must succeed for the visitor's submission to
+ * count, so a broken/unconfigured SMTP setup must never surface as a form
+ * error — failures here are logged and swallowed.
+ */
+async function notify(input: Parameters<typeof sendNotificationEmail>[0]) {
+  try {
+    await sendNotificationEmail(input);
+  } catch (err) {
+    console.error("Form notification email failed:", err);
+  }
+}
+
 export async function submitContact(formData: FormData) {
   const name = (formData.get("name") as string)?.trim();
   const email = (formData.get("email") as string)?.trim();
   const message = (formData.get("message") as string)?.trim();
   if (!name || !email || !message) return { ok: false };
+  const phone = ((formData.get("phone") as string) || "").trim() || null;
+  const subject = ((formData.get("subject") as string) || "").trim() || null;
   await prisma.contactMessage.create({
-    data: {
-      name,
-      email,
-      phone: ((formData.get("phone") as string) || "").trim() || null,
-      subject: ((formData.get("subject") as string) || "").trim() || null,
+    data: { name, email, phone, subject, message },
+  });
+  await notify({
+    subject: `New contact message${subject ? `: ${subject}` : ""}`,
+    text: [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      phone ? `Phone: ${phone}` : null,
+      subject ? `Subject: ${subject}` : null,
+      "",
       message,
-    },
+    ]
+      .filter((line) => line !== null)
+      .join("\n"),
+    replyTo: email,
   });
   return { ok: true };
 }
@@ -483,12 +508,17 @@ export async function submitContact(formData: FormData) {
 export async function submitSuggestion(formData: FormData) {
   const message = (formData.get("message") as string)?.trim();
   if (!message) return { ok: false };
+  const name = ((formData.get("name") as string) || "").trim() || null;
+  const email = ((formData.get("email") as string) || "").trim() || null;
   await prisma.suggestion.create({
-    data: {
-      name: ((formData.get("name") as string) || "").trim() || null,
-      email: ((formData.get("email") as string) || "").trim() || null,
-      message,
-    },
+    data: { name, email, message },
+  });
+  await notify({
+    subject: "New suggestion submitted",
+    text: [name ? `Name: ${name}` : null, email ? `Email: ${email}` : null, "", message]
+      .filter((line) => line !== null)
+      .join("\n"),
+    replyTo: email ?? undefined,
   });
   return { ok: true };
 }
@@ -517,6 +547,9 @@ export async function submitBooking(formData: FormData) {
     return { ok: false, error: "Please choose a valid appointment date." };
   }
 
+  const email = ((formData.get("email") as string) || "").trim() || null;
+  const notes = ((formData.get("notes") as string) || "").trim() || null;
+
   await prisma.booking.create({
     data: {
       name,
@@ -524,9 +557,25 @@ export async function submitBooking(formData: FormData) {
       service: service.nameEn,
       preferredDate,
       preferredTime,
-      email: ((formData.get("email") as string) || "").trim() || null,
-      notes: ((formData.get("notes") as string) || "").trim() || null,
+      email,
+      notes,
     },
+  });
+
+  await notify({
+    subject: `New booking: ${service.nameEn}`,
+    text: [
+      `Service: ${service.nameEn}`,
+      `Name: ${name}`,
+      `Phone: ${phone}`,
+      email ? `Email: ${email}` : null,
+      `Preferred date: ${date}`,
+      `Preferred time: ${preferredTime}`,
+      notes ? `Notes: ${notes}` : null,
+    ]
+      .filter((line) => line !== null)
+      .join("\n"),
+    replyTo: email ?? undefined,
   });
 
   return { ok: true };
@@ -535,10 +584,19 @@ export async function submitBooking(formData: FormData) {
 export async function subscribeNewsletter(formData: FormData) {
   const email = (formData.get("email") as string)?.trim();
   if (!email || !email.includes("@")) return { ok: false };
+  let isNew = true;
   try {
     await prisma.subscriber.create({ data: { email } });
   } catch {
-    // duplicate — treat as success
+    // duplicate — treat as success, but skip the notification email below
+    isNew = false;
+  }
+  if (isNew) {
+    await notify({
+      subject: "New newsletter subscriber",
+      text: `Email: ${email}`,
+      replyTo: email,
+    });
   }
   return { ok: true };
 }

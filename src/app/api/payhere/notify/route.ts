@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyNotifySignature, statusFromCode } from "@/lib/payhere";
+import { sendNotificationEmail } from "@/lib/mailer";
 
 // PayHere server-to-server notification. Must be publicly reachable in production.
 export async function POST(request: NextRequest) {
@@ -19,13 +20,39 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
+  const status = statusFromCode(params.status_code);
+
   await prisma.donation.updateMany({
     where: { orderId: params.order_id },
     data: {
-      status: statusFromCode(params.status_code),
+      status,
       payherePaymentId: paymentId,
     },
   });
+
+  if (status === "success") {
+    const donation = await prisma.donation.findUnique({ where: { orderId: params.order_id } });
+    if (donation) {
+      try {
+        await sendNotificationEmail({
+          subject: `New donation: ${donation.currency} ${donation.amount}`,
+          text: [
+            `Name: ${donation.name}`,
+            `Email: ${donation.email}`,
+            donation.phone ? `Phone: ${donation.phone}` : null,
+            `Amount: ${donation.currency} ${donation.amount}`,
+            donation.message ? `Message: ${donation.message}` : null,
+            `Order ID: ${donation.orderId}`,
+          ]
+            .filter((line) => line !== null)
+            .join("\n"),
+          replyTo: donation.email,
+        });
+      } catch (err) {
+        console.error("Donation notification email failed:", err);
+      }
+    }
+  }
 
   return NextResponse.json({ ok: true });
 }
