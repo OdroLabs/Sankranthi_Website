@@ -118,7 +118,15 @@ const navSections: NavSection[] = [
 const footerAction =
   "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900";
 
-export function AdminSidebar({ role, logo }: { role: string; logo?: string }) {
+export function AdminSidebar({
+  role,
+  logo,
+  logoAlt,
+}: {
+  role: string;
+  logo?: string;
+  logoAlt?: string;
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const isOwner = role === "owner";
@@ -184,7 +192,7 @@ export function AdminSidebar({ role, logo }: { role: string; logo?: string }) {
         <PrideStripe />
         <div className="flex h-16 shrink-0 items-center justify-between gap-2 border-b border-slate-200 px-4">
           <Link href="/admin/dashboard" className="flex min-w-0 items-center">
-            <AdminLogo src={logo} className="h-10" />
+            <AdminLogo src={logo} alt={logoAlt} className="h-10" />
           </Link>
           <button
             type="button"

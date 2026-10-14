@@ -9,16 +9,20 @@ export default async function AdminPanelLayout({ children }: { children: React.R
   const admin = await getAdmin();
   if (!admin) redirect("/admin/login");
 
-  // Keep the panel branded with whatever logo the live site is using.
-  const logo = await prisma.setting.findUnique({ where: { key: "logo_image" } });
+  // Keep the panel branded with whatever logo/name the live site is using.
+  const [logo, siteName] = await Promise.all([
+    prisma.setting.findUnique({ where: { key: "logo_image" } }),
+    prisma.setting.findUnique({ where: { key: "site_name" } }),
+  ]);
   const logoUrl = logo?.valueEn?.trim() || undefined;
+  const orgName = siteName?.valueEn?.trim() || "Logo";
 
   const initial = (admin.name || admin.email).trim().charAt(0).toUpperCase();
 
   return (
     <ToastProvider>
       <div className="flex min-h-screen bg-white text-foreground">
-        <AdminSidebar role={admin.role} logo={logoUrl} />
+        <AdminSidebar role={admin.role} logo={logoUrl} logoAlt={orgName} />
         <div className="flex min-w-0 flex-1 flex-col bg-slate-50">
           <header className="sticky top-0 z-20 flex h-16 shrink-0 items-center justify-between gap-4 border-b border-slate-200 bg-white/85 pl-16 pr-4 backdrop-blur lg:px-6">
             <div className="flex min-w-0 items-center gap-3">

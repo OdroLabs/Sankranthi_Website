@@ -8,12 +8,20 @@ export const MARK_SRC = "/brand/mark.png";
  * Full wordmark. Pass `src` to honour the logo uploaded under
  * Site Settings → General, so the panel always matches the live site.
  */
-export function AdminLogo({ src, className }: { src?: string; className?: string }) {
+export function AdminLogo({
+  src,
+  alt = "Logo",
+  className,
+}: {
+  src?: string;
+  alt?: string;
+  className?: string;
+}) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src={src || LOGO_SRC}
-      alt="Sankranthi Foundation"
+      alt={alt}
       className={cn("h-9 w-auto max-w-[170px] object-contain object-left", className)}
     />
   );
