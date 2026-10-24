@@ -600,3 +600,75 @@ export async function subscribeNewsletter(formData: FormData) {
   }
   return { ok: true };
 }
+
+/**
+ * Records a bank-transfer donation. There's no payment gateway behind this —
+ * the visitor deposits/transfers directly and uploads a photo of the slip as
+ * proof, uploaded client-side to /api/donate/slip before this runs. The
+ * record always lands as "pending"; an admin checks the slip in Donations
+ * and sets it to Success or Failed by hand (see the inbox status dropdown).
+ */
+export async function submitBankDonation(formData: FormData) {
+  const name = ((formData.get("name") as string) || "").trim();
+  const email = ((formData.get("email") as string) || "").trim();
+  const amountRaw = parseFloat((formData.get("amount") as string) || "0");
+  const bankSlipUrl = ((formData.get("bankSlipUrl") as string) || "").trim();
+
+  if (!name || !email || !amountRaw || amountRaw <= 0) {
+    return { ok: false, error: "Please fill in your name, email and donation amount." };
+  }
+  if (!bankSlipUrl) {
+    return { ok: false, error: "Please upload a photo of your deposit/transfer slip." };
+  }
+
+  const phone = ((formData.get("phone") as string) || "").trim() || null;
+  const message = ((formData.get("message") as string) || "").trim() || null;
+  const purposeRaw = ((formData.get("purpose") as string) || "").trim();
+  const purposeLabels: Record<string, string> = {
+    general: "Where it's needed most",
+    health: "Health services",
+    education: "Education & awareness",
+    community: "Community programs",
+  };
+  const purpose = purposeLabels[purposeRaw];
+  const storedMessage = [purpose ? `[${purpose}]` : null, message].filter(Boolean).join(" ") || null;
+
+  const orderId = `BANK-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+  const amount = amountRaw.toFixed(2);
+
+  await prisma.donation.create({
+    data: {
+      orderId,
+      name,
+      email,
+      phone,
+      amount,
+      currency: "LKR",
+      message: storedMessage,
+      status: "pending",
+      method: "bank",
+      bankSlipUrl,
+    },
+  });
+
+  await notify({
+    subject: `New bank-transfer donation: LKR ${amount} (needs verification)`,
+    text: [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      phone ? `Phone: ${phone}` : null,
+      `Amount: LKR ${amount}`,
+      purpose ? `Purpose: ${purpose}` : null,
+      message ? `Message: ${message}` : null,
+      `Deposit slip: ${bankSlipUrl}`,
+      `Order ID: ${orderId}`,
+      "",
+      "Check the slip and mark this donation Success or Failed in the admin panel under Donations.",
+    ]
+      .filter((line) => line !== null)
+      .join("\n"),
+    replyTo: email,
+  });
+
+  return { ok: true };
+}

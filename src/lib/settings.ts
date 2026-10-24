@@ -664,7 +664,21 @@ export const settingPages: SettingPage[] = [
         section: "Bank transfer",
         preview: { path: "/donate", anchor: "sec-bank" },
         hideNote: AUTO_HIDE,
-        items: [T("donate_bank_title", "Heading"), PA("bank_details", "Bank transfer details")],
+        items: [
+          T("donate_bank_title", "Heading"),
+          P("bank_account_number", "Account number"),
+          P("bank_account_name", "Name of the account"),
+          P("bank_swift_code", "Swift code"),
+          P("bank_currency", "Currency"),
+          P("bank_branch", "Bank & Branch"),
+          P("bank_code", "Bank Code"),
+          P("bank_branch_code", "Branch Code"),
+          PA(
+            "bank_details_extra",
+            "Additional notes",
+            "Optional. Anything else donors should know — shown below the details above."
+          ),
+        ],
       },
       {
         section: "Why donate",

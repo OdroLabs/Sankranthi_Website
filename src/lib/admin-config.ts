@@ -463,8 +463,15 @@ export const entities: EntityDef[] = [
     model: "donation",
     title: "Donations",
     titleSingular: "Donation",
-    description: "Donation records from PayHere.",
+    description: "Donation records — online payment and bank transfer.",
     readOnly: true,
+    inbox: {
+      statuses: [
+        { value: "pending", label: "Pending" },
+        { value: "success", label: "Success" },
+        { value: "failed", label: "Failed" },
+      ],
+    },
     orderBy: { createdAt: "desc" },
     fields: [],
     listFields: [
@@ -472,6 +479,8 @@ export const entities: EntityDef[] = [
       { name: "name", label: "Name" },
       { name: "email", label: "Email" },
       { name: "amount", label: "Amount", type: "money" },
+      { name: "method", label: "Method" },
+      { name: "bankSlipUrl", label: "Deposit slip", type: "image" },
       { name: "status", label: "Status" },
     ],
   },
