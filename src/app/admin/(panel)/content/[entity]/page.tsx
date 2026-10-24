@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Plus, Pencil, CheckCircle2, XCircle, Eye } from "lucide-react";
+import { Plus, Pencil, CheckCircle2, XCircle, Eye, FileText } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { getEntity, type EntityDef } from "@/lib/admin-config";
 import { formatDate, formatMoney } from "@/lib/utils";
@@ -36,11 +36,25 @@ export default async function EntityListPage({ params }: { params: Promise<{ ent
       );
     }
     if (col.type === "image") {
-      return value ? (
-        <div className="relative h-10 w-14 overflow-hidden rounded border">
-          <Image src={value} alt="" fill className="object-cover" />
-        </div>
-      ) : null;
+      if (!value) return null;
+      // Bank deposit slips are sometimes a PDF, not an image — no thumbnail
+      // to render there, so link out to it instead of breaking an <Image>.
+      const isPdf = /\.pdf($|\?)/i.test(String(value));
+      return (
+        <a
+          href={value}
+          target="_blank"
+          rel="noreferrer"
+          className="relative grid h-10 w-14 place-items-center overflow-hidden rounded border bg-muted/30"
+          title="Open in a new tab"
+        >
+          {isPdf ? (
+            <FileText className="h-5 w-5 text-muted-foreground" />
+          ) : (
+            <Image src={value} alt="" fill className="object-cover" />
+          )}
+        </a>
+      );
     }
     if (col.type === "boolean") {
       return value ? (

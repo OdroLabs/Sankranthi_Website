@@ -241,6 +241,8 @@ model Donation {
   currency         String   @default("LKR")
   message          String?  @db.Text
   status           String   @default("pending") // pending | success | failed | cancelled | chargeback
+  method           String   @default("payhere") // payhere | bank
+  bankSlipUrl      String? // Uploaded deposit/transfer slip for bank-transfer donations.
   payherePaymentId String?
   createdAt        DateTime @default(now())
 }

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import Image from "next/image";
+import { ArrowLeft, FileText, ExternalLink } from "lucide-react";
 import type { EntityDef } from "@/lib/admin-config";
 import { formatDate, formatMoney } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -36,6 +37,9 @@ export function RecordView({
   const labels = new Map(entity.listFields.map((c) => [c.name, c.label]));
   const money = new Set(
     entity.listFields.filter((c) => c.type === "money").map((c) => c.name)
+  );
+  const images = new Set(
+    entity.listFields.filter((c) => c.type === "image").map((c) => c.name)
   );
 
   const rows = Object.entries(record).filter(([key]) => !HIDDEN.has(key));
@@ -87,6 +91,38 @@ export function RecordView({
       <Card>
         <CardContent className="divide-y pt-2">
           {rows.map(([key, value]) => {
+            if (images.has(key)) {
+              const isPdf = typeof value === "string" && /\.pdf($|\?)/i.test(value);
+              return (
+                <div key={key} className="grid gap-1 py-3 sm:grid-cols-[11rem_minmax(0,1fr)]">
+                  <p className="text-sm font-medium text-muted-foreground">
+                    {labels.get(key) || humanise(key)}
+                  </p>
+                  {value ? (
+                    <a
+                      href={value}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+                    >
+                      {isPdf ? (
+                        <span className="inline-flex items-center gap-1.5">
+                          <FileText className="h-4 w-4" /> Open PDF
+                        </span>
+                      ) : (
+                        <span className="relative h-16 w-24 overflow-hidden rounded-md border">
+                          <Image src={value} alt="" fill className="object-cover" />
+                        </span>
+                      )}
+                      <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                    </a>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">—</p>
+                  )}
+                </div>
+              );
+            }
+
             let shown: string;
             if (value == null || value === "") shown = "—";
             else if (money.has(key)) shown = formatMoney(String(value));
