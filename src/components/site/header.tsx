@@ -213,7 +213,7 @@ export function SiteHeader({
               <img
                 src={logoImage}
                 alt={siteName || shortName}
-                className="h-12 w-auto max-w-[210px] object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                className="h-14 w-auto max-w-[250px] object-contain transition-transform duration-300 group-hover:scale-[1.03]"
               />
             ) : (
               <>

@@ -84,7 +84,7 @@ export function SiteFooter({
           <div className="mb-4 flex items-center gap-2.5">
             {logoImage ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={logoImage} alt={shortName} className="h-10 w-auto max-w-[170px] object-contain" />
+              <img src={logoImage} alt={shortName} className="h-16 w-auto max-w-[250px] object-contain" />
             ) : (
               <>
                 {logoLetter && (
